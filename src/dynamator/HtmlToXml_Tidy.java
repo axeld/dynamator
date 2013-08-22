@@ -396,7 +396,7 @@ implements HtmlToXml
     throws IOException
     {
         tidy_.setInputStreamName(inputFilename);
-        tidy_.setCharEncoding(tidyEncoding);
+//        tidy_.getConfiguration().setCharEncoding(tidyEncoding);
         StringWriter errout;
         // StringWriter(int) does not compile under 1.1, even though
         // it's in the API documentation
