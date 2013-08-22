@@ -57,11 +57,11 @@
     />
 
   <taskdef name="foreach"  
-      classname="net.sf.antcontrib.logic.ForEach"/>
+      classname="net.sf.antcontrib.logic.ForEach" classpath="lib/ant-contrib-0.5-jdk1.2.2.jar"/>
   <taskdef name="if"  
-      classname="net.sf.antcontrib.logic.IfTask"/>
+      classname="net.sf.antcontrib.logic.IfTask" classpath="lib/ant-contrib-0.5-jdk1.2.2.jar"/>
   <taskdef name="propertyregexp"
-      classname="net.sf.antcontrib.property.RegexTask"/>
+      classname="net.sf.antcontrib.property.RegexTask" classpath="lib/ant-contrib-0.5-jdk1.2.2.jar"/>
 
   <property name="trace" value="false"/>
   
