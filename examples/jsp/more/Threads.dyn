@@ -1,0 +1,40 @@
+<dynamator language="jsp">
+<prolog>
+<%@ page session="false" %>
+<%
+    ThreadGroup tg = Thread.currentThread().getThreadGroup();
+
+    Thread[] threads = new Thread[tg.activeCount()];
+    int n = tg.enumerate(threads);
+
+    // ensure array is full
+    if ( n < threads.length )
+    {
+        Thread[] newThreads = new Thread[n];
+        System.arraycopy(threads, 0, newThreads, 0, n);
+        threads = newThreads;
+    }
+%>
+</prolog>
+<class name="threads">
+  <foreach i="iThreads" type="Thread[]" element="thread">
+      threads
+  </foreach>
+  <attr name="id">
+     <if>thread == Thread.currentThread()</if>
+     <content>"CurrentThread"</content>
+  </attr>
+</class>
+<class name="name">
+  <content>thread.getName()</content>
+</class>
+<class name="priority">
+  <content>thread.getPriority()</content>
+</class>
+<id name="isDaemon">
+  <if>thread.isDaemon()</if>
+</id>
+<id name="isNotDaemon">
+  <if>!thread.isDaemon()</if>
+</id>
+</dynamator>

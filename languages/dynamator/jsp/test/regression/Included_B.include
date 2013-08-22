@@ -1,0 +1,10 @@
+<dynamator language="jsp">
+  <tag tag="meta" http-equiv="Refresh">
+    <if>count > 0</if>
+    <attr name="content">
+      <content>
+        "1; URL=" + request.getRequestURI() + "?count=" + (count-1)
+      </content>
+    </attr>
+  </tag>
+</dynamator>

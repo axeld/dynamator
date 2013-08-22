@@ -1,0 +1,54 @@
+<dynamator language="jsp">
+  <prolog>
+    <%@ page session="false" %>
+    <%
+        String valueArgument = request.getParameter("value");
+        Boolean value = 
+            ( valueArgument == null )
+            ? null
+            : Boolean.valueOf(valueArgument);
+    %>
+  </prolog>
+  <id name="form">
+    <attr name="action">
+      <content>request.getServletPath()</content>
+    </attr>
+  </id>
+
+  <!--
+    Only output the response section if the user has 
+    submitted the form.
+  -->
+  <id name="response">
+    <if>request.getQueryString()!=null</if>
+  </id>
+  
+  <!--
+    Add the 'selected' attribute to the option the user selected.
+  -->
+  <id name="valueIsTrue">
+    <attr name="selected">
+      <if>Boolean.TRUE.equals(value)</if>
+    </attr>
+  </id>
+  <id name="valueIsFalse">
+    <attr name="selected">
+      <if>Boolean.FALSE.equals(value)</if>
+    </attr>
+  </id>
+
+  <!--
+    Display text appropriate to the selection.
+  -->
+  <id name="trueText">
+    <if>Boolean.TRUE.equals(value)</if>
+  </id>
+  <id name="falseText">
+    <if>Boolean.FALSE.equals(value)</if>
+
+    <!-- Unhide the element. -->
+    <attr name="class">
+      <discard/>
+    </attr>
+  </id>
+</dynamator>

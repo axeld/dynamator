@@ -1,0 +1,33 @@
+<dynamator language="xsl">
+<prolog><?xml version="1.0"?>
+<xsl:stylesheet
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	version="1.0" >
+
+<xsl:template match="/">
+</prolog>
+
+  <class name="entry">
+    <foreach>
+      //term
+    </foreach>
+  </class>
+
+  <class name="term">
+    <content>
+      <xsl:value-of select="name"/>
+    </content>
+  </class>
+
+  <class name="definition">
+    <content>
+      <xsl:value-of select="def"/>
+    </content>
+  </class>
+
+<epilog>
+</xsl:template>
+</xsl:stylesheet>
+</epilog>
+
+</dynamator>

@@ -1,0 +1,15 @@
+<!-- 
+    This is an ant build file. 
+
+    It just executes ant build files in subdirectories.
+-->
+<project name="dynamator-i18n-example-master" default="all">
+  
+  <target name="all">
+    <ant dir="html" />
+  </target>
+
+  <target name="clean">
+    <ant dir="html" target="clean" />
+  </target>
+</project>

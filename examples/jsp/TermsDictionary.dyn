@@ -1,0 +1,3 @@
+<dynamator language="jsp">
+  <include file="TermsTable.dyn"/>
+</dynamator>

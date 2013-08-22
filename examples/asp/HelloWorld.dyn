@@ -1,0 +1,16 @@
+<dynamator language="asp.vb">
+
+<prolog>
+<%@ 
+    Language=VBScript 
+%>
+<% 
+    greeting = "Hello World, says Dynamator!"
+%>
+</prolog>
+  
+<id name="DynamicText">
+  <content>greeting</content>
+</id>
+
+</dynamator>

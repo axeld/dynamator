@@ -1,0 +1,4 @@
+<dynamator language="none">
+  <include file="Content.dyn"/>
+  <include file="RemoveMarkers.include"/>
+</dynamator>

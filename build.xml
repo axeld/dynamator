@@ -1,0 +1,349 @@
+<!-- 
+    This is an ant build file. 
+
+    By default, files are compiled optimized with no debug info.
+    To compile for debugging, use 
+        prompt=> ant -Dtesting=1
+        
+    To build all of Dynamator:
+        ant clean
+        ant
+        ant doc
+    
+    To regression test:
+        ant test
+        
+    To build a release distribution:
+        ant release
+
+    $ANT_HOME/lib must contain:
+    - jakarta-oro-2.0.8.jar
+      (http://jakarta.apache.org/oro
+    - antcontrib-0.5.jar
+      (http://ant-contrib.sourceforge.net)
+-->
+
+<project name="dynamator" default="all">
+  
+  <!-- user-defined configuration -->
+  <property name="configuration.file" value="build.properties"/> 
+  <property file="${user.home}/dynamator.build.properties" /> 
+  <property file="${user.home}/build.properties" />
+  <property file="${basedir}/${configuration.file}" />
+
+  <!-- product information -->
+  <property name="product"      value="dynamator"/>
+  <property name="version-major" value="1"/>
+  <property name="version-minor" value="5"/>
+  <property name="version"       value="${version-major}.${version-minor}"/>
+  <property name="version-label" value="${version-major}_${version-minor}"/>
+
+  <!-- destination directories -->
+  <property name="dir.build"    location="${basedir}/build"/>
+  <property name="dir.classes"  location="${dir.build}/classes"/>
+  <property name="dir.dist"     location="${basedir}/dist"/>
+
+  <!-- compile properties -->
+  <property name="deprecation"  value="on"/>
+
+  <path id="classpath.project">
+    <pathelement location="${dir.classes}"/>
+    <fileset dir="${basedir}">
+      <include name="lib/**/*.jar"/>
+    </fileset>
+    <pathelement path="${java.class.path}"/>
+  </path>
+  
+  <target name="all" 
+      depends="
+        jar
+        "
+      description="Build executable."
+    />
+
+  <target name="set-properties" 
+      depends="
+        set-test-properties,
+        set-prod-properties
+        ">
+  </target>
+  
+  <target name="set-test-properties"
+      if="testing">
+    <property name="debug"        value="on" />
+    <property name="optimize"     value="off" />
+    <echo message="building for test (debug=${debug},optimize=${optimize})..."/>
+  </target>
+  
+  <target name="set-prod-properties"
+      unless="testing">
+    <property name="debug"        value="off"/>
+    <property name="optimize"     value="on"/>
+    <echo message="building for release (debug=${debug},optimize=${optimize})..."/>
+  </target>
+  
+  <target name="timestamp">
+    <tstamp>
+      <format property="YEAR" pattern="yyyy"/>
+    </tstamp>
+  </target>
+  
+  <target name="compile" 
+      depends="
+        set-properties,
+        compile-core,
+        compile-languages,
+        compile-tools
+        "
+      description="Compile binaries."
+    />
+    
+  <target name="_compile_">
+    <mkdir dir="${dir.classes}"/>
+    <javac
+        srcdir="${dir.source}"
+        destdir="${dir.classes}"
+        debug="${debug}"
+        deprecation="${deprecation}"
+        optimize="${optimize}"
+        excludes="${exclude}"
+        includes="**/*.java"
+      >
+      
+      <classpath refid="classpath.project"/>
+    </javac>
+  </target>    
+
+  <target name="check-version">
+    <uptodate property="version.uptodate"
+        targetfile="src/dynamator/Version.java">
+      <srcfiles dir="${basedir}">
+        <include name="src/**/*.java"/>
+        <include name="languages/**/*.java"/>
+        <include name="tools/**/*.java"/>
+      </srcfiles>
+    </uptodate>
+  </target>
+  
+  <target name="version"
+      depends="check-version"
+      unless="version.uptodate">
+    <copy overwrite="yes"
+        file="src/dynamator/Version.template"    
+        tofile="src/dynamator/Version.java"
+      />
+
+    <replace file="src/dynamator/Version.java">
+      <replacefilter 
+          token="@BUILD@"
+          value="${DSTAMP}.${TSTAMP}" />
+      <replacefilter 
+          token="@VERSION@"
+          value="${version}" />
+      <replacefilter 
+          token="@YEAR@"
+          value="${YEAR}" />
+    </replace>
+
+    <mkdir dir="test/expected"/>
+    <echo file="test/expected/version.out"
+>Dynamator version ${version}, build ${DSTAMP}.${TSTAMP}
+Copyright 2000-${YEAR}, Jay Dunning.  All rights reserved.
+</echo>
+
+  </target>
+  
+  <target name="compile-core"
+      depends="timestamp, version"
+      description="Compile base Dynamator binaries."
+    >
+
+    <antcall target="_compile_">
+      <param name="dir.source" value="src" />
+    </antcall>
+  </target>
+
+  <target name="compile-languages"
+      description="Compile Dynamator language-specific binaries."
+    >
+    <antcall target="_compile_">
+      <param name="dir.source" value="languages" />
+      <param name="exclude" value="**/test/**" />
+    </antcall>
+  </target>
+
+  <target name="compile-tools"
+      description="Compile Dynamator tool-specific binaries."
+    >
+    <antcall target="_compile_">
+      <param name="dir.source" value="tools" />
+    </antcall>
+  </target>
+
+  <target name="jar"
+      depends="compile"
+      description="Build jar file."
+    >
+    <jar destfile="${dir.build}/dynamator.jar" update="false">
+      <fileset dir="${dir.classes}"
+        includes="*.class, dynamator/**/*.class"/>
+      <manifest>
+        <attribute name="Specification-Title"
+            value="${product}"/>
+        <attribute name="Specification-Version"
+            value="${version}"/>
+        <attribute name="Specification-Vendor"
+            value="http://dynamator.sourceforge.net"/>
+        <attribute name="Implementation-Title"
+            value="${product}"/>
+        <attribute name="Implementation-Version"
+            value="${version}"/>
+        <attribute name="Implementation-Vendor"
+            value="http://dynamator.sourceforge.net"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="examples">
+    <ant dir="examples"/>
+  </target>
+  
+  <target name="doc" depends="jar">
+    <ant antfile="doc.xml"/>
+  </target>
+
+  <target name="test" depends="jar">
+    <ant antfile="test.xml"/>
+  </target>
+
+  <target name="release"
+      description="Create a release file."
+    >
+
+    <!-- create source zipfile to place within release zipfile -->
+    <delete file="${dir.build}/src.zip" quiet="true"/>
+    <zip zipfile="${dir.build}/src.zip"
+        basedir="${basedir}"
+        includes="
+            src/**,
+            languages/**,
+            tools/**,
+
+            build.xml,
+            doc.xml,
+            jcoverage.xml,
+            pmd.xml,
+            test-invalid.xml,
+            test-syntax.xml,
+            test.xml,
+
+            testall.bat,
+
+            doc-src/dynhtml/**,
+            doc-src/dynxsl/**,
+            doc-src/html/**,
+            doc-src/tutorial/**,
+            doc-src/xmlcatalog/**
+            "
+        excludes="
+            doc-src/manual/DynamateTask.html,
+            doc-src/tutorial/**/*.jsp,
+            **/*.zip,
+            **/CVS/**,
+            **/RCS/**,
+            **/*.bak,
+            **/*.tidy,
+            **/*.asxml,
+            **/*.$$$$$$,
+            **/*.%,
+            **/*.diff,
+            **/*.java.*, 
+            **/*.log,
+            **/*.note,
+            **/actual*/**,
+            **/expected_uncommented/**,
+            **/*.err,
+            **/*.db, 
+            **/*.out,
+            **/work/**
+            doc-src/html/faq.html,
+            doc-src/html/tutorial/**
+            "
+      />  
+
+    <!-- create release zipfile -->
+    <mkdir dir="${dir.dist}"/>
+    <delete file="${dir.dist}/dynamator-${version-label}.zip" quiet="true"/>
+    <zip zipfile="${dir.dist}/dynamator-${version-label}.zip">
+      <zipfileset dir="${basedir}"
+          prefix="dynamator-${version}"
+          includes="
+              LICENSE,
+              CONTRIBUTORS.txt,
+              Readme.html
+              "
+        />
+      <zipfileset dir="${dir.build}"
+          prefix="dynamator-${version}"
+          includes="
+              dynamator.jar,
+              src.zip
+              "
+        />
+      <zipfileset dir="${dir.build}/doc"
+          prefix="dynamator-${version}/doc"
+          includes="**"
+        />
+      <!-- Makefiles are included in examples directory -->
+      <zipfileset dir="${basedir}" 
+          prefix="dynamator-${version}"
+          includes="examples/"
+          excludes="
+            **/*.zip,
+            **/CVS/**,
+            **/RCS/**,
+            **/*.bak,
+            **/*.tidy,
+            **/*.asxml,
+            **/*.$$$$$$,
+            **/*.%,
+            **/*.diff,
+            **/*.java.*, 
+            **/*.log,
+            **/actual/*,
+            **/*.err
+            "
+        />
+    </zip>
+  </target>
+
+  <target name="release-libs">
+    <mkdir dir="${dir.dist}"/>
+    <delete file="${dir.dist}/dynamator-build-libs-${version-label}.zip" 
+        quiet="true"/>
+    <zip zipfile="${dir.dist}/dynamator-build-libs-${version-label}.zip">
+      <zipfileset dir="${basedir}"
+          prefix="dynamator-${version}"
+          includes="
+              lib/**
+              "
+        />
+    </zip>
+  </target>
+  
+  <target name="require-jdk-1.2">
+    <condition property="jdk-1.2">
+      <equals arg1="${java.specification.version}" arg2="1.2"/>
+    </condition>
+    <fail unless="jdk-1.2"
+        message="The official Dynamator build requires JDK 1.2" />
+  </target>
+
+  <target name="clean"
+      description="Delete all program-generated files."
+    >
+    <delete dir="${dir.build}"/>
+    <mkdir  dir="${dir.build}"/>
+  </target>
+
+</project>

@@ -1,0 +1,18 @@
+<dynamator language="jsp">
+  <include file="Included_A.include"/>
+  <class name="DynamicText">
+    <content>
+        ( count == 0 ) 
+        ? getGreeting()
+        : String.valueOf(count)
+    </content>
+  </class>
+  <tag tag="title">
+    <content>
+        ( count == 0 ) 
+        ? getGreeting()
+        : String.valueOf(count)
+    </content>
+  </tag>
+  <include file="Included_B.include"/>
+</dynamator>

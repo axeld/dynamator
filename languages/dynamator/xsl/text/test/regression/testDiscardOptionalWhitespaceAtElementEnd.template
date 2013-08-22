@@ -1,0 +1,8 @@
+<module>
+<choose
+><when-some-condition
+></when-some-condition
+><otherwise
+></otherwise
+></choose>
+</module>

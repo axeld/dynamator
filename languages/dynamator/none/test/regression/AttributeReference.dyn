@@ -1,0 +1,37 @@
+<dynamator language="none">
+  <tag tag="body">
+    <attr name="bgcolor">
+      <content>[[@/f/d/
+        +/d/c/
+        +/d/e/
+        ]]</content>
+    </attr>
+  </tag>
+  
+  <tag tag="a" with-attr="href">
+    <attr name="href">
+      <content>[[@/.html/.htm]]</content>
+    </attr>
+  </tag>
+
+  <tag tag="img">
+    <attr name="alt">
+      <content>This image shows: [[@]]</content>
+    </attr>
+  </tag>
+
+  <tag tag="input" type="button">
+    <attr name="name">
+      <content>Click "Me"!</content>
+    </attr>
+    <attr name="onclick">
+      <content>alert("Thanks for testing quote behavior!")</content>
+    </attr>
+  </tag>
+
+  <class name="discard-me">
+    <attr name="class">
+      <content>[[@/ discard-me//]]</content>
+    </attr>
+  </class>
+</dynamator>

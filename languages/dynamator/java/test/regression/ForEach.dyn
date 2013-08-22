@@ -1,0 +1,197 @@
+<dynamator language="java">
+<prolog>
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.*;
+import javax.servlet.http.*;
+
+public class ForEach
+extends HttpServlet
+{
+    public static class
+    EnumerationIterator
+    implements Iterator
+    {
+        Enumeration e_;
+        
+        public EnumerationIterator(Enumeration e)
+        {
+            e_ = e;
+        }
+        
+        public boolean hasNext() { return e_.hasMoreElements(); }
+        public Object next() { return e_.nextElement(); }
+        public void remove() {}
+    }
+
+    public 
+    void
+    doGet(
+        HttpServletRequest request,
+        HttpServletResponse response
+        )
+    throws IOException
+    {
+        PrintWriter out = response.getWriter();
+        response.setContentType("text/html");
+
+        output(out);
+    }
+    
+    public static void main(String[] args)
+    {
+        output(new PrintWriter(System.out, true));
+    }
+    
+    public static
+    void
+    output(
+        PrintWriter out
+        )
+    {
+        Vector v = new Vector();
+        v.addElement("a");
+        v.addElement("b");
+        v.addElement("c");
+        v.addElement("d");
+</prolog>
+<id name="Array1">
+  <foreach type="java.util.Locale[]" element="locale">
+    java.util.Locale.getAvailableLocales()
+  </foreach>
+  <content>locale</content>
+</id>
+<id name="Array2">
+  <foreach type="java.util.Locale[]" element="locale" i="iLocale">
+    java.util.Locale.getAvailableLocales()
+  </foreach>
+  <content>locale</content>
+</id>
+<id name="Array3">
+  <foreach type="java.util.Locale[]" element="locale"
+      i="iLocale" collection="locales">
+    java.util.Locale.getAvailableLocales()
+  </foreach>
+  <content>locale</content>
+</id>
+
+<id name="Vector1">
+  <foreach type="Vector[String]" element="item">
+    v
+  </foreach>
+  <content>item</content>
+</id>
+<id name="Vector2">
+  <foreach type="Vector[String]" element="item" i="iItem">
+    v
+  </foreach>
+  <content>item</content>
+</id>
+<id name="Vector3">
+  <foreach type="Vector[String]" element="item" i="iItem" collection="items">
+    v
+  </foreach>
+  <content>item</content>
+</id>
+
+<id name="Enumeration1">
+  <foreach type="Enumeration[String]" element="name">
+      System.getProperties().propertyNames()
+  </foreach>
+  <content>name</content>
+</id>
+<id name="Enumeration2">
+  <foreach type="Enumeration[String]" element="name" i="iName">
+      System.getProperties().propertyNames()
+  </foreach>
+  <content>name</content>
+</id>
+<id name="Enumeration3">
+  <foreach type="Enumeration[String]" element="name" i="iName" collection="names">
+      System.getProperties().propertyNames()
+  </foreach>
+  <content>name</content>
+</id>
+
+<id name="Iterator1">
+  <foreach type="Iterator[String]" element="name">
+      new EnumerationIterator(System.getProperties().propertyNames())
+  </foreach>
+  <content>name</content>
+</id>
+<id name="Iterator2">
+  <foreach type="Iterator[String]" element="name" i="iName">
+      new EnumerationIterator(System.getProperties().propertyNames())
+  </foreach>
+  <content>name</content>
+</id>
+<id name="Iterator3">
+  <foreach type="Iterator[String]" element="name" i="iName" collection="names">
+      new EnumerationIterator(System.getProperties().propertyNames())
+  </foreach>
+  <content>name</content>
+</id>
+
+<id name="Dictionary1">
+  <foreach type="Dictionary[String,String]" element="property">
+      System.getProperties()
+  </foreach>
+  <content>property</content>
+</id>
+<id name="Dictionary2">
+  <foreach type="Dictionary[String,String]" element="property" i="iProperty">
+      System.getProperties()
+  </foreach>
+  <content>property</content>
+</id>
+<id name="Dictionary3">
+  <foreach type="Dictionary[String,String]" element="property" i="iProperty" collection="d">
+      System.getProperties()
+  </foreach>
+  <content>property</content>
+</id>
+
+<id name="Map1">
+  <foreach type="Map[String,String]" element="property">
+      System.getProperties()
+  </foreach>
+  <content>property</content>
+</id>
+<id name="Map2">
+  <foreach type="Map[String,String]" element="property" i="iProperty">
+      System.getProperties()
+  </foreach>
+  <content>property</content>
+</id>
+<id name="Map3">
+  <foreach type="Map[String,String]" element="property" i="iProperty" collection="d">
+      System.getProperties()
+  </foreach>
+  <content>property</content>
+</id>
+
+<id name="Properties1">
+  <foreach type="Properties" element="property">
+      System.getProperties()
+  </foreach>
+  <content>property</content>
+</id>
+<id name="Properties2">
+  <foreach type="Properties" element="property" i="iProperty">
+      System.getProperties()
+  </foreach>
+  <content>property</content>
+</id>
+<id name="Properties3">
+  <foreach type="Properties" element="property" i="iProperty" collection="properties">
+      System.getProperties()
+  </foreach>
+  <content>property</content>
+</id>
+<epilog>
+        out.flush();
+        out.close();
+    }
+}
+</epilog>
+</dynamator>

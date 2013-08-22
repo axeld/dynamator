@@ -1,0 +1,7 @@
+<dynamator>
+  <tag tag="body">
+    <after-content>x
+      <p>Nested include worked.
+    </after-content>
+  </tag>
+</dynamator>

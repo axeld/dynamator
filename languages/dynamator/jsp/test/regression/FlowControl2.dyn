@@ -1,0 +1,68 @@
+<dynamator language="jsp">
+  <prolog>
+    <%@ page session="false" %>
+    <%
+        ThreadGroup tg = Thread.currentThread().getThreadGroup();
+
+        Thread[] threads = new Thread[tg.activeCount()];
+        int n = tg.enumerate(threads);
+
+        if ( n < threads.length )
+        {
+            Thread[] newThreads = new Thread[n];
+            System.arraycopy(threads, 0, newThreads, 0, n);
+            threads = newThreads;
+        }
+    %>
+  </prolog>
+  <id name="threads">
+    <before>
+        /* before */
+    </before>
+    <before-content>
+        /* before Content */
+    </before-content>
+    <after>
+        */ after */
+    </after>
+    <after-content>
+        /* after Content */
+    </after-content>
+    <if>
+        1 == 1
+    </if>
+    <foreach i="iThreads" type="Thread[]" element="thread">
+        threads
+    </foreach>
+    <attr name="id">
+      <discard/>
+    </attr>
+  </id>
+  <id name="name">
+    <content>thread.getName()</content>
+  </id>
+  <id name="priority">
+    <content>thread.getPriority()</content>
+  </id>
+  <id name="isDaemon">
+    <if>thread.isDaemon()</if>
+  </id>
+  <id name="isNotDaemon">
+    <if>!thread.isDaemon()</if>
+  </id>
+  <id name="isAlive">
+    <if>thread.isAlive()</if>
+  </id>
+  <id name="isNotAlive">
+    <if>!thread.isAlive()</if>
+  </id>
+  <id name="isInterrupted">
+    <if>thread.isInterrupted()</if>
+  </id>
+  <id name="isNotInterrupted">
+    <if>!thread.isInterrupted()</if>
+  </id>
+  <class name="exclude">
+    <if>false</if>
+  </class>
+</dynamator>

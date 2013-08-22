@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<terms>
+  <term>
+    <name>epilog</name>
+    <def>
+        The end of the generated file, after the template.
+    </def>
+  </term>
+  <term>
+    <name>locator</name>
+    <def>
+        An element in a Dynamator annotations file that identifies
+        the set of elements to which a set of overrides will apply.
+    </def>
+  </term>
+  <term>
+    <name>marker</name>
+    <def>
+        An invisible HTML element or attribute that identifies a
+        location in an HTML file.  The HTML 4.0 markers are
+        div, span, id, and class.
+    </def>
+  </term>
+  <term>
+    <name>override</name>
+    <def>
+        An element in a Dynamator annotations file that specifies
+        a set of changes to be applied to the template.
+        (AKA "modifier")
+    </def>
+  </term>
+  <term>
+    <name>prolog</name>
+    <def>
+        The beginning of the generated file, before the template.
+    </def>
+  </term>
+  <term>
+    <name>template</name>
+    <def>
+        The file containing the static text pattern to be output
+        by the generated program.
+    </def>
+  </term>
+</terms>
+

@@ -1,0 +1,16 @@
+<dynamator language="none" suffix="html">
+  <tag tag="title">
+    <content>An Imageway Agepay</content>
+  </tag>
+  <id name="HelloImage">
+    <attr name="width">
+      <content>297</content>
+    </attr>
+    <attr name="height">
+      <content>56</content>
+    </attr>
+    <attr name="alt">
+      <content>Ellohay, Orldway!</content>
+    </attr>
+  </id>
+</dynamator>

@@ -1,0 +1,39 @@
+<dynamator suffix="cgi" comment-start="#">
+
+<prolog>
+print <<EOF;
+</prolog>
+  
+<epilog>
+EOF
+</epilog>
+
+<class name="size">
+  <before-content indent="yes">
+EOF
+for ( $i = 1; $i <= 7; ++$i ) {
+  print <<EOF;
+  </before-content>
+  <after-content>
+EOF
+}
+print <<EOF;
+  </after-content>
+  <discard-tag/>
+</class>
+
+<class name="font">
+  <attr name="size">
+    <content>$i</content>
+  </attr>
+  <attr name="class">
+    <discard/>
+  </attr>
+</class>
+
+<class name="fontsize">
+  <content>$i</content>
+  <discard-tag/>
+</class>
+
+</dynamator>

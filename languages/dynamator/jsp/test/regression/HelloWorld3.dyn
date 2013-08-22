@@ -1,0 +1,14 @@
+<dynamator language="jsp">
+  <prolog>
+    <%@ page session="false" %>
+    <%!
+        private String getGreeting()
+        {
+            return "<Hello&World>, says Dynamator!";
+        }
+    %>
+  </prolog>
+  <id name="DynamicText">
+    <content>getGreeting()</content>
+  </id>
+</dynamator>

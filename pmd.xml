@@ -1,0 +1,86 @@
+<!-- 
+    This ant build file checks source code for potential
+    maintainability issues using PMD (http://pmd.sourceforge.net). 
+
+    Usage:
+        ant -Dpmd.home=.../pmd-1.5 -f pmd.xml
+-->
+
+<project name="dynamator" default="pmd">
+  
+  <!-- user-defined configuration -->
+  <property name="configuration.file" value="build.properties"/> 
+  <property file="${user.home}/dynamator.build.properties" /> 
+  <property file="${user.home}/build.properties" />
+  <property file="${basedir}/${configuration.file}" />
+
+  <!-- destination directories -->
+  <property name="dir.build"    location="${basedir}/build"/>
+
+  <property name="file.pmd-errors"
+      location="${dir.build}/pmd.errors"/>
+
+  <path id="classpath.pmd">
+    <fileset dir="${pmd.home}/lib">
+      <include name="*.jar"/>
+    </fileset>
+  </path>
+
+  <taskdef name="pmd" 
+      classname="net.sourceforge.pmd.ant.PMDTask"
+      classpathref="classpath.pmd"/>
+  <taskdef name="propertyregexp"  
+      classname="net.sf.antcontrib.property.RegexTask"/>
+
+  <target name="check-preconditions">
+    <available property="preconditions.satisfied"
+        classname="net.sourceforge.pmd.Rule"
+        classpathref="classpath.pmd"/>
+  </target>
+  
+  <target name="preconditions"
+      depends="check-preconditions"
+      unless="preconditions.satisfied">
+    <fail>
+PMD not found in classpath.
+Property 'pmd.home' = '${pmd.home}'.</fail>
+  </target>
+  
+  <target name="pmd"
+      depends="preconditions">
+    <delete file="${file.pmd-errors}" quiet="true"/>
+    
+    <pmd rulesetfiles="${basedir}/ruleset.pmd">
+
+      <formatter type="text" toFile="${file.pmd-errors}"/>
+        
+      <fileset dir=".">
+        <include name="src/**/*.java"/>
+        <include name="languages/**/*.java"/>
+        <include name="tools/**/*.java"/>
+        <exclude name="**/test/**"/>
+      </fileset>
+    </pmd>
+
+    <available file="${file.pmd-errors}" property="pmd.found.errors"/>
+
+    <antcall target="pmd-errors"/>
+    
+  </target>
+  
+  <target name="pmd-errors"
+      if="pmd.found.errors">
+
+    <antcall target="compilify"/>
+    <fail message="PMD found errors; see ${file.pmd-errors}"/>
+  </target>
+
+  <target name="compilify">
+    <replaceregexp file="${file.pmd-errors}"
+        match="^([^\s]+)\s+(\d+)"
+        replace="\1(\2):"
+        byline="true"
+        />
+  </target>
+
+</project>

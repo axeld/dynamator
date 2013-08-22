@@ -1,0 +1,177 @@
+<dynamator language = "jsp">
+<prolog>
+<%@ page import="java.util.Dictionary"%>
+<%@ page import="java.util.Enumeration"%>
+<%@ page import="java.util.Hashtable"%>
+<%@ page session="false" %>
+<%!
+    private 
+    Dictionary 
+    obtainRequestArguments_(
+        ServletRequest request
+        )
+    {
+        Dictionary result = new Hashtable();
+        String name;
+        Enumeration e = request.getParameterNames();
+        while ( e.hasMoreElements() )
+        {
+            name = e.nextElement().toString();
+            result.put(name, request.getParameter(name));
+        }
+        return result;
+    }
+
+    private 
+    Dictionary 
+    obtainRequestHeaders_(
+        HttpServletRequest request
+        )
+    {
+        Dictionary result = new Hashtable();
+        String name;
+        Enumeration e = request.getHeaderNames();
+        while ( e.hasMoreElements() )
+        {
+            name = e.nextElement().toString();
+            result.put(name, request.getHeader(name));
+        }
+        return result;
+    }
+
+
+    private 
+    Dictionary 
+    obtainSessionData_(
+        HttpSession session
+        )
+    {
+        Dictionary result = new Hashtable();
+        String[] names = session.getValueNames();
+        int i = names.length;
+        while ( --i >= 0 )
+        {
+            result.put(names[i], session.getValue(names[i]));
+        }
+        return result;
+    }
+%>
+<%
+    Dictionary requestArguments = obtainRequestArguments_(request);
+    Dictionary requestHeaders   = obtainRequestHeaders_(request);
+    HttpSession session         = request.getSession(false);
+    Dictionary sessionData = 
+        session == null 
+        ? null
+        : obtainSessionData_(session);
+%>
+</prolog>
+<id name="classname">
+  <content>this.getClass().getName()</content>
+</id>
+<id name="threadname">
+  <content>Thread.currentThread().getName()</content>
+</id>
+<id name="freememory">
+  <content>Runtime.getRuntime().freeMemory()</content>
+</id>
+<id name="totalmemory">
+  <content>Runtime.getRuntime().totalMemory()</content>
+</id>
+<id name="RequestArguments">
+  <foreach type="Dictionary[String,String]" element="argument">
+      requestArguments
+  </foreach>
+</id>
+<id name="RequestArgumentName">
+  <content>argumentKey</content>
+</id>
+<id name="RequestArgumentValue">
+  <content>argument</content>
+</id>
+<id name="NumberOfRequestArguments">
+  <content>requestArguments.size()</content>
+</id>
+<id name="AuthType">
+  <content>request.getAuthType()</content>
+</id>
+<id name="CharacterEncoding">
+  <content>request.getCharacterEncoding()</content>
+</id>
+<id name="ContentLength">
+  <content>request.getContentLength()</content>
+</id>
+<id name="ContentType">
+  <content>request.getContentType()</content>
+</id>
+<id name="Method">
+  <content>request.getMethod()</content>
+</id>
+<id name="PathInfo">
+  <content>request.getPathInfo()</content>
+</id>
+<id name="PathTranslated">
+  <content>request.getPathTranslated()</content>
+</id>
+<id name="Protocol">
+  <content>request.getProtocol()</content>
+</id>
+<id name="QueryString">
+  <content>request.getQueryString()</content>
+</id>
+<id name="RemoteAddr">
+  <content>request.getRemoteAddr()</content>
+</id>
+<id name="RemoteHost">
+  <content>request.getRemoteHost()</content>
+</id>
+<id name="RemoteUser">
+  <content>request.getRemoteUser()</content>
+</id>
+<id name="RequestURI">
+  <content>request.getRequestURI()</content>
+</id>
+<id name="RequestedSessionId">
+  <content>request.getRequestedSessionId()</content>
+</id>
+<id name="Scheme">
+  <content>request.getScheme()</content>
+</id>
+<id name="ServerName">
+  <content>request.getServerName()</content>
+</id>
+<id name="ServerPort">
+  <content>request.getServerPort()</content>
+</id>
+<id name="ServletPath">
+  <content>request.getServletPath()</content>
+</id>
+<id name="Headers">
+  <foreach type="Dictionary[String,String]" element="header">
+      requestHeaders
+  </foreach>
+</id>
+<id name="HeaderName">
+  <content>headerKey</content>
+</id>
+<id name="HeaderValue">
+  <content>header</content>
+</id>
+<id name="IfWithinSession">
+  <if>session != null</if>
+</id>
+<id name="SessionVariables">
+  <foreach type="Dictionary[String,Object]" element="value">
+    sessionData
+  </foreach>
+</id>
+<id name="SessionVariableName">
+  <content>valueKey</content>
+</id>
+<id name="SessionVariableValue">
+  <content>value</content>
+</id>
+<id name="IfNotWithinSession">
+  <if>session == null</if>
+</id>
+</dynamator>

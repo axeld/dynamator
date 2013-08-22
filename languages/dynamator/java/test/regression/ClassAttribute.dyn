@@ -1,0 +1,36 @@
+<dynamator language="java">
+<prolog>
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.http.*;
+
+public class ClassAttribute
+extends HttpServlet
+{
+    private String getGreeting()
+    {
+        return "Hello World, says Dynamator!";
+    }
+
+    public 
+    void
+    doGet(
+        HttpServletRequest request,
+        HttpServletResponse response
+        )
+    throws IOException
+    {
+        PrintWriter out = response.getWriter();
+        response.setContentType("text/html");
+
+</prolog>
+<class name="DynamicText">
+  <content>getGreeting()</content>
+</class>
+<epilog>
+        out.flush();
+        out.close();
+    }
+}
+</epilog>
+</dynamator>

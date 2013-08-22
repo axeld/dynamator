@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+  <title>Test No Changes</title>
+</head>
+<body>
+<p>Actually, this tests for the browser whitespace bug
+<p>
+&#187; &#188;
+&#8192;&nbsp;&#8192;
+
+<table>
+  <tr>
+    <td><img src="x"></td>
+    <td><img src="x"> 
+    </td>
+  </tr>
+</table>
+<a href="xxx">text</a>
+<br>
+<a href="xxx">text
+</a><!-- tidy fixes this last one -->
+<p>
+The
+<br>
+end.
+</p>
+</body>
+</html>

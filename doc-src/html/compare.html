@@ -1,0 +1,340 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>
+      Comparison
+    </title>
+    <link type="text/css" href="style.css" rel="stylesheet" />
+<style type="text/css">
+.tabular .data tr th { text-align: left; }
+.tabular .data tr td { text-align: center; vertical-align:middle; }
+.good, .good * { background-color: #0f0; color: #eee; font-weight: bold }
+.bad,  .bad  * { background-color: #f00; color: #eee; font-weight: bold }
+</style>
+  </head>
+  <body>
+    <h1>
+      Comparison
+    </h1>
+    <table border="0" cellspacing="1" class="tabular"
+    summary="Compare Dynamator with other products used for similar reasons">
+      <tbody>
+        <tr class="heading">
+          <th>
+          </th>
+          <th>
+            Dynamator
+          </th>
+          <th>
+            <a href="http://xmlc.objectweb.org" target="external">
+            XMLC</a>
+          </th>
+          <th>
+            <a href="http://jakarta.apache.org/tapestry/"
+            target="external">Tapestry</a>
+          </th>
+          <th>
+            <a href="http://jakarta.apache.org/velocity/"
+            target="external">Velocity</a>
+          </th>
+          <th>
+            JSP<br/>(scripts)
+          </th>
+          <th>
+            JSP<br/>(taglibs)
+          </th>
+        </tr>
+      </tbody>
+      <tbody class="data">
+        <tr class="odd">
+          <th>
+            Pure, valid HTML
+          </th>
+          <td class="good">
+            Y
+          </td>
+          <td class="good">
+            Y
+          </td>
+          <td class="bad">
+            N
+          </td>
+          <td class="bad">
+            N
+          </td>
+          <td class="bad">
+            N
+          </td>
+          <td class="bad">
+            N
+          </td>
+        </tr>
+        <tr class="even">
+          <th>
+            Architecture neutral
+          </th>
+          <td class="good">
+            Y
+          </td>
+          <td class="good">
+            Y
+          </td>
+          <td class="bad">
+            N
+          </td>
+          <td class="good">
+            Y
+          </td>
+          <td class="bad">
+            N
+          </td>
+          <td class="bad">
+            N
+          </td>
+        </tr>
+        <tr class="even">
+          <th>
+            Works in non-web apps
+          </th>
+          <td class="good">
+            Y
+          </td>
+          <td class="good">
+            Y
+          </td>
+          <td class="bad">
+            N
+          </td>
+          <td class="good">
+            Y
+          </td>
+          <td class="bad">
+            N
+          </td>
+          <td class="bad">
+            N
+          </td>
+        </tr>
+        <tr class="even">
+          <th>
+            Language independent
+          </th>
+          <td class="good">
+            Y
+          </td>
+          <td class="bad">
+            N
+          </td>
+          <td class="bad">
+            N
+          </td>
+          <td class="bad">
+            N
+          </td>
+          <td class="bad">
+            N
+          </td>
+          <td class="bad">
+            N
+          </td>
+        </tr>
+        <tr class="odd">
+          <th>
+            No run-time library
+          </th>
+          <td class="good">
+            Y
+          </td>
+          <td class="bad">
+            N
+          </td>
+          <td class="bad">
+            N
+          </td>
+          <td class="bad">
+            N
+          </td>
+          <td class="good">
+            Y
+          </td>
+          <td class="bad">
+            N
+          </td>
+        </tr>
+        <tr class="even">
+          <th>
+            No run-time overhead
+          </th>
+          <td class="good">
+            Y
+          </td>
+          <td class="bad">
+            N
+          </td>
+          <td class="bad">
+            N
+          </td>
+          <td class="bad">
+            N
+          </td>
+          <td class="good">
+            Y
+          </td>
+          <td class="bad">
+            N
+          </td>
+        </tr>
+        <tr class="odd">
+          <th>
+            Mechanism
+          </th>
+          <td>
+            XML-based source code manipulation
+          </td>
+          <td>
+            XML compiler + enhanced DOM API
+          </td>
+          <td>
+            XML config + architecture
+          </td>
+          <td>
+            Template language
+          </td>
+          <td>
+            Template language
+          </td>
+          <td>
+            Tag-based template language
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h2>
+      Comparison Criteria and Comments
+    </h2>
+    <p>
+      The table above compares Dynamator with popular Java
+      technologies claiming to separate program logic from static
+      content, using the following criteria:
+    </p>
+    <dl>
+      <dt>
+        HTML purity and validity
+      </dt>
+      <dd>
+        <p>
+        Can the technology use pure HTML without the addition of
+        server-side program logic? 
+        Can someone knowledgeable only in
+        HTML and web applications in general develop and maintain HTML
+        templates that can be used without modification by this
+        technology?
+        Given an HTML marked up to use this technology, would an HTML
+        validator consider it valid? 
+        </p>
+        <p>
+          Dynamator and XMLC use the same HTML interface,
+          leveraging the HTML standard. Tapestry is nearly pure,
+          but requires a non-standard attribute. The others
+          aren't even close.
+        </p>
+      </dd>
+      <dt>
+        Architectural neutrality
+      </dt>
+      <dd>
+        <p>
+        Are web applications that use this technology free to
+        choose any server-side presentation architecture without
+        constraint? (Note that a negative in this category is not
+        necessarily a bad thing, if you can commit to a single
+        architecture across an application portfolio.)
+        </p>
+        <p>
+          With a much larger scope than any of the other products
+          listed, Tapestry is on the opposite end of this
+          spectrum from Dynamator, which is a small tool that
+          focuses on doing one thing without imposing architectural
+          constraints. 
+        </p>
+      </dd>
+      <dt>
+        Supports non-web applications
+      </dt>
+      <dd>
+        <p>
+        Can the technology be used with applications that run
+        outside a servlet container? Can the technology be used
+        for a command-line application without mock servlet
+        scaffolding?  
+        </p>
+        <p>
+          Dynamator, Velocity, and XMLC can be used with batch
+          programs for document generation.
+        </p>
+      </dd>
+      <dt>
+        Language independence
+      </dt>
+      <dd>
+        <p>
+        Does the technology assume Java, or can it work with other
+        languages as well?
+        </p>
+        <p>
+          JSP theoretically supports multiple languages, but
+          in practice works only with Java.
+          Because Dynamator is specifically designed for use with
+          multiple languages, it can supply a degree of consistency to
+          a multi-technology portfolio. For example, Dynamator can be
+          used to generate JSP, servlets, and XSL.
+        </p>
+      </dd>
+      <dt>
+        Freedom from run-time components
+      </dt>
+      <dd>
+        <p>
+        Is it possible to run an application that uses this
+        technology without deploying a technology-specific
+        run-time library?
+        </p>
+        <p>
+          Dynamator doesn't require any run-time library, because
+          Dynamator executes in the development environment.
+          Generated pages or programs stand on their own.
+          This makes for a simpler execution environment,
+          simplifies debugging, and reduces tool dependence.  
+          If you run into a problem with an output library component,
+          you don't have many options.  If you run into a problem with
+          Dynamator, you can always tweak the generated source code.
+        </p>
+      </dd>
+      <dt>
+        Efficient run-time
+      </dt>
+      <dd>
+        <p>
+        Is the technology as efficient as a hand-coded program
+        containing out.println statements?
+        </p>
+        <p>
+          All of these technologies claim to be "efficient enough".
+          But it's hard to match Dynamator for efficiency, since
+          it has a run-time overhead of zero. (Java code generated by 
+          Dynamator may actually be more efficient than a hand-coded
+          program that uses string concatenation.)
+          This is one of Dynamator's biggest advantages over XMLC.
+        </p>
+      </dd>
+    </dl>
+    <br/>
+    <p>Note:
+      Even though they appear as competitors in the chart above,
+      Dynamator can generate JSP (scripts or taglibs) and Velocity.
+      Although it's often better to just generate straight Java.
+    </p>
+  </body>
+</html>
+

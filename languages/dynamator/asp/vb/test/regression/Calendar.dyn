@@ -1,0 +1,233 @@
+<dynamator language="asp.vb">
+
+<prolog>
+<%@ Language=VBScript %>
+<%
+    ' I don't know how to implement a Dictionary in VB,
+    ' so I haven't implemented the event feature.
+    
+    dayNames = Array("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat")
+    daysInMonth = Array(31, "?", 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
+
+    today = now
+    thisDay = day(today)
+    thisMonth = month(today)
+    thisYear = year(today)
+
+    displayMonth = request("month")
+    if displayMonth = "" then
+        displayMonth = thisMonth
+    end if
+    displayYear = request("year")
+    if displayYear = "" then
+        displayYear = thisYear
+    end if
+
+    displayMonthName = monthname(displayMonth)
+    
+    ' find first day of month
+    firstDayOfMonth = WeekDay(displayMonth & "/1/" & displayYear)
+    calendarDay = 1 - firstDayOfMonth
+
+    ' find last day of month
+    lastDayOfMonth = daysInMonth(displayMonth-1)
+    if lastDayOfMonth = "?" then
+        if displayYear mod 400 = 0 or ( displayYear mod 100 <> 0 and displayYear mod 4 = 0 ) then
+            lastDayOfMonth = 29
+        else
+            lastDayOfMonth = 28
+        end if 
+    end if
+
+    prevMonth = displayMonth - 1
+    prevYear  = displayYear
+    if prevMonth = 0 then
+        prevMonth = 12
+        prevYear = prevYear - 1
+    end if 
+    
+    nextMonth = displayMonth + 1
+    nextYear = displayYear
+    if nextMonth > 12 then
+        nextMonth = 1
+        nextYear = nextYear + 1
+    end if 
+%>
+</prolog>
+
+<tag tag="title">
+  <content>
+    displayMonthName & " " & displayYear
+  </content>
+</tag>
+
+<id name="month-title">
+  <content>
+    displayMonthName & " " & displayYear
+  </content>
+</id>
+
+<!--
+    Select the first day-name heading cell and replicate it for each
+    day of the week.
+-->
+<id name="prototype-weekday-name">
+  <foreach element="dayName">
+    dayNames
+  </foreach>
+  <content>dayName</content>
+  <attr name="id">
+    <discard/>
+  </attr>
+</id>
+
+<!--
+    Discard all the other day-name heading cells.
+-->
+<tag tag="td" class="weekday-name" without-attr="id">
+  <discard/>
+</tag>
+
+<!--
+    Select the table row for the first week of the month and replicate
+    it for each week in the month.
+-->
+<id name="prototype-week">
+  <before indent="yes">
+    <% Do While calendarDay < lastDayOfMonth %>
+  </before>
+  <after>
+    <% Loop %>
+  </after>
+  <attr name="id">
+    <discard/>
+  </attr>
+</id>
+
+<!--
+    Discard all the other week rows.
+-->
+<tag tag="tr" class="week" without-attr="id">
+  <discard/>
+</tag>
+
+<!--
+    Select the date cell containing the complete prototype formatting
+    and replicate it for each day in the week.
+-->
+<id name="prototype-day">
+  <!-- 
+    There is currently no Dynamator element that allows placement
+    between a foreach and the tag it controls.  So this iteration is
+    hard-coded. 
+  -->
+       
+  <before>
+    <%
+        For dayOfWeek = 1 To 7
+            calendarDay = calendarDay + 1
+    
+            if calendarDay = thisDay and displayMonth = thisMonth and displayYear = thisYear then
+                dayId = "id=""today"""
+            else
+                dayId = ""
+            end if
+    
+            if 1 <= calendarDay and calendarDay <= lastDayOfMonth then
+                cellClass = "this-month"
+                displayDate = calendarDay
+            else
+                cellClass = "other-month"
+                displayDate = "&nbsp;"
+            end if
+    %>
+  </before>
+  <after>
+    <%
+        Next
+    %>
+  </after>
+
+  <!-- 
+        Add an id attribute only for the calendar day 
+        corresponding to today.
+  -->
+  <raw-attrs> <%= dayId %></raw-attrs>
+
+  <attr name="id">
+    <discard/>
+  </attr>
+
+  <!-- 
+        Set the class for the table cell to be either this-month
+        or other-month, depending on whether the calendar cell
+        represents a day in this month.
+  -->
+  <attr name="class">
+    <content>cellClass</content>
+  </attr>
+
+</id>
+
+<!-- 
+    Have to at least remove the content of the tag
+-->
+<class name="event">
+  <discard/>
+</class>
+
+
+<!--
+    This class is associated with a span tag inside the prototype
+    day cell that contains the day of the month.  
+-->
+<class name="day">
+
+  <!-- Discard the span tag (but not its content) -->
+  <discard-tag/>
+
+  <!-- Output the day of the month -->
+  <content>displayDate</content>
+
+</class>
+
+<!--
+    Discard all the table cells in the template that represent a 
+    day in another month.
+-->
+<class name="other-month">
+  <discard/>
+</class>
+
+<!--
+    Discard all the table cells in the template that represent a 
+    day in this month, except for any that have 'id' attributes.
+    (There's only one, the prototype referenced above.)
+-->
+<tag tag="td" class="this-month" without-attr="id">
+  <discard/>
+</tag>
+
+<!--
+    Set the target of the link to the previous month.
+-->
+<id name="prev">
+  <attr name="href">
+    <content>
+      <%= request("SCRIPT_NAME") & "?month="  & prevMonth & "&year=" & prevYear %>
+    </content>
+  </attr>
+</id>
+
+<!--
+    Set the target of the link to the next month.
+-->
+<id name="next">
+  <attr name="href">
+    <content>
+      <%= request("SCRIPT_NAME") & "?month="  & nextMonth & "&year=" & nextYear %>
+    </content>
+  </attr>
+</id>
+
+</dynamator>

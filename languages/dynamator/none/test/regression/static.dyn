@@ -1,0 +1,7 @@
+<dynamator language="none" suffix="html" template="example.template">
+<id name="content">
+  <content>
+    Content would go here.
+  </content>
+</id>
+</dynamator>

@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<ruleset name="dynamator-ruleset">
+  <description>
+    PMD rules used to check Dynamator code quality.
+  </description>
+
+  <rule ref="rulesets/imports.xml"/>
+
+  <rule ref="rulesets/unusedcode.xml">
+
+    <!-- For frameworks, it's normal to have unused parameters -->
+    <exclude name="UnusedFormalParameter"/>
+
+  </rule>
+
+  <rule ref="rulesets/design.xml">
+
+    <!-- Utility classes are OK by me -->
+    <exclude name="UseSingletonRule"/>
+
+    <!-- I don't see any problem with this -->
+    <exclude name="AvoidReassigningParametersRule"/>
+
+    <!-- Hard to avoid this in parsers -->
+    <exclude name="AvoidDeeplyNestedIfStmts"/>
+
+    <!-- Complains when Dynamator uses Vector etc, even though 
+         there's no available interface in 1.1. -->
+    <exclude name="LooseCouplingRule"/>
+
+    <!-- A good idea, but the implementation still needs
+        refinement - too many false positives -->
+    <exclude name="ConstructorCallsOverridableMethodRule"/>
+
+  </rule>
+
+  <rule ref="rulesets/strings.xml">
+
+    <!-- In some cases I prefer literals -->
+    <exclude name="AvoidDuplicateLiterals"/>
+
+  </rule>
+
+  <rule ref="rulesets/braces.xml"/>
+
+</ruleset>

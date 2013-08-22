@@ -1,0 +1,64 @@
+<dynamator language="jsp">
+  <prolog>
+    <%@ page session="false" %>
+    <%@ page import="java.util.Enumeration" %>
+    <%@ page import="java.util.Vector" %>
+    <%@ page import="java.util.LinkedList" %>
+    <%@ page import="java.util.List" %>
+    <%@ page import="java.util.Iterator" %>
+    <%!
+        private static final String[] dinner_ = 
+            new String[]
+            {
+                "quiche",
+                "salad"
+            };
+        private static final Vector dessert_ = new Vector();
+        static
+        {
+            dessert_.addElement("Pie");
+            dessert_.addElement("Ice Cream");
+        }
+    
+        private static final Vector reminder_ = new Vector();
+        static
+        {
+            reminder_.addElement("Flowers");
+        }
+
+        private Enumeration reminder()
+        {
+            return reminder_.elements();
+        }
+    %>
+    <%
+        List nonos = new LinkedList();
+        nonos.add("Day-old sushi");
+        nonos.add("Fruitcake");
+    %>
+  </prolog>
+  <class name="dinner">
+    <foreach type="String[]" element="menuItem">
+        dinner_
+    </foreach>
+    <content>menuItem</content>
+  </class>
+  <class name="dessert">
+    <foreach type="Vector[String]" element="dessertItem">
+        dessert_
+    </foreach>
+    <content>dessertItem</content>
+  </class>
+  <class name="reminder">
+    <foreach type="Enumeration[String]" element="reminderItem">
+        reminder()
+    </foreach>
+    <content>reminderItem + "!"</content>
+  </class>
+  <class name="nono">
+    <foreach type="Iterator[String]" element="nonoItem">
+        nonos.listIterator()
+    </foreach>
+    <content>nonoItem</content>
+  </class>
+</dynamator>

@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta name="generator" content="HTML Tidy, see www.w3.org" />
+    <title>
+      Dynamator File for Unspecified Languages
+    </title>
+    <link rel="StyleSheet" type="text/css" href="../style.css" />
+  </head>
+  <body>
+    <table width="600">
+      <tr>
+        <td>
+          <h1>
+            Dynamator File for Unspecified Languages
+          </h1>
+          <hr />
+          <h2>
+            Contents
+          </h2>
+          <dl>
+            <dd>
+              <a href="#Description">Description</a>
+            </dd>
+            <dd>
+              <a href="#Identification">Identification</a>
+            </dd>
+          </dl>
+          <hr />
+          <dl>
+            <dt>
+              <a id="Description"
+              name="Description"><b>DESCRIPTION</b></a>
+            </dt>
+            <dd>
+              <p>
+                This document describes the expected format and
+                code generation behavior of a <a
+                href="DynamatorFile.html">Dynamator File</a> with
+                the language not specified, or specified as "none".
+              </p>
+              <p>
+                A Dynamator File with a root element that does not
+                specify a 'language' attribute, or that specifies
+                'language="none"', identifies a file containing
+                transformations to be applied to an HTML or XML
+                template in order to produce a different static
+                HTML or XML file, or a program template in a
+                language unknown to Dynamator. Dynamator applies
+                the Dynamator file to an HTML or XML file (the
+                "template") to create another HTML or XML file with
+                structure corresponding to the template and
+                modifications specified by the Dynamator file.
+              </p>
+              <p>
+                The unspecified language may be used to generate
+                static HTML or XML. It may also be used to generate
+                server pages in unsupported languages.
+              </p>
+              <p>
+                The rules for the default language are simple:
+              </p>
+              <ul>
+                <li>
+                  All content specified in the Dynamator file is
+                  transferred as-is to the output file.
+                </li>
+                <li>
+                  The 'content' element is equivalent to the
+                  'raw-content' element.
+                </li>
+                <li>
+                  Features requiring language awareness are not
+                  supported. Specifically, 'if', 'for', and
+                  'foreach' are not supported.
+                </li>
+              </ul>
+            </dd>
+            <dt>
+              <b><a id="SeeAlso" name="SeeAlso">SEE ALSO</a></b>
+            </dt>
+            <dd>
+              <p>
+                <a href="dynamate.html">dynamate</a>, <a
+                href="DynamatorFile.html">Dynamator File</a><br />
+                <br />
+              </p>
+            </dd>
+            <dt>
+              <a id="Identification"
+              name="Identification"><b>IDENTIFICATION</b></a>
+            </dt>
+            <dd>
+              <table border="0">
+                <tr>
+                  <td>
+                    Author:
+                  </td>
+                  <td>
+                    Jay Dunning
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    Version:
+                  </td>
+                  <td>
+                    1.4
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    Copyright:
+                  </td>
+                  <td>
+                    2000-2004, Jay Dunning
+                  </td>
+                </tr>
+              </table>
+            </dd>
+          </dl>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
+

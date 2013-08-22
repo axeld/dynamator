@@ -1,0 +1,65 @@
+<dynamator language="java">
+<prolog>
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.*;
+import javax.servlet.http.*;
+
+public class TrueFalse
+extends HttpServlet
+{
+    public 
+    void
+    doGet(
+        HttpServletRequest request,
+        HttpServletResponse response
+        )
+    throws IOException
+    {
+        PrintWriter out = response.getWriter();
+        response.setContentType("text/html");
+
+        String valueArgument = request.getParameter("value");
+        boolean value = 
+            ( valueArgument == null )
+            ? false
+            : Boolean.valueOf(valueArgument).booleanValue();
+</prolog>
+<!-- 1 -->
+    <id name="demo">
+      <discard/>
+    </id>
+    <id name="form">
+      <attr name="action">
+        <content>request.getServletPath()</content>
+      </attr>
+    </id>
+    <id name="valueIsTrue">
+<!-- 2 -->
+      <attr name="selected">
+        <if>value</if>
+      </attr>
+    </id>
+    <id name="valueIsFalse">
+<!-- 3 -->
+      <attr name="selected">
+        <if>! value</if>
+      </attr>
+    </id>
+<!-- 4 -->
+    <id name="response">
+      <if>request.getQueryString()!=null</if>
+    </id>
+    <id name="trueText">
+      <if>value</if>
+    </id>
+    <id name="falseText">
+      <if>! value</if>
+    </id>
+<epilog>
+        out.flush();
+        out.close();
+    }
+}
+</epilog>
+</dynamator>

@@ -1,0 +1,39 @@
+<dynamator language="java">
+<prolog>
+import java.io.PrintWriter;
+import java.util.Calendar;
+
+public class TheTime
+{
+    public static void main(String[] args)
+    {
+        PrintWriter writer = new PrintWriter(System.out, true);
+        output(writer);
+        writer.flush();
+        writer.close();
+    }
+
+    public static void output(PrintWriter out)
+    {
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+</prolog>
+
+<epilog>
+    }
+}
+</epilog>
+
+<id name="CurrentTime">
+  <content>calendar.getTime()</content>
+</id>
+<id name="IfMorning">
+  <if>hour < 12</if>
+</id>
+<id name="IfAfternoon">
+  <if>12 <= hour && hour < 18</if>
+</id>
+<id name="IfEvening">
+  <if>18 <= hour</if>
+</id>
+</dynamator>

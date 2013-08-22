@@ -1,0 +1,707 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta name="generator" content="HTML Tidy, see www.w3.org" />
+    <title>
+      Dynamator File for JSP
+    </title>
+    <link rel="StyleSheet" type="text/css" href="../style.css" />
+  </head>
+  <body>
+    <table width="600">
+      <tr>
+        <td>
+          <h1>
+            Dynamator File for JSP
+          </h1>
+          <hr />
+          <h2>
+            Contents
+          </h2>
+          <dl>
+            <dd>
+              <a href="#Description">Description</a>
+            </dd>
+            <dd>
+              <a href="#Identification">Identification</a>
+            </dd>
+          </dl>
+          <hr />
+          <dl>
+            <dt>
+              <a id="Description"
+              name="Description"><b>DESCRIPTION</b></a>
+            </dt>
+            <dd>
+              <p>
+                This document describes the language-specific
+                format and code generation behavior of a <a
+                href="DynamatorFile.html">Dynamator File</a> with
+                language specified as "jsp".
+              </p>
+              <p>
+                A Dynamator File with a root element of
+                "<b>&lt;dynamator language="jsp"&gt;</b>"
+                identifies a file containing transformations to be
+                applied to an HTML or XML template in order to
+                produce a JSP source file (i.e. a file with
+                filetype ".jsp"). Dynamator applies the Dynamator
+                file to an HTML or XML file (the "template") to
+                create a JSP that outputs an HTML or XML file with
+                structure corresponding to the template and
+                behavior specified by the Dynamator file.
+              </p>
+              <h3>
+                <a id="ProgramLanguageElement"
+                name="ProgramLanguageElement">JSP Elements</a>
+              </h3>
+              <p>
+                Where a Dynamator file allows program lines, any
+                JSP scripting element may be used. (JSP scripting
+                elements are declarations (&lt;%! ... %&gt;),
+                scriptlets (&lt;% ... %&gt;), and expressions
+                (&lt;%= ... %&gt;).)
+              </p>
+              <h3>
+                <a id="for" name="for">for</a>
+              </h3>
+              <p>
+                The 'for' element of a Dynamator file for JSP has
+                the following structure:
+              </p>
+              <dl>
+                <dd>
+                  <table border="1" width="500" bgcolor="#F0F0F0">
+                    <tr>
+                      <td>
+<pre>
+&lt;for&gt;
+    <i>for-statement-remainder</i>
+&lt;/for&gt;
+</pre>
+                      </td>
+                    </tr>
+                  </table>
+                  <p>
+                  </p>
+                </dd>
+              </dl>
+              <p>
+                The content of the 'for' element is the
+                parenthesized 'for' text. The text is treated as
+                CDATA; that is, it may contain special characters
+                such as '&lt;'. The parentheses may be omitted.
+              </p>
+              <p>
+                For example, the element:
+              </p>
+              <dl>
+                <dd>
+                  <table border="1" width="500">
+                    <tr>
+                      <td>
+<pre>
+&lt;for&gt;int i = 0; i &lt; array.length; ++i&lt;/for&gt;
+</pre>
+                      </td>
+                    </tr>
+                  </table>
+                </dd>
+              </dl>
+              generates: 
+              <dl>
+                <dd>
+                  <table border="1" width="500">
+                    <tr>
+                      <td bgcolor="#eeeeee">
+<pre>
+for ( int i = 0; i &lt; array.length; ++i )
+{
+    ...
+}
+</pre>
+                      </td>
+                    </tr>
+                  </table>
+                </dd>
+              </dl>
+              <h3>
+                <a id="foreach-collections"
+                name="foreach-collections">foreach
+                (collections)</a>
+              </h3>
+              <p>
+                The collection form of the 'foreach' element in a
+                Dynamator file for JSP has the following structure:
+              </p>
+              <dl>
+                <dd>
+                  <table border="1" width="500" bgcolor="#F0F0F0">
+                    <tr>
+                      <td>
+<pre>
+&lt;foreach 
+      type="<i><a class="a"
+href="#java-collection-type-name">java-collection-type-name</a></i>"
+      element="<i><a class="a"
+href="#element-variable-name">element-variable-name</a></i>"
+      { i="<i><a class="a"
+href="#iteration-variable-name">iteration-variable-name</a></i>" }
+      { collection="<i><a class="a"
+href="#collection-variable-name">collection-variable-name</a></i>" }
+    &gt;
+    <i>&lt;!-- Content: <a class="a"
+href="#java-collection">java-collection-expression</a> --&gt;</i>
+&lt;/foreach&gt;
+</pre>
+                      </td>
+                    </tr>
+                  </table>
+                  <p>
+                  </p>
+                </dd>
+              </dl>
+              <p>
+                The content of the foreach element must be a Java
+                expression that evaluates to a compile-time type of
+                array, Vector, Enumeration, Iterator, Dictionary,
+                Map, or Properties.
+              </p>
+              <p>
+                Although some attributes are optional, every
+                applicable attribute should be specified to improve
+                readability of the generated JSP code.
+              </p>
+              <p>
+                The 'foreach' element may have the following
+                attributes:
+              </p>
+              <p>
+              </p>
+              <dl>
+                <dd>
+                  <dl>
+                    <dt>
+                      <b>type="<i><a id="java-collection-type-name"
+                      name="java-collection-type-name">java-collection-type-name</a></i>"</b>
+                    </dt>
+                    <dd>
+                      (Required)<br />
+                       Identifies the type of the <i>
+                      java-collection</i>. The following patterns
+                      are recognized: 
+                      <table border="1" width="500">
+                        <tr>
+                          <td>
+                            <i>Type</i>[]
+                          </td>
+                          <td>
+                            The collection is an array of elements
+                            of type <i>Type</i>.
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            Vector[<i>Type</i>]
+                          </td>
+                          <td>
+                            The collection is a Vector of elements
+                            of type <i>Type</i>.
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            Enumeration[<i>Type</i>]
+                          </td>
+                          <td>
+                            The collection is an Enumeration of
+                            elements of type <i>Type</i>.
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            Iterator[<i>Type</i>]
+                          </td>
+                          <td>
+                            The collection is an Iterator over
+                            elements of type <i>Type</i>.
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            Dictionary[<i>KeyType</i>,<i>ValueType</i>]
+                          </td>
+                          <td>
+                            The collection is a Dictionary with a
+                            key type of <i>KeyType</i> and a value
+                            type of <i>ValueType</i>.
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            Map[<i>KeyType</i>,<i>ValueType</i>]
+                          </td>
+                          <td>
+                            The collection is a Map with a key type
+                            of <i>KeyType</i> and a value type of
+                            <i>ValueType</i>.
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            Properties
+                          </td>
+                          <td>
+                            The collection is a Properties object.
+                          </td>
+                        </tr>
+                      </table>
+                      <br />
+                    </dd>
+                    <dt>
+                      <b>element="<i><a id="element-variable-name"
+                      name="element-variable-name">java-variable-name</a></i>"</b>
+                    </dt>
+                    <dd>
+                      (Required)<br />
+                       Identifies the name of the Java variable
+                      that refers to the current element of the
+                      collection.<br />
+                    </dd>
+                    <dt>
+                      <b>i="<i><a id="iteration-variable-name"
+                      name="iteration-variable-name">iteration-variable-name</a></i>"</b>
+                    </dt>
+                    <dd>
+                      (Optional)<br />
+                       Identifies the name of the iteration
+                      variable. The iteration variable is in scope
+                      for the duration of the iteration. Its value
+                      is the number of times the iteration block
+                      has been completed (i.e. the offset into the
+                      container). 
+                      <p>
+                        If specified for a collection type that
+                        does not require it, Dynamator generates
+                        code to declare and increment the variable
+                        so that it is available within the
+                        iteration block.
+                      </p>
+                      <p>
+                        If not specified for a collection type that
+                        requires it (an array or a Vector),
+                        Dynamator generates a variable name as well
+                        as the code required.<br />
+                      </p>
+                    </dd>
+                    <dt>
+                      <b>collection="<i><a
+                      id="collection-variable-name"
+                      name="collection-variable-name">java-variable-name</a></i>"</b>
+                    </dt>
+                    <dd>
+                      (Optional)<br />
+                       Identifies the name of the Java variable
+                      that references the collection. If this
+                      attribute is not specified, Dynamator
+                      generates a name from <i>
+                      java-collection-expression</i>.<br />
+                    </dd>
+                  </dl>
+                </dd>
+              </dl>
+              <p>
+                A 'foreach' element results in code similar to the
+                following. Names in italics are the attribute names
+                described above. If not specified by a foreach
+                attribute, they are generated by Dynamator.
+              </p>
+              <dl>
+                <dd>
+                  <table border="1" width="500">
+                    <tr>
+                      <th>
+                        Value of 'type' attribute
+                      </th>
+                    </tr>
+                    <tr>
+                      <th bgcolor="#eeeeee">
+                        Generates
+                      </th>
+                    </tr>
+                  </table>
+                  <br />
+                   
+                  <table border="1" width="500">
+                    <tr>
+                      <td valign="top">
+                        <i>Type</i>[]
+                      </td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#EEEEEE">
+<pre>
+{
+  <i>Type</i>[] <i>collection</i> = <i>foreach-collection-expression</i>;
+  int lim<i>Collection</i> = <i>collection</i>.length;
+  <i>Type</i> <i>element</i>;
+  for ( int <i>i</i> = 0; <i>i</i> &lt; lim<i>Collection</i>; ++<i>i</i> )
+  {
+    element = <i>collection</i>[<i>i</i>];
+    ...
+  }
+}
+</pre>
+                      </td>
+                    </tr>
+                  </table>
+                  <br />
+                   
+                  <table border="1" width="500">
+                    <tr>
+                      <td valign="top">
+                        Vector[<i>Type</i>]
+                      </td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#EEEEEE">
+<pre>
+{
+  java.util.Vector <i>collection</i> = <i>foreach-collection-expression</i>;
+  int lim<i>Collection</i> = <i>collection</i>.size();
+  <i>Type</i> <i>element</i>;
+  for ( int <i>i</i> = 0; <i>i</i> &lt; lim<i>Collection</i>; ++<i>i</i> )
+  {
+    <i>element</i> = <i>collection</i>.elementAt(<i>i</i>);
+    ...
+  }
+}
+</pre>
+                      </td>
+                    </tr>
+                  </table>
+                  <br />
+                   
+                  <table border="1" width="500">
+                    <tr>
+                      <td valign="top">
+                        Enumeration[<i>Type</i>]
+                      </td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#EEEEEE">
+<pre>
+{
+  java.util.Enumeration <i>collection</i> = <i>foreach-collection-expression</i>;
+  <i>Type</i> <i>element</i>;
+  while ( <i>collection</i>.hasMoreElements() )
+  {
+    <i>element</i> = (<i>Type</i>) <i>collection</i>.nextElement();
+    ...
+  }
+}
+</pre>
+                      </td>
+                    </tr>
+                  </table>
+                  <br />
+                   
+                  <table border="1" width="500">
+                    <tr>
+                      <td valign="top">
+                        Iterator[<i>Type</i>]
+                      </td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#EEEEEE">
+<pre>
+{
+  java.util.Iterator <i>collection</i> = <i>foreach-collection-expression</i>;
+  <i>Type</i> <i>element</i>;
+  while ( <i>collection</i>.hasNext() )
+  {
+    <i>element</i> = (<i>Type</i>) <i>collection</i>.next();
+    ...
+  }
+}
+</pre>
+                      </td>
+                    </tr>
+                  </table>
+                  <br />
+                   
+                  <table border="1" width="500">
+                    <tr>
+                      <td valign="top">
+                        Dictionary[<i>KeyType</i>,<i>ValueType</i>]
+                      </td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#EEEEEE">
+<pre>
+{
+  java.util.Dictionary <i>collection</i> = <i>foreach-collection-expression</i>;
+  <i>ValueType</i> <i>element</i>;
+  <i>KeyType</i> <i>element</i>Key;
+  Enumeration <i>collection</i>Keys = <i>collection</i>.keys();
+  while ( <i>collection</i>Keys.hasMoreElements() )
+  {
+    <i>element</i>Key = (<i>KeyType</i>) <i>collection</i>Keys.nextElement();
+    <i>element</i> = (<i>ValueType</i>) <i>collection</i>.get(<i>element</i>Key);
+    ...
+  }
+}
+</pre>
+                      </td>
+                    </tr>
+                  </table>
+                  <br />
+                   
+                  <table border="1" width="500">
+                    <tr>
+                      <td valign="top">
+                        Map[<i>KeyType</i>,<i>ValueType</i>]
+                      </td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#EEEEEE">
+<pre>
+{
+  java.util.Map <i>collection</i> = <i>foreach-collection-expression</i>;
+  java.util.Map.Entry <i>element</i>;
+  <i>KeyType</i> <i>element</i>Key;
+  <i>ValueType</i> <i>element</i>Value;
+  Iterator <i>collection</i>Entries = <i>collection</i>.entrySet().iterator();
+  while ( <i>collection</i>Entries.hasNext() )
+  {
+    <i>element</i> = (java.util.Map.Entry) <i>collection</i>Entries.next();
+    <i>element</i>Key = (<i>KeyType</i>) <i>element</i>.getKey();
+    <i>element</i>Value = (<i>ValueType</i>) <i>element</i>.getValue();
+    ...
+  }
+}
+</pre>
+                      </td>
+                    </tr>
+                  </table>
+                  <br />
+                   
+                  <table border="1" width="500">
+                    <tr>
+                      <td valign="top">
+                        Properties
+                      </td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#EEEEEE">
+<pre>
+{
+  java.util.Properties <i>collection</i> = <i>foreach-collection-expression</i>;
+  Enumeration <i>collection</i>Names = <i>collection</i>.propertyNames();
+  while ( <i>collection</i>Names.hasMoreElements() )
+  {
+    <i>element</i>Name = (String) <i>collection</i>Names.nextElement();
+    <i>element</i> = <i>collection</i>.getProperty(<i>element</i>Name);
+    ...
+  }
+}
+</pre>
+                      </td>
+                    </tr>
+                  </table>
+                </dd>
+              </dl>
+              <h3 class="deprecated">
+                <a id="foreach-sequences"
+                name="foreach-sequences">foreach (sequenced)</a>
+              </h3>
+              <p class="deprecated">
+                <b>The sequenced form of the 'foreach' element has
+                been deprecated. Use the <a
+                style="color:#666666;text-decoration:none"
+                href="#for">for</a> element instead.</b>
+              </p>
+              <p class="deprecated">
+                The sequenced form of a 'foreach' element in a
+                Dynamator file for JSP has the following structure:
+              </p>
+              <dl>
+                <dd>
+                  <table border="1" width="500" bgcolor="#F0F0F0">
+                    <tr>
+                      <td>
+<pre class="deprecated">
+&lt;foreach 
+      init="<i><a style="text-decoration:none;color:#999999"
+href="#initialize">initialize</a></i>"
+      compare="<i><a style="text-decoration:none;color:#999999"
+href="#compare">compare</a></i>"
+      step="<i><a style="text-decoration:none;color:#999999"
+href="#increment">increment</a></i>"
+/&gt;
+</pre>
+                      </td>
+                    </tr>
+                  </table>
+                </dd>
+              </dl>
+              <p class="deprecated">
+                It maps to the following Java statement pattern:
+              </p>
+              <dl>
+                <dd>
+                  <table border="1" width="500" bgcolor="#F0F0F0">
+                    <tr>
+                      <td>
+<pre class="deprecated">
+for ( <i>init</i>; <i>compare</i>; <i>step</i> )
+</pre>
+                      </td>
+                    </tr>
+                  </table>
+                </dd>
+              </dl>
+              <p class="deprecated">
+                The sequenced values form of the 'foreach' element
+                takes no element content. It takes the following
+                attributes:
+              </p>
+              <p>
+              </p>
+              <dl>
+                <dd>
+                  <dl>
+                    <dt>
+                      <span class="deprecated"><b>first="<i><a
+                      id="initialize"
+                      style="text-decoration:none;color:#999999"
+                      name="initialize">initialize</a></i>"</b></span>
+                    </dt>
+                    <dd>
+                      <span class="deprecated">(Required)<br />
+                       A Java statement to be placed in the init
+                      part of the Java 'for' statement.</span> 
+                      <p>
+                      </p>
+                    </dd>
+                    <dt>
+                      <span class="deprecated"><b>last="<i><a
+                      id="compare"
+                      style="text-decoration:none;color:#999999"
+                      name="compare">compare</a></i>"</b></span>
+                    </dt>
+                    <dd>
+                      <span class="deprecated">(Required)<br />
+                       A Java boolean expression to be placed in
+                      the compare part of the Java 'for'
+                      statement.</span> 
+                      <p>
+                      </p>
+                    </dd>
+                    <dt>
+                      <span class="deprecated"><b>step="<i><a
+                      id="increment"
+                      style="text-decoration:none;color:#999999"
+                      name="increment">increment</a></i>"</b></span>
+                    </dt>
+                    <dd>
+                      <span class="deprecated">(Required)<br />
+                       A Java statement to be placed in the step
+                      part of the Java 'for' statement.</span> 
+                      <p>
+                      </p>
+                    </dd>
+                  </dl>
+                </dd>
+              </dl>
+              <h3>
+                Expressions
+              </h3>
+              <p>
+                This document uses the following special terms to
+                denote varieties of expressions allowed within a
+                Dynamator file for JSP:
+              </p>
+              <dl>
+                <dd>
+                  <dl>
+                    <dt>
+                      <a id="java-collection"
+                      name="java-collection"><b>java-collection-expression</b></a>
+                    </dt>
+                    <dd>
+                      A <i>java-expression</i> that evaluates to a
+                      value with a type of array, Enumeration,
+                      Vector, Dictionary, or Properties. 
+                      <p>
+                      </p>
+                    </dd>
+                    <dt>
+                      <a id="java-expression"
+                      name="java-expression"><b>java-expression</b></a>
+                    </dt>
+                    <dd>
+                      A Java expression. Text within a
+                      java-expression is treated as CDATA; that is,
+                      it may contain special characters such as
+                      '&lt;'. 
+                      <p>
+                      </p>
+                    </dd>
+                  </dl>
+                </dd>
+              </dl>
+              <br />
+            </dd>
+            <dt>
+              <b><a id="SeeAlso" name="SeeAlso">SEE ALSO</a></b>
+            </dt>
+            <dd>
+              <p>
+                <a href="dynamate.html">dynamate</a>, <a
+                href="DynamatorFile.html">Dynamator File</a><br />
+              </p>
+            </dd>
+            <dd>
+              <br />
+            </dd>
+            <dt>
+              <a id="Identification"
+              name="Identification"><b>IDENTIFICATION</b></a>
+            </dt>
+            <dd>
+              <table border="0">
+                <tr>
+                  <td>
+                    Author:
+                  </td>
+                  <td>
+                    Jay Dunning
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    Version:
+                  </td>
+                  <td>
+                    1.5
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    Copyright:
+                  </td>
+                  <td>
+                    2000-2004, Jay Dunning
+                  </td>
+                </tr>
+              </table>
+            </dd>
+          </dl>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
+

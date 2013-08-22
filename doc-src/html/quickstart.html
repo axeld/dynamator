@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>
+      Dynamator: Quick Start
+    </title>
+    <link type="text/css" href="style.css" rel="stylesheet" />
+  </head>
+  <body>
+    <h1>
+      Quick Start
+    </h1>
+    <ol>
+      <li>
+        <a href="download.html">Download</a> Dynamator.
+      </li>
+      <li>
+        Download <a href="http://jtidy.sourceforge.net">JTidy</a>.
+      </li>
+      <li>
+        If your JDK predates 1.4, download
+        <a href="http://xml.apache.org/xerces-j/index.html">
+        Xerces-J</a>.
+      </li>
+      <li>
+        Add downloaded JARs to your classpath. For example: 
+        <div class="column">
+          <div class="column-filename">
+            DOS: autoexec.bat
+          </div>
+          <div class="neutral">
+<pre>
+SET CLASSPATH=%CLASSPATH%;d:/dynamator-1.5/dynamator.jar
+SET CLASSPATH=%CLASSPATH%;d:/xerces-1_1_3/xerces.jar
+SET CLASSPATH=%CLASSPATH%;d:/jtidy/lib/tidy.jar
+</pre>
+          </div>
+        </div>
+        <div class="clear">
+        </div>
+        <div class="column">
+          <div class="column-filename">
+            UNIX: .profile
+          </div>
+          <div class="neutral">
+<pre>
+CLASSPATH=${CLASSPATH}:~/dynamator-1.5/dynamator.jar
+CLASSPATH=${CLASSPATH}:~/xerces-1_1_3/xerces.jar
+CLASSPATH=${CLASSPATH}:~/jtidy/lib/tidy.jar
+export CLASSPATH
+</pre>
+          </div>
+        </div>
+        <div class="clear">
+        </div>
+      </li>
+      <li>
+        Verify your installation by trying to recreate a
+        generated file in the examples directory: 
+        <div class="shell">
+<pre>
+prompt&gt; cd examples/jsp
+prompt&gt; cp HelloWorld.jsp HelloWorld.jsp.original
+prompt&gt; java dynamate HelloWorld.html
+prompt&gt; diff HelloWorld.jsp HelloWorld.jsp.original
+</pre>
+        </div>
+        <div class="clear">
+        </div>
+        <p>
+          Only the generation timestamp should be different.
+        </p>
+        <p>
+          If you are using <tt>jview</tt> instead of <tt>
+          java</tt> on Windows, and you get the error 'class not
+          found' for some class in a java package, run <tt>
+          clspack -auto</tt> to create the classes.zip file
+          required by jview.
+        </p>
+      </li>
+      <li>
+        To use Dynamator with Ant:
+        <div class="column">
+          <div class="column-filename">
+            build.xml
+          </div>
+          <div class="neutral">
+<pre>
+  &lt;taskdef name="dynamate" classname="dynamator.ant.DynamateTask"&gt;
+    &lt;classpath&gt;
+      &lt;pathelement location="lib/dynamator.jar"/&gt;
+      &lt;pathelement location="lib/Tidy.jar"/&gt;
+      &lt;!-- add xerces.jar and xml-apis.jar for JDK 1.1-1.3 --&gt;
+    &lt;/classpath&gt;
+  &lt;/taskdef&gt;
+  ...
+  &lt;--
+    Convert HTML files in directory tree 'html' to JSP using
+    corresponding Dynamator files in directory tree 'dyn', 
+    removing HTML indentation and comments, and placing
+    output into directory tree 'htdocs'.
+    Check timestamps of dynamator include files (suffix '.dyninclude')
+    as well as HTML and Dynamator files.
+  --&gt;
+  &lt;dynamate
+      srcdir="html"
+      matchdir="dyn"
+      destdir="htdocs"
+      destsuffix="jsp"
+      includes="**/*.html"
+      includeds="**/*.dyninclude"
+      indent="false"
+      stripComments="true"
+      /&gt;
+</pre>
+          </div>
+        </div>
+        <div class="clear">
+        </div>
+      </li>
+      <li>
+        Read the <a href="guide.html">20 minute Guide</a>.
+      </li>
+      <li>
+        Take a look at the <a href="examples.html">examples</a>.
+        (There are many more JSP examples in the distribution.)
+      </li>
+      <li>
+        Print out the <a href="manual/DynamatorQuickReference.pdf">
+        Dynamator Quick Reference</a>.
+      </li>
+      <li>
+        Read the Dynamator <a href="manual/DynamatorFile.html">
+        syntax</a> documentation, and the
+        program-language-specific documentation for the server
+        pages technology you will be using.
+      </li>
+      <li>
+        Read the tutorial (in the distribution) for detailed
+        information about common HTML and XML transformations.
+      </li>
+    </ol>
+  </body>
+</html>
+

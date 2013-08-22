@@ -1,0 +1,159 @@
+<dynamator language="jsp">
+<!--
+    This example shows how to recursively execute a portion of a JSP.
+-->
+<prolog>
+<%!
+    private static
+    class Element
+    {
+        private String name_;
+        private Element[] children_ = {};
+        
+        public
+        Element(
+            String name
+            )
+        {
+            name_ = name;
+        }
+
+        public
+        Element(
+            String name,
+            Element[] children
+            )
+        {
+            name_ = name;
+            children_ = children;
+        }
+
+        public
+        String
+        name()
+        {
+            return name_;
+        }
+        
+        public
+        Element[] 
+        children()
+        {
+            return children_;
+        }
+    }
+
+    private static Element root = 
+        new Element("Animals",
+            new Element[]
+            {
+                new Element("Vertebrates",
+                    new Element[]
+                    {
+                        new Element("Warm-blooded",
+                            new Element[]
+                            {
+                                new Element("Mammals"),
+                                new Element("Birds")
+                            }
+                        ),
+                        new Element("Cold-blooded",
+                            new Element[]
+                            {
+                                new Element("Fish"),
+                                new Element("Reptiles")
+                            }
+                        )
+                    }
+                ),
+                new Element("Invertebrates",
+                    new Element[]
+                    {
+                        new Element("Arthropods",
+                            new Element[]
+                            {
+                                new Element("Crustaceans"),
+                                new Element("Insects")
+                            }
+                        )
+                    }
+                )
+            }
+        );
+    
+    private static
+    interface ElementOutputter
+    {
+        void
+        output(
+            JspWriter out,
+            Element element
+            )
+        throws java.io.IOException;
+    }
+%>
+</prolog>
+
+  <id name="title">
+    <content>
+      "An Informal Taxonomy of the Animal Kingdom"
+    </content>
+  </id>
+
+  <id name="root">
+    <content>
+      root.name()
+    </content>
+  </id>
+
+  <class name="children-list">
+    <before>
+<%
+    ElementOutputter elementOutputter = new ElementOutputter()
+    {
+        public
+        void
+        output(
+            JspWriter out,
+            Element element
+            )
+        throws java.io.IOException
+        {
+%>
+    </before>
+
+    <after>
+<%
+        }
+    };
+    elementOutputter.output(out, root);
+%>
+    </after>
+  
+  </class>
+
+  <class name="child">
+    <foreach type="Element[]" element="child">
+      element.children()
+    </foreach>
+  </class>
+
+  <class name="child-name">
+    <content>
+      child.name()
+    </content>
+  </class>
+
+  <class name="children">
+    <discard/>
+    <before>
+<%
+      if ( child.children().length > 0 )
+      {
+          output(out, child);
+      }
+%>
+    </before>
+  </class>
+
+</dynamator>

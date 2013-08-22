@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<taxonomy>
+  <item name="Animals">
+    <item name="Vertebrates">
+      <item name="Warm-blooded">
+        <item name="Mammals"/>
+        <item name="Birds"/>
+      </item>
+      <item name="Cold-blooded">
+        <item name="Fish"/>
+        <item name="Reptiles"/>
+      </item>
+    </item>
+    <item name="Invertebrates">
+      <item name="Arthropods">
+        <item name="Crustaceans"/>
+        <item name="Insects"/>
+     </item>
+    </item>
+  </item>
+</taxonomy>
+

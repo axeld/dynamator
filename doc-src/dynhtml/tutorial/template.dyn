@@ -1,0 +1,72 @@
+<dynamator language="none" suffix="html" template="../template.html">
+
+<!-- 
+    Modify the main site template for example directories.
+    The build process adjusts the tutorial TOC hrefs.
+-->
+
+<tag tag="link" with-attr="href">
+  <attr name="href">
+    <content>../../[[@]]</content>
+  </attr>
+</tag>
+
+<tag tag="img">
+  <attr name="src">
+    <content>../../[[@]]</content>
+  </attr>
+</tag>
+
+<id name="main-menu">
+  <content>
+  <a href="../index.html" class="nav-heading"><b>Tutorial</b></a><br/>
+  <a href="../example01a-HelloWorld/index.html">Hello World</a><br/>
+  <a href="../example01b-HelloWorld_Bean/index.html">Beans</a><br/>
+  <a href="../example02-ArbitraryText/index.html">Content</a><br/>
+  <a href="../example03-DynamicAttribute/index.html">Attributes</a><br/>
+  <a href="../example04-TextEcho/index.html">Forms</a><br/>
+  <a href="../example05-Class/index.html">Class</a><br/>
+  <a href="../example06-If/index.html">If</a><br/>
+  <a href="../example07-WhereNoIdOrClassBelongs/index.html">Tags</a><br/>
+  <a href="../example08-WhereNoHtmlBelongs/index.html">Scripts</a><br/>
+  <a href="../example09-Iteration/index.html">Iteration</a><br/>
+  <a href="../example09a-Iteration_li/index.html" class="nav-indent-1">Lists</a><br/>
+  <a href="../example09b-Iteration_option/index.html" class="nav-indent-1">Options</a><br/>
+  <a href="../example09c-Iteration_tr/index.html" class="nav-indent-1">Tables</a><br/>
+  <a href="../example09d-Iteration_dl/index.html" class="nav-indent-1">Definitions</a><br/>
+  <a href="../example10-Xml/index.html">XML</a><br/>
+  </content>
+</id>
+
+<tag tag="a" with-attr="href" without-attr="class">
+  <attr name="href">
+    <content>../../[[@]]</content>
+  </attr>
+</tag>
+
+<id name="content">
+  <before>
+<div class="tutorial-nav">
+<p style="text-align:right"><!--
+--><a class="tutorial-prev" href='../example01b_HelloWorld_Bean/index.html'><!--
+-->&lt; prev</a> 
+| <a href='../index.html'>up</a> 
+| <a class="tutorial-next" href='../example03_DynamicAttribute/index.html'><!--
+-->next &gt;</a></p>
+<hr/>
+</div>
+  </before>
+  <after>
+<hr/>
+<div class="tutorial-nav">
+<p style="text-align:right"><!--
+--><a class="tutorial-prev" href='../example01b_HelloWorld_Bean/index.html'><!--
+-->&lt; prev</a> 
+| <a href='../index.html'>up</a> 
+| <a class="tutorial-next" href='../example03_DynamicAttribute/index.html'><!--
+-->next &gt;</a></p>
+</div>
+  </after>
+</id>
+
+</dynamator>

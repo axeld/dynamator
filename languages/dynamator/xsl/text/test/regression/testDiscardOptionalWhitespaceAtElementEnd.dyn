@@ -1,0 +1,36 @@
+<dynamator language="xsl.text" suffix="xsl">
+<prolog><xsl:stylesheet
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	version="1.1" >
+
+<xsl:output method="text"/>
+</prolog>
+<epilog>
+</xsl:stylesheet>
+</epilog>
+
+<tag tag="module">
+  <rename to="xsl:template"/>
+  <attr name="match">
+    <content>/type</content>
+  </attr>
+</tag>
+
+<tag tag="choose">
+  <rename to="xsl:choose"/>
+</tag>
+
+<tag tag="otherwise">
+  <rename to="xsl:otherwise"/>
+</tag>
+
+<tag tag="when-some-condition">
+  <rename to="xsl:when"/>
+  <attr name="test">
+    <content>
+      '1'='1'
+    </content>
+  </attr>
+</tag>
+
+</dynamator>

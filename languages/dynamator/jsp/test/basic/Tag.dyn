@@ -1,0 +1,30 @@
+<dynamator language="jsp">
+  <tag tag="title">
+    <raw-content>Success!</raw-content>
+  </tag>
+
+  <tag tag="meta" name="Description">
+    <attr name="content">
+      <raw-content>Success!</raw-content>
+    </attr>
+  </tag>
+  
+  <id name="h1">
+    <raw-content>Specified by id</raw-content>
+  </id>
+
+  <tag tag="h1">
+    <raw-content>Success!</raw-content>
+  </tag>
+
+  <tag tag="body">
+    <attr name="bgcolor">
+      <discard/>
+    </attr>
+  </tag>
+
+  <tag tag="p" with-attr="align">
+    <discard/>
+  </tag>
+  
+</dynamator>

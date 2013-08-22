@@ -1,0 +1,18 @@
+<dynamator language="none" suffix="html">
+  <id name="x">
+    <content>1</content>
+  </id>
+  <id name="y">
+    <discard-tag/>
+    <content>a</content>
+  </id>
+  <id name="z">
+    <discard-tag/>
+    <content>b</content>
+  </id>
+  <id name="alert">
+    <content>
+      alert("this was inserted");
+    </content>
+  </id>
+</dynamator>

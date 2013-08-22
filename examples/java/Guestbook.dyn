@@ -1,0 +1,257 @@
+<dynamator language="java">
+
+<prolog>
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Dictionary;
+import java.util.Hashtable;
+import java.util.Vector;
+
+import javax.servlet.http.*;
+
+public class Guestbook
+extends HttpServlet
+{
+    // following is identical to JSP
+
+    private static
+    class Entry
+    {
+        private String name_;
+        private String comment_;
+        
+        public 
+        Entry(
+            String name,
+            String comment
+            )
+        {
+            name_ = name;
+            comment_ = comment;
+        }
+
+        public String name()    { return name_; }
+        public String comment() { return comment_; }
+    }
+    
+    private static final Vector entries = new Vector();
+    static
+    {
+        entries.addElement(new Entry("Socrates", "To do is to be"));
+        entries.addElement(new Entry("Plato",    "To be is to do"));
+        entries.addElement(new Entry("Sinatra",  "Do be do be do"));
+    }
+    
+    private static final
+    String
+    safeTrim(
+        String s
+        )
+    {
+        return s == null ? s : s.trim();
+    }
+    
+    // above is identical to JSP
+
+    public 
+    void
+    doGet(
+        HttpServletRequest request,
+        HttpServletResponse response
+        )
+    throws IOException
+    {
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+        output(request, response, out);
+        out.flush();
+        out.close();
+    }
+
+    public 
+    void
+    doPost(
+        HttpServletRequest request,
+        HttpServletResponse response
+        )
+    throws IOException
+    {
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+        output(request, response, out);
+        out.flush();
+        out.close();
+    }
+    
+    public static 
+    void 
+    output(
+        HttpServletRequest request,
+        HttpServletResponse response,
+        PrintWriter out
+        )
+    {
+        // following is identical to JSP
+        String name = "";
+        String comment = "";
+        Dictionary fieldErrors = new Hashtable();
+        String pageMessage = null;
+
+        if ( "POST".equals(request.getMethod()) )
+        {
+            name = safeTrim(request.getParameter("name"));
+            comment = safeTrim(request.getParameter("comment"));
+            
+            if ( name == null || name.length() == 0 )
+            {
+                fieldErrors.put("name", "Please enter your name");
+            }
+            
+            if ( comment == null || comment.length() == 0 )
+            {
+                fieldErrors.put("comment", "Please enter a comment");
+            }
+
+            if ( fieldErrors.isEmpty() )
+            {
+                entries.addElement(new Entry(name, comment));
+                pageMessage = "Thank you for signing my guestbook!";
+                name = "";
+                comment = "";
+            }
+            else
+            {
+                pageMessage = "Please correct the items below";
+            }
+        }
+        // above is identical to JSP
+</prolog>
+
+<epilog>
+    }
+}
+</epilog>
+
+<!-- remainder is identical to jsp -->
+
+<tag tag="form" name="add">
+  <attr name="action">
+    <content>
+      request.getRequestURI()
+    </content>
+  </attr>
+</tag>
+
+<!-- page message handling -->
+<id name="DynPageMessageContainer">
+  <attr name="id">
+    <discard/>
+  </attr>
+  <attr name="class">
+    <content>
+      ! fieldErrors.isEmpty()
+      ? "errorContainer"
+      : (pageMessage != null
+        ? "successContainer"
+        : "emptyMessageContainer")
+    </content>
+  </attr>
+</id>
+
+<id name="DynPageMessage">
+  <attr name="id">
+    <discard/>
+  </attr>
+  <attr name="class">
+    <content>
+      ! fieldErrors.isEmpty()
+      ? "errorMessage"
+      : (pageMessage != null
+        ? "successMessage"
+        : "emptyMessage")
+    </content>
+  </attr>
+  <content>
+    pageMessage != null ? pageMessage : "&nbsp;"
+  </content>
+</id>
+
+<!-- input field handling -->
+<id name="DynNewName">
+  <attr name="id">
+    <discard/>
+  </attr>
+  <attr name="value">
+    <content>name</content>
+  </attr>
+</id>
+<id name="DynNameError">
+  <attr name="id">
+    <discard/>
+  </attr>
+  <if>fieldErrors.get("name") != null</if>
+</id>
+
+
+<id name="DynNewComment">
+  <attr name="id">
+    <discard/>
+  </attr>
+  <content>comment</content>
+</id>
+<id name="DynCommentError">
+  <attr name="id">
+    <discard/>
+  </attr>
+  <if>fieldErrors.get("comment") != null</if>
+</id>
+
+<!-- Make the submit button work correctly -->
+
+<id name="DynSubmitButton">
+  <attr name="id">
+    <discard/>
+  </attr>
+  <attr name="type">
+    <raw-content>
+      submit
+    </raw-content>
+  </attr>
+  <attr name="onclick">
+    <discard/>
+  </attr>
+</id>
+
+<!-- output the guestbook entries -->
+
+<id name="DynRow">
+  <attr name="id">
+    <discard/>
+  </attr>
+
+  <foreach element="entry" type="Vector[Entry]">
+    entries
+  </foreach>
+</id>
+
+<id name="DynName">
+  <attr name="id">
+    <discard/>
+  </attr>
+
+  <content>
+    entry.name()
+  </content>
+</id>
+
+<id name="DynComment">
+  <attr name="id">
+    <discard/>
+  </attr>
+
+  <content>
+    entry.comment()
+  </content>
+</id>
+
+</dynamator>

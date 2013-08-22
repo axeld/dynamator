@@ -1,0 +1,2095 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta name="generator" content="HTML Tidy, see www.w3.org" />
+    <title>
+      Dynamator File
+    </title>
+    <link rel="StyleSheet" type="text/css" href="../style.css" />
+  </head>
+  <body>
+    <h1>
+      Dynamator File
+    </h1>
+    <hr />
+    <h2>
+      Contents
+    </h2>
+    <dl>
+      <dd>
+        <a href="#Description">Description</a>
+      </dd>
+      <dd>
+        <a href="#Identification">Identification</a>
+      </dd>
+    </dl>
+    <hr />
+    <dl>
+      <dt>
+        <b>NAME</b>
+      </dt>
+      <dd>
+        <table>
+          <tr valign="top">
+            <td>
+              Dynamator&nbsp;File&nbsp;-
+            </td>
+            <td>
+              file defining transformations to be applied by
+              Dynamator to an XML file in order to create a program
+              file.
+            </td>
+          </tr>
+        </table>
+        <p>
+        </p>
+      </dd>
+      <dt>
+        <a id="Description"
+        name="Description"><b>DESCRIPTION</b></a>
+      </dt>
+      <dd>
+        <p>
+          This document describes the generic format conformed to
+          by all Dynamator Files. Additional features provided for
+          certain target languages are documented <a
+          href="#SeeAlso">elsewhere</a>.
+        </p>
+        <p>
+          A Dynamator File is an XML file with the following
+          syntax.
+        </p>
+        <ul>
+          <li>
+            A <tt><b>*</b></tt> after an element means that it may
+            occur multiple times.
+          </li>
+          <li>
+            A <tt><b>?</b></tt> after an element means that it may
+            occur zero or one time.
+          </li>
+          <li>
+            An element without a following <tt><b>*</b></tt> or
+            <tt><b>?</b></tt> must occur exactly one time.
+          </li>
+          <li>
+            A <tt><b>|</b></tt> between element names means that
+            any name may be used.
+          </li>
+          <li>
+            Text in <tt><b>{braces}</b></tt> is specified by the
+            specific Dynamator File filetype.
+          </li>
+        </ul>
+      </dd>
+      <dd>
+        <dl>
+          <dd>
+            <table border="1" width="100%">
+              <tr>
+                <td bgcolor="#F0F0F0">
+<pre>
+<a class="a" href="#dynamator">&lt;dynamator&gt;</a>
+    <i><a class="a"
+href="#defaultOverrides">default-overrides</a></i> ?
+    ( 
+      <a class="a" href="#prolog">&lt;prolog&gt;</a>
+    | <a class="a" href="#epilog">&lt;epilog&gt;</a>
+    | <a class="a" href="#include">&lt;include&gt;</a>
+    | <a class="a" href="#id">&lt;id&gt;</a>
+    | <a class="a" href="#class">&lt;class&gt;</a>
+    | <a class="a" href="#tag">&lt;tag&gt;</a>
+    | <a class="a"
+href="#before-extracts">&lt;before-extracts&gt;</a>
+    | <a class="a"
+href="#after-extracts">&lt;after-extracts&gt;</a>
+    )*
+<a class="a" href="#dynamator">&lt;/dynamator&gt;</a>
+
+<a class="a" href="#prolog">&lt;prolog&gt;</a>
+    <a class="a" href="#program-lines"><i>program-lines</i></a> *
+<a class="a" href="#prolog">&lt;/prolog&gt;</a>
+
+&lt; <a class="a" href="#id">id</a> | <a class="a"
+href="#class">class</a> | <a class="a" href="#tag">tag</a> &gt;
+    <a class="a"
+href="#content">&lt;content&gt;...&lt;/content&gt;</a> ?
+    <a class="a"
+href="#raw-content">&lt;raw-content&gt;...&lt;/raw-content&gt;</a> ?
+    <a class="a" href="#attr">&lt;attr&gt;</a> *
+        <a class="a" href="#if">&lt;if&gt;...&lt;/if&gt;</a> ?
+        <a class="a"
+href="#content">&lt;content&gt;...&lt;/content&gt;</a> ?
+        <a class="a"
+href="#raw-content">&lt;raw-content&gt;...&lt;/raw-content&gt;</a> ?
+        <a class="a" href="#discard">&lt;discard/&gt;</a> ?
+        <a class="a" href="#rename">&lt;rename/&gt;</a> ?
+    <a class="a" href="#attr">&lt;/attr&gt;</a> 
+    <a class="a" href="#if">&lt;if&gt;...&lt;/if&gt;</a> ?
+    <a class="a" href="#for">&lt;for&gt;...&lt;/for&gt;</a> ?
+    <a class="a"
+href="#foreach">&lt;foreach&gt;...&lt;/foreach&gt;</a> ?
+    <a class="a" href="#discard">&lt;discard/&gt;</a> ?
+    <a class="a" href="#discard-tag">&lt;discard-tag/&gt;</a> ?
+    <a class="a" href="#rename">&lt;rename/&gt;</a> ?
+    <a class="a" href="#extract">&lt;extract/&gt;</a> ?
+
+    &lt;!-- <a class="a" href="#lowlevel">Low-Level Tags</a> --&gt;
+    <a class="a"
+href="#before">&lt;before&gt;...&lt;/before&gt;</a> ?
+    <a class="a"
+href="#before-content">&lt;before-content&gt;...&lt;/before-content&gt;</a> ?
+    <a class="a"
+href="#after-content">&lt;after-content&gt;...&lt;/after-content&gt;</a> ?
+    <a class="a" href="#after">&lt;after&gt;...&lt;/after&gt;</a> ?
+    <a class="a" href="#raw-attrs">&lt;raw-attrs&gt;</a> *
+&lt; <a class="a" href="#id">/id</a> | <a class="a"
+href="#class">/class</a> | <a class="a" href="#tag">/tag</a> &gt;
+
+<a class="a" href="#before-extracts">&lt;before-extracts&gt;</a>
+    <a class="a" href="#program-lines"><i>program-lines</i></a> *
+<a class="a" href="#before-extracts">&lt;/before-extracts&gt;</a>
+
+<a class="a" href="#after-extracts">&lt;after-extracts&gt;</a>
+    <a class="a" href="#program-lines"><i>program-lines</i></a> *
+<a class="a" href="#after-extracts">&lt;/after-extracts&gt;</a>
+
+<a class="a" href="#epilog">&lt;epilog&gt;</a> 
+    <a class="a" href="#program-lines"><i>program-lines</i></a> * 
+<a class="a" href="#epilog">&lt;/epilog&gt;</a>
+
+</pre>
+                </td>
+              </tr>
+            </table>
+          </dd>
+        </dl>
+      </dd>
+      <dd>
+        <h3>
+          <a name="dynamator">Root Element</a>
+        </h3>
+        <dl>
+          <dd>
+            <table border="1" width="100%">
+              <tr>
+                <td bgcolor="#F0F0F0">
+<pre>
+&lt;dynamator
+    language="<i>language-name</i>"
+    { suffix="<i>output-file-suffix</i>" }
+    &gt;
+     <i>&lt;!-- Content: 
+            <a class="a"
+href="#defaultOverrides">default-overrides</a>?, 
+            ( <a class="a" href="#prolog">prolog</a> <!--
+            -->| <a class="a" href="#epilog">epilog</a> 
+            | <a class="a" href="#include">include</a> 
+            | <a class="a" href="#id">id</a> <!--
+            -->| <a class="a" href="#class">class</a> <!--
+            -->| <a class="a" href="#tag">tag</a> 
+            | <a class="a" href="#id">id</a>
+            | <a class="a"
+href="#before-extracts">before-extracts</a> <!--
+            -->| <a class="a"
+href="#after-extracts">after-extracts</a>
+            ) *
+     --&gt;</i>
+&lt;/dynamator&gt;
+</pre>
+                </td>
+              </tr>
+            </table>
+          </dd>
+        </dl>
+        <p>
+          The root element is required. It may have the following
+          attributes:
+        </p>
+        <p>
+        </p>
+        <dl>
+          <dd>
+            <dl>
+              <dt>
+                <b>language="<i>language-name</i>"</b>
+              </dt>
+              <dd>
+                The name of the target language. This value must
+                correspond to a language supported by Dynamator.
+                The following names are currently supported: 
+                <ul>
+                  <li>
+                    <a href="DynamatorFile_Default.html">none</a>
+                  </li>
+                  <li>
+                    <a href="DynamatorFile_JSP.html">jsp</a>
+                  </li>
+                  <li>
+                    <a href="DynamatorFile_Java.html">java</a>
+                  </li>
+                  <li>
+                    <a href="DynamatorFile_XSL.html">xsl</a>
+                  </li>
+                  <li>
+                    <a href="DynamatorFile_XSL-Text.html">xsl.txt</a>
+                  </li>
+                  <li>
+                    <a href="DynamatorFile_PHP.html">php</a>
+                  </li>
+                  <li>
+                    <a href="DynamatorFile_ASP.html">asp.vb</a>
+                  </li>
+                </ul>
+                <p>
+                  This value affects formatting of the
+                  output file. It also determines the availability
+                  and behavior of features requiring
+                  language-awareness such as 'if' and 'foreach'.
+                </p>
+                <p>
+                  If not present or "none", content is assumed to
+                  be static; no language-aware features are
+                  supported.
+                </p>
+                <p>
+                </p>
+              </dd>
+              <dt>
+                <b>suffix="<i>output-file-suffix</i>"</b>
+              </dt>
+              <dd>
+                The suffix to be given to the output file. The
+                output file name is the same as that of the input
+                file name, except that the suffix is replaced with
+                this attribute's value. If this attribute is not
+                supplied, the suffix defaults to the value of the
+                language attribute. If the language attribute is
+                also not supplied, the suffix defaults to the
+                suffix of the template file. 
+                <p>
+                </p>
+              </dd>
+              <dt>
+                <b>template="<i>template-name</i>"</b>
+              </dt>
+              <dd>
+                The filename of the template to be used with this
+                Dynamator file. This attribute is required if the
+                Dynamator file is used as the argument to <b>
+                dynamate</b>. It is ignored if the template file is
+                used as the argument to <b>dynamate</b>. 
+                <p>
+                </p>
+              </dd>
+              <dt>
+                <b>comment-start="<i>comment start string</i>"</b>
+              </dt>
+              <dd>
+                The string used by the target programming language
+                to begin a comment. If not specified, "&lt;--" is
+                used. 
+                <p>
+                </p>
+              </dd>
+              <dt>
+                <b>comment-end="<i>comment end string</i>"</b>
+              </dt>
+              <dd>
+                The string used by the target programming language
+                to end a comment. If not specified, "--&gt;" is
+                used. If comment-start is specified but comment-end
+                is not, comments are assumed to end at the
+                following newline. 
+                <p>
+                </p>
+              </dd>
+              <dt>
+                <b>filename="<i>output-file-name</i>"</b>
+              </dt>
+              <dd>
+                The name of the output file to be created. This
+                attribute overrides the 'suffix' attribute. 
+                <p>
+                </p>
+              </dd>
+            </dl>
+          </dd>
+        </dl>
+        <h3>
+          <a id="defaultOverrides" name="defaultOverrides"></a>
+          Default Overrides
+        </h3>
+        <p>
+          The Dynamator file may contain overrides to default
+          values provided by Dynamator. The syntaxes below show the
+          default value. In all cases, a Dynamator file may contain
+          zero or one override to any default value; if more than
+          one is specified, the results are undefined.
+        </p>
+        <h4>
+          exclusive iteration tags
+        </h4>
+        <dl>
+          <dd>
+            <table border="1" width="100%">
+              <tr>
+                <td bgcolor="#F0F0F0">
+<pre>
+&lt;exclusiveIterationTags&gt;dl&lt;/exclusiveIterationTags&gt;
+</pre>
+                </td>
+              </tr>
+            </table>
+          </dd>
+        </dl>
+        <p>
+          Exclusive iteration tags identify tags that must be
+          placed outside iteration blocks associated with them.
+        </p>
+        <p>
+          In most cases, generated iteration constructs place the
+          tag associated with the iteration within the iteration
+          block. For example, when producing HTML table rows, the
+          'foreach' expression is associated with the 'tr' tag,
+          which is repeated for each element of an indexed
+          property.
+        </p>
+        <p>
+          In exceptional cases, generated iterations must place the
+          tag outside the iteration block. For example, when
+          producing HTML dictionary lists, the 'foreach' expression
+          must be associated with the 'dl' tag, not the 'dt' or
+          'dd' tag (because there are two of them), but the 'dl'
+          tag is not repeated for each element.
+        </p>
+        <p>
+          If this element is present in the Dynamator file, the
+          default values are ignored; to add to the default values,
+          specify them in the list for this element.
+        </p>
+        <p>
+          If more than one value is specified, values should be
+          space-separated.
+        </p>
+        <h4>
+          preformatted tags
+        </h4>
+        <dl>
+          <dd>
+            <table border="1" width="100%">
+              <tr>
+                <td bgcolor="#F0F0F0">
+<pre>
+&lt;preformattedTags&gt;pre script&lt;/preformattedTags&gt;
+</pre>
+                </td>
+              </tr>
+            </table>
+          </dd>
+        </dl>
+        <p>
+          The 'preformattedTags' element identifies tags for which
+          whitespace is significant.
+        </p>
+        <p>
+          Dynamator automatically indents child elements and
+          program blocks for readability. This is not a problem for
+          normal HTML or XML, which are not affected by whitespace.
+          But within some tags, whitespace is significant. For
+          example, the HTML 'pre' tag causes text to be rendered
+          as-is, reflecting any whitespace within the block.
+        </p>
+        <p>
+          If this element is present in the Dynamator file, the
+          default values are ignored; to add to the default values,
+          specify them in the list for this element.
+        </p>
+        <p>
+          If more than one value is specified, values should be
+          space-separated.
+        </p>
+        <h4>
+          flag attributes
+        </h4>
+        <dl>
+          <dd>
+            <table border="1" width="100%">
+              <tr>
+                <td bgcolor="#F0F0F0">
+<pre>
+&lt;flagAttributes&gt;
+   border checked compact declare disabled ismap
+   multiple nohref noresize noshade nowrap readonly
+   selected showgrid showgridx showgridy usemap 
+&lt;/flagAttributes&gt;
+</pre>
+                </td>
+              </tr>
+            </table>
+          </dd>
+        </dl>
+        <p>
+          The 'flagAttributes' element identifies names of
+          attributes to be treated as flagAttributes.
+        </p>
+        <p>
+          A flag attribute is an attribute that requires no value.
+          If provided, the value of a flag attribute is always the
+          same as the name of the attribute. XML does not allow
+          flag attributes; they are only valid for HTML.
+        </p>
+        <p>
+          If this element is present in the Dynamator file, the
+          default values are ignored; to add to the default values,
+          specify them in the list for this element.
+        </p>
+        <p>
+          If more than one value is specified, values should be
+          space-separated.
+        </p>
+        <h4>
+          id attribute name
+        </h4>
+        <dl>
+          <dd>
+            <table border="1" width="100%">
+              <tr>
+                <td bgcolor="#F0F0F0">
+<pre>
+&lt;idAttribute&gt;id&lt;/idAttribute&gt;
+</pre>
+                </td>
+              </tr>
+            </table>
+          </dd>
+        </dl>
+        <p>
+          The idAttribute override causes the attribute named in
+          its content to be treated like 'id'.
+        </p>
+        <p>
+          HTML 4.0 defines 'id' as an attribute of most elements.
+          But XML does not. When working with an XML DTD that
+          already defines 'id', it may be useful to ask Dynamator
+          to use another name.
+        </p>
+        <p>
+          This element causes 'id' elements in the Dynamator file
+          to apply to attributes having the name indicated in the
+          content of this element. For example,
+          "<code>&lt;idAttribute&gt;id_&lt;/idAttribute&gt;</code>"
+          causes <code>&lt;id&gt;</code> tags in this document to
+          apply to matching <code>id_</code> attributes in the
+          corresponding XML file.
+        </p>
+        <h4>
+          class attribute name
+        </h4>
+        <dl>
+          <dd>
+            <table border="1" width="100%">
+              <tr>
+                <td bgcolor="#F0F0F0">
+<pre>
+&lt;classAttribute&gt;class&lt;/classAttribute&gt;
+</pre>
+                </td>
+              </tr>
+            </table>
+          </dd>
+        </dl>
+        <p>
+          The classAttribute override causes the attribute named in
+          its content to be treated like 'class'.
+        </p>
+        <p>
+          HTML 4.0 defines 'class' as an attribute of most
+          elements. But XML does not. When working with an XML DTD
+          that already defines 'class', it may be useful to ask
+          Dynamator to use another name.
+        </p>
+        <p>
+          This element causes 'class' elements in the Dynamator
+          file to apply to attributes having the name indicated in
+          the content of this element. For example,
+          "<code>&lt;classAttribute&gt;class_&lt;/classAttribute&gt;</code>"
+          causes <code>&lt;class&gt;</code> tags in this document
+          to apply to matching <code>class_</code> attributes in
+          the corresponding XML file.
+        </p>
+        <h3>
+          <a id="prolog" name="prolog">prolog</a>
+        </h3>
+        <dl>
+          <dd>
+            <table border="1" width="100%">
+              <tr>
+                <td bgcolor="#F0F0F0">
+<pre>
+&lt;prolog&gt;
+  <i>&lt;!-- Content: ( <a class="a"
+href="#program-lines">program-lines</a> )* --&gt;</i>
+&lt;/prolog&gt;
+</pre>
+                </td>
+              </tr>
+            </table>
+          </dd>
+        </dl>
+        <p>
+          The prolog contains text to be placed as-is at the
+          beginning of the generated file.
+        </p>
+        <p>
+          A Dynamator file may contain zero or more prologs. Each
+          prolog is placed in the generated file in the order
+          encountered in the Dynamator file. All whitespace within
+          the prolog is retained, including whitespace immediately
+          following the &lt;prolog&gt; tag and whitespace
+          immediately preceding the &lt;/prolog&gt; tag.
+        </p>
+        <h4>
+          <a id="program-lines" name="program-lines">Program
+          Lines</a>
+        </h4>
+        <p>
+          Program lines are transferred as-is into the output file.
+          In particular, characters that are special to XML, such
+          as '&lt;', do not need to be escaped.
+        </p>
+        <h3>
+          <a id="epilog" name="epilog">epilog</a>
+        </h3>
+        <dl>
+          <dd>
+            <table border="1" width="100%">
+              <tr>
+                <td bgcolor="#F0F0F0">
+<pre>
+&lt;epilog&gt;
+  <i>&lt;!-- Content: ( <a class="a"
+href="#program-lines">program-lines</a> )* --&gt;</i>
+&lt;/epilog&gt;
+</pre>
+                </td>
+              </tr>
+            </table>
+            <p>
+              The epilog contains material to be placed as-is at
+              the end of the generated file.
+            </p>
+            <p>
+              A Dynamator file may contain zero or more epilogs.
+              Each epilog is placed in the generated file in the
+              order encountered in the Dynamator file. All
+              whitespace within the epilog is retained, including
+              whitespace immediately following the &lt;epilog&gt;
+              tag and whitespace immediately preceding the
+              &lt;/epilog&gt; tag.
+            </p>
+          </dd>
+        </dl>
+        <h3>
+          <a id="before-extracts"
+          name="before-extracts">before-extracts</a>
+        </h3>
+        <dl>
+          <dd>
+            <table border="1" width="100%">
+              <tr>
+                <td bgcolor="#F0F0F0">
+<pre>
+&lt;before-extracts&gt;
+  <i>&lt;!-- Content: ( <a class="a"
+href="#program-lines">program-lines</a> )* --&gt;</i>
+&lt;/before-extracts&gt;
+</pre>
+                </td>
+              </tr>
+            </table>
+            <p>
+              The before-extracts element is used with the <a
+              href="#extract">extract</a> element to specify
+              program lines to be placed immediately before the set
+              of extracts.
+            </p>
+            <p>
+              A Dynamator file may contain zero or one
+              before-extracts element.
+            </p>
+          </dd>
+        </dl>
+        <h3>
+          <a id="after-extracts"
+          name="after-extracts">after-extracts</a>
+        </h3>
+        <dl>
+          <dd>
+            <table border="1" width="100%">
+              <tr>
+                <td bgcolor="#F0F0F0">
+<pre>
+&lt;after-extracts&gt;
+  <i>&lt;!-- Content: ( <a class="a"
+href="#program-lines">program-lines</a> )* --&gt;</i>
+&lt;/after-extracts&gt;
+</pre>
+                </td>
+              </tr>
+            </table>
+            <p>
+              The after-extracts element is used with the <a
+              href="#extract">extract</a> element to specify
+              program lines to be placed immediately after the set
+              of extracts.
+            </p>
+            <p>
+              A Dynamator file may contain zero or one
+              after-extracts element.
+            </p>
+          </dd>
+        </dl>
+        <h3>
+          <a id="include" name="include">include</a>
+        </h3>
+        <dl>
+          <dd>
+            <table border="1" width="100%">
+              <tr>
+                <td bgcolor="#F0F0F0">
+<pre>
+&lt;include file="<i>filename</i>" /&gt;
+</pre>
+                </td>
+              </tr>
+            </table>
+            <p>
+              The include element causes the content of the
+              referenced file to be included in the referencing
+              file at the location of the include. The referenced
+              file must be a Dynamator file.
+            </p>
+            <p>
+              <i>filename</i> may be an absolute or relative name.
+              If relative, it is assumed to be relative to the
+              directory containing the Dynamator file.
+            </p>
+            <p>
+              The include element must be an immediate child of the
+              &lt;dynamator&gt; element.
+            </p>
+            <p>
+              The included file may contain &lt;include&gt;
+              elements.
+            </p>
+          </dd>
+        </dl>
+        <h3>
+          <a id="id" name="id">id</a>
+        </h3>
+        <dl>
+          <dd>
+            <table border="1" width="100%">
+              <tr>
+                <td bgcolor="#F0F0F0">
+<pre>
+&lt;id name="<i>name</i>"&gt;
+    <i>&lt;!-- Content: 
+      ( <a class="a" href="#attr">attr</a>*, <a class="a"
+href="#content">content</a>?, ( <a class="a"
+href="#for">for</a>? | <a class="a"
+href="#foreach">foreach</a>? ), <a class="a" href="#if">if</a>?, <a
+class="a" href="#discard">discard</a>?, <a class="a"
+href="#discard-tag">discard-tag</a>? )
+    --&gt;</i>
+&lt;/id&gt;
+</pre>
+                </td>
+              </tr>
+            </table>
+          </dd>
+        </dl>
+        <p>
+          The 'id' element controls processing of the HTML element
+          associated with a certain id. An 'id' element maps to an
+          'id' attribute declared within the HTML page or XML file.
+          The content of the 'id' element is applied to the HTML or
+          XML element having a matching 'id' attribute.
+        </p>
+        <p>
+          The 'id' element must have the following attribute:
+        </p>
+        <p>
+        </p>
+        <dl>
+          <dd>
+            <dl>
+              <dt>
+                <b>name="<i>name</i>"</b>
+              </dt>
+              <dd>
+                (Required)<br />
+                 The value of the 'id' attribute within the HTML or
+                XML page. It is not an error if an id with this
+                name does not appear in the HTML or XML document. 
+                <p>
+                </p>
+              </dd>
+            </dl>
+          </dd>
+        </dl>
+        <h3>
+          <a id="class" name="class">class</a>
+        </h3>
+        <dl>
+          <dd>
+            <table border="1" width="100%">
+              <tr>
+                <td bgcolor="#F0F0F0">
+<pre>
+&lt;class name="<i>name</i>&gt;
+    <i>&lt;!-- Content: 
+      ( <a class="a" href="#attr">attr</a>*, <a class="a"
+href="#content">content</a>?, ( <a class="a"
+href="#for">for</a>? | <a class="a"
+href="#foreach">foreach</a>? ), <a class="a" href="#if">if</a>?, <a
+class="a" href="#discard">discard</a>?, <a class="a"
+href="#discard-tag">discard-tag</a>? )
+    --&gt;</i>
+&lt;/class&gt;
+</pre>
+                </td>
+              </tr>
+            </table>
+          </dd>
+        </dl>
+        <p>
+          The 'class' element controls processing of HTML elements
+          associated with a certain class. A 'class' element maps
+          to 'class' attributes declared within the HTML page or
+          XML file. The content of the 'class' element is applied
+          to any HTML or XML element having a matching 'class'
+          attribute. If more than one element ('class' or 'id') in
+          the Dynamator file applies to the same HTML or XML
+          element, the effect is additive, with overrides having
+          the same name applied so that 'id' has precedence over
+          'class', and earlier classes listed within the element's
+          attribute value have precedence.
+        </p>
+        <p>
+          The 'class' element must have the following attribute:
+        </p>
+        <p>
+        </p>
+        <dl>
+          <dd>
+            <dl>
+              <dt>
+                <b>name="<i>name</i>"</b>
+              </dt>
+              <dd>
+                (Required)<br />
+                 The value of the 'class' attribute within the HTML
+                or XML page. Class attribute values defined in the
+                HTML or XML page must be space-separated. It is not
+                an error if a class with this name does not appear
+                in the HTML or XML document. 
+                <p>
+                </p>
+              </dd>
+            </dl>
+          </dd>
+        </dl>
+        <h3>
+          <a id="tag" name="tag">tag</a>
+        </h3>
+        <dl>
+          <dd>
+            <table border="1" width="100%">
+              <tr>
+                <td bgcolor="#F0F0F0">
+<pre>
+&lt;tag tag="<i>name</i>"...&gt;
+    <i>&lt;!-- Content: 
+      ( <a class="a" href="#attr">attr</a>*, <a class="a"
+href="#content">content</a>?, ( <a class="a"
+href="#for">for</a>? | <a class="a"
+href="#foreach">foreach</a>? ), <a class="a" href="#if">if</a>?, <a
+class="a" href="#discard">discard</a>?, <a class="a"
+href="#discard-tag">discard-tag</a>? )
+    --&gt;</i>
+&lt;/id&gt;
+</pre>
+                </td>
+              </tr>
+            </table>
+          </dd>
+        </dl>
+        <p>
+          The 'tag' element identifies elements by tag name and
+          attributes. It is especially useful for tags for which
+          'id' or 'class' is invalid, where it is possible to
+          identify a single tag occurrence based on attribute
+          values.
+        </p>
+        <p>
+          The 'tag' element must have at least one of the following
+          attributes:
+        </p>
+        <p>
+        </p>
+        <dl>
+          <dd>
+            <dl>
+              <dt>
+                <b>tag="<i>name</i>"</b>
+              </dt>
+              <dd>
+                (Optional)<br />
+                 The tag name of an element within the HTML or XML
+                template. If multiple 'tag' elements specify the
+                same value for this attribute, earlier elements
+                have precedence. If the value of this attribute is
+                '*', this element applies to every element in the
+                template. It is not an error if a tag with this
+                name does not appear in the HTML or XML document.
+                It is not an error if multiple tags with this name
+                appear in the HTML or XML document. 
+                <p>
+                </p>
+              </dd>
+              <dt>
+                <b>with-attr="<i>name1 name2 ...</i>"</b>
+              </dt>
+              <dd>
+                (Optional)<br />
+                 A space-separated list of one or more attribute
+                names that must be specified by an element within
+                the HTML or XML template for this tag element to
+                match. 
+                <p>
+                </p>
+              </dd>
+              <dt>
+                <b>without-attr="<i>name1 name2 ...</i>"</b>
+              </dt>
+              <dd>
+                (Optional)<br />
+                 A space-separated list of one or more attribute
+                names that must not be specified by an element
+                within the HTML or XML template for this tag
+                element to match. 
+                <p>
+                </p>
+              </dd>
+              <dt>
+                <b><i>attrname</i>="<i>value</i>"</b>
+              </dt>
+              <dd>
+                (Optional)<br />
+                 Any attribute name, with any value. The 'tag'
+                element is applied only to tags in the template
+                file having an attribute with the name and value
+                specified. (Note that "attrname" above is not a
+                specific attribute name, but is replaced with the
+                name of the attribute to be matched.) 
+                <p>
+                </p>
+              </dd>
+            </dl>
+          </dd>
+        </dl>
+        <p>
+          A 'tag' element applies to any tag in the template file
+          for which all of the following are true:
+        </p>
+        <ul>
+          <li>
+            If the value of the 'tag' attribute is not "*", the
+            name of the HTML/XML tag matches the value of the 'tag'
+            attribute.
+          </li>
+          <li>
+            For each attribute of the tag element in the Dynamator
+            file (except for the 'tag' attribute), the HTML/XML tag
+            has a corresponding attribute with the same value. The
+            HTML/XML tag may have other attributes not specified in
+            the tag element.
+          </li>
+          <li>
+            For each word in the 'with-attr' attribute of the tag
+            element, the HTML/XML tag has a corresponding attribute
+            with the same name. The HTML/XML tag may have other
+            attributes not specified in the 'with-attr' attribute.
+          </li>
+          <li>
+            For each word in the 'without-attr' attribute of the
+            tag element, the HTML/XML tag does not have a
+            corresponding attribute with the same name.
+          </li>
+        </ul>
+        <p>
+          For example:
+        </p>
+        <dl>
+          <dd>
+            <dl>
+              <dt>
+                <code>&lt;tag tag="title"&gt;</code>
+              </dt>
+              <dd>
+                Applies to all 'title' tags in the template
+                file.<br />
+                <br />
+              </dd>
+              <dt>
+                <code>&lt;tag tag="meta"
+                http-equiv="Refresh"&gt;</code>
+              </dt>
+              <dd>
+                Applies to any tag in the template file having a
+                name of 'meta' and an 'http-equiv' attribute with a
+                value of 'Refresh'.<br />
+                <br />
+              </dd>
+              <dt>
+                <code>&lt;tag tag="a" with-attr="href"&gt;</code>
+              </dt>
+              <dd>
+                Applies to all &lt;a href="..."&gt; tags, but no
+                &lt;a name="..."&gt; tags.<br />
+                <br />
+              </dd>
+              <dt>
+                <code>&lt;tag tag="td" with-attr="class"
+                without-attr="id"&gt;</code>
+              </dt>
+              <dd>
+                Applies to all &lt;td&gt; tags that have a class
+                attribute but do not have an id attribute.
+              </dd>
+            </dl>
+          </dd>
+        </dl>
+        <h3>
+          <a id="attr" name="attr">attr</a>
+        </h3>
+        <dl>
+          <dd>
+            <table border="1" width="100%">
+              <tr>
+                <td bgcolor="#F0F0F0">
+<pre>
+&lt;attr name="<i>name</i>"<!-- { flag="yes" } -->&gt; 
+    <i>&lt;!-- Content: 
+          ( (<a class="a" href="#content">content</a> <!--
+          -->| <a class="a" href="#raw-content">raw-content</a>)?, 
+<!--
+          --><a class="a" href="#if">if</a>, <!--
+          --><a class="a" href="#discard">discard</a>? <!--
+          --><a class="a" href="#rename">rename</a>) 
+      --&gt;</i>
+&lt;/attr&gt;
+</pre>
+                </td>
+              </tr>
+            </table>
+          </dd>
+        </dl>
+        <p>
+          The 'attr' element specifies behavior for an attribute of
+          an HTML tag. An attribute may be added, removed, changed,
+          or made conditional. An 'attr' element must be
+          immediately subordinate to an <a href="#id">id</a>, <a
+          href="#class">class</a>, or <a href="#tag">tag</a>
+          element.
+        </p>
+        <p>
+          An 'attr' element maps to an attribute of the tag
+          identified by the parent 'id', 'class', or 'tag' element.
+          The attribute does not need to exist in the template
+          file.
+        </p>
+        <p>
+          The 'attr' element has the following attributes:
+        </p>
+        <p>
+        </p>
+        <dl>
+          <dd>
+            <dl>
+              <dt>
+                <b>name="<i>name</i>"</b>
+              </dt>
+              <dd>
+                (Required)<br />
+                 The name of the attribute. If multiple 'attr'
+                elements within the same parent element specify the
+                same value for this attribute, results are
+                undefined. 
+                <p>
+                </p>
+              </dd>
+              <!--
+                                <dt><b>flag="yes"</b></dt>
+                                <dd>(Optional)<br>
+                                    Indicates that the attribute is a flag.  If specified, the 
+                                    attribute name is output as its value.
+                                </dd>
+                            -->
+            </dl>
+          </dd>
+        </dl>
+        <h3>
+          <a id="content" name="content">content</a>
+        </h3>
+        <dl>
+          <dd>
+            <table border="1" width="100%">
+              <tr>
+                <td bgcolor="#F0F0F0">
+<pre>
+&lt;content&gt;
+    <i>&lt;!-- Content: <a class="a"
+href="#program-expression">program-expression</a> --&gt;</i>
+&lt;/content&gt;
+</pre>
+                </td>
+              </tr>
+            </table>
+          </dd>
+        </dl>
+        <p>
+          The 'content' element specifies dynamic content to be
+          substituted for the original content of an HTML element
+          or attribute. A 'content' element must be immediately
+          subordinate to an <a href="#id">id</a>, <a href="#class">
+          class</a>, <a href="#tag">tag</a>, or <a href="#attr">
+          attr</a> element.
+        </p>
+        <p>
+          The content of an element is everything between the
+          element's start and end tags. Dynamator replaces the
+          content of the HTML/XML element corresponding to the
+          'content' element's parent with program code that at
+          runtime outputs the value of <i>program-expression</i>.
+        </p>
+        <p>
+          An HTML flag attribute (i.e. an attribute that has no
+          value) may be added to a tag by specifying the flag
+          attribute name as the content value.
+        </p>
+        <p>
+          If a 'content' and a 'raw-content' element are specified
+          for the same template element, the results are undefined.
+        </p>
+        <p>
+          A 'content' element must not be empty.
+        </p>
+        <p>
+          When used within an 'id', 'class', or 'tag' element, the
+          content of the corresponding element is replaced with the
+          content of this element.
+        </p>
+        <p>
+          When used within an 'attr' element, the value of the
+          corresponding attribute is given the content of this
+          element. If the attribute is not in the original HTML, it
+          is added.
+        </p>
+        <p>
+          Text within a 'content' element is treated as CDATA; that
+          is, it may contain special characters such as '&lt;'.
+        </p>
+        <h4>
+          Template Attribute Value Substitution
+        </h4>
+        <p>
+          When used within an 'attr' element, the content and
+          raw-content elements may contain references to the
+          original attribute value. This can be especially useful
+          for href's, which often change between a static site and
+          a live site.<br />
+          <br />
+        </p>
+        <table border="0">
+          <tr>
+            <td valign="top" nowrap="nowrap">
+              <b><code>[[@]]</code></b> 
+            </td>
+            <td>
+              Replaced by the original value of the
+              attribute.<br />
+               <br />
+               
+            </td>
+          </tr>
+          <tr>
+            <td valign="top" nowrap="nowrap">
+              <b><code>[[@/a/b/]]</code></b> 
+            </td>
+            <td>
+              Replaced by the original value of the attribute, with
+              all occurrences of string 'a' replaced with string
+              'b'. For example, if the attribute value is
+              'index.html', and the content value is
+              'response.encodeURL("[[@/.html/.jsp]]")', the result
+              is 'response.encodeURL("index.jsp")'.
+            </td>
+          </tr>
+          <tr>
+            <td valign="top" nowrap="nowrap">
+              <b><code>[[@/a/b/+/c/d/]]</code></b> 
+            </td>
+            <td>
+              Replaced by the original value of the attribute, with
+              all occurrences of string 'a' replaced with string
+              'b', then all occurrences of string 'c' replaced with
+              string 'd'. An unlimited of replacement pairs may be
+              specified. Replacement is performed in the order
+              listed.
+            </td>
+          </tr>
+        </table>
+        <h3>
+          <a id="discard" name="discard">discard</a>
+        </h3>
+        <dl>
+          <dd>
+            <table border="1" width="100%">
+              <tr>
+                <td bgcolor="#F0F0F0">
+<pre>
+&lt;discard/&gt;
+</pre>
+                </td>
+              </tr>
+            </table>
+          </dd>
+        </dl>
+        <p>
+          The 'discard' element causes the referenced template
+          element and its children to be removed from the output
+          file.
+        </p>
+        <p>
+          A 'discard' element must be immediately subordinate to an
+          <a href="#id">id</a>, <a href="#class">class</a>, <a
+          href="#tag">tag</a>, or <a href="#attr">attr</a> element.
+        </p>
+        <h3>
+          <a id="discard-tag" name="discard-tag">discard-tag</a>
+        </h3>
+        <dl>
+          <dd>
+            <table border="1" width="100%">
+              <tr>
+                <td bgcolor="#F0F0F0">
+<pre>
+&lt;discard-tag/&gt;
+</pre>
+                </td>
+              </tr>
+            </table>
+          </dd>
+        </dl>
+        <p>
+          The 'discard-tag' element causes an HTML or XML tag, but
+          not its content, to be removed from the output file. The
+          element's start and close tags are removed, but the
+          element's content is retained.
+        </p>
+        <p>
+          A 'discard-tag' element must be immediately subordinate
+          to an <a href="#id">id</a>, <a href="#class">class</a>,
+          or <a href="#tag">tag</a> element.
+        </p>
+        <h3>
+          <a id="rename" name="rename">rename</a>
+        </h3>
+        <dl>
+          <dd>
+            <table border="1" width="100%">
+              <tr>
+                <td bgcolor="#F0F0F0">
+<pre>
+&lt;rename to="<i>new-name</i>"/&gt;
+</pre>
+                </td>
+              </tr>
+            </table>
+          </dd>
+        </dl>
+        <p>
+          The 'rename' element causes the name of an HTML or XML
+          element or attribute to be changed upon output. The
+          attribute or tag and optional close-tag for the element
+          are output with the name <i>new-name</i>.
+        </p>
+        <p>
+          A 'rename' element must be immediately subordinate to an
+          <a href="#id">id</a>, <a href="#class">class</a>, <a
+          href="#tag">tag</a>, or <a href="#attr">attr</a> element.
+        </p>
+        <p>
+          If more than one 'rename' element applies to the same tag
+          or attribute, results are undefined.
+        </p>
+        <h3>
+          <a id="extract" name="extract">extract</a>
+        </h3>
+        <dl>
+          <dd>
+            <table border="1" width="100%">
+              <tr>
+                <td bgcolor="#F0F0F0">
+<pre>
+&lt;extract { to-file="<i>extract-file-name</i>"}&gt;
+  <i>&lt;!-- Content: ( <a class="a"
+href="#program-lines">program-lines</a> )* --&gt;</i>
+&lt;/extract&gt;
+</pre>
+                </td>
+              </tr>
+            </table>
+          </dd>
+        </dl>
+        <p>
+          The 'extract' element causes an HTML or XML element or
+          attribute to be moved to the end of the file,
+          or to another file entirely. 
+        </p>
+        <p>
+          If the 'to-file' attribute is present, the extracted
+          element is moved to the file named by its value. 
+          If the file is a relative path, the path is relative to 
+          the current output file.
+        </p>
+        <p>
+          If the 'to-file' attribute is not present, the extracted
+          element is moved to the end of the file, immediately before
+          the <a href="#epilog"> epilog</a>. The content of the <a
+          href="#before-extracts">before-extracts</a> element, if
+          present, is placed before the first extract, and the
+          content of the <a href="#after-extracts">
+          after-extracts</a> element, if present, is placed after
+          the last extract.
+        </p>
+        <p>
+          The content of the 'extract' element consists of optional
+          program lines that replace the extracted element.
+        </p>
+        <p>
+          The 'extract' element is useful for program logic
+          requiring recursion, when the language does not allow
+          inline function definition. It is ideal for XSL, which
+          often requires recursion. The 'extract' element without
+          'to-file' is incompatible with JSP, because JSP does not
+          convert static content outside of the main template block.
+          (Use a recursively invoked inline class instead.)
+        </p>
+        <p>
+          An 'extract' element must be immediately subordinate to
+          an <a href="#id">id</a>, <a href="#class">class</a>, or
+          <a href="#tag">tag</a> element.
+        </p>
+        <h3>
+          <a id="if" name="if">if</a>
+        </h3>
+        <dl>
+          <dd>
+            <table border="1" width="100%">
+              <tr>
+                <td bgcolor="#F0F0F0">
+<pre>
+&lt;if&gt;
+    <i>&lt;!-- Content: <a class="a"
+href="#program-conditional">program-conditional-expression</a> --&gt;</i>
+&lt;/if&gt;
+</pre>
+                </td>
+              </tr>
+            </table>
+          </dd>
+        </dl>
+        <p>
+          The 'if' element causes the referenced template element
+          and its children to be output by the server page only if
+          <i>program-conditional-expression</i> evaluates to 'true'
+          at run-time.
+        </p>
+        <p>
+          An 'if' element must be immediately subordinate to an <a
+          href="#id">id</a>, <a href="#class">class</a>, <a
+          href="#tag">tag</a>, or <a href="#attr">attr</a> element.
+        </p>
+        <p>
+          As a special case, the value "&lt;if&gt;false&lt;/if&gt;"
+          causes the element and all its children to be omitted
+          from the generated file. (This provides the creator of
+          the Dynamator file a mechanism similar to that provided
+          to the template author through the "Discard" class.)
+        </p>
+        <p>
+          Text within an 'if' element is treated as CDATA; that is,
+          it may contain special characters such as '&lt;'. <a
+          id="for" name="for"></a>
+        </p>
+        <h3>
+          for
+        </h3>
+        <dl>
+          <dd>
+            <table border="1" width="100%">
+              <tr>
+                <td bgcolor="#F0F0F0">
+<pre>
+&lt;for&gt;
+    <i>&lt;!-- Content: 
+   </i>   for-statement-remainder
+      &lt;if&gt;<i>conditional-expression</i>&lt;/if&gt; <i> --&gt;</i>
+&lt;/for&gt;
+</pre>
+                </td>
+              </tr>
+            </table>
+            <p>
+            </p>
+          </dd>
+        </dl>
+        <p>
+          A 'for' element outputs a 'for' block in the target
+          language, causing the referenced template element and its
+          content to be output multiple times.
+        </p>
+        <p>
+          A 'for' element must be immediately subordinate to an <a
+          href="#id">id</a>, <a href="#class">class</a>, or <a
+          href="#tag">tag</a> element.
+        </p>
+        <p>
+          The content of the element is the text that appears after
+          the target language's 'for' keyword. The content may
+          optionally contain an &lt;if&gt; element specifying a
+          conditional expression. If present, this condition is
+          evaluated for each iteration; the referenced template
+          element and its content are output only if the condition
+          is true.
+        </p>
+        <h3>
+          <a id="foreach" name="foreach">foreach</a>
+        </h3>
+        <dl>
+          <dd>
+            <table border="1" width="100%">
+              <tr>
+                <td bgcolor="#F0F0F0">
+<pre>
+&lt;foreach 
+      { type="<i><a class="a"
+href="#program-collection-type-name">program-collection-type-name</a></i>" }
+      { element="<i><a class="a"
+href="#element-variable-name">element-variable-name</a></i>" }
+      { i="<i><a class="a"
+href="#foreach-iteration-variable-name">iteration-variable-name</a></i>" }
+      { collection="<i><a class="a"
+href="#foreach-collection-variable-name">collection-variable-name</a></i>" }
+    &gt;
+    <i>&lt;!-- Content: 
+      <a class="a"
+href="#program-collection">program-collection-expression</a> 
+   </i>   &lt;if&gt;<i>conditional-expression</i>&lt;/if&gt; <i> --&gt;</i>
+&lt;/foreach&gt;
+</pre>
+                </td>
+              </tr>
+            </table>
+            <p>
+            </p>
+          </dd>
+        </dl>
+        <p>
+          A 'foreach' element causes the referenced template
+          element and its children to be output once for each
+          element of a collection.
+        </p>
+        <p>
+          A 'foreach' element must be immediately subordinate to an
+          <a href="#id">id</a>, <a href="#class">class</a>, or <a
+          href="#tag">tag</a> element.
+        </p>
+        <p>
+          The target collection is identified by the content of the
+          'foreach' element, which must be a program expression
+          that evaluates to a collection.
+        </p>
+        <p>
+          The 'foreach' element's content may optionally contain an
+          &lt;if&gt; element specifying a conditional expression.
+          If present, this condition is evaluated for each
+          iteration; the referenced template element and its
+          content are output only if the condition is true.
+        </p>
+        <p>
+          Most of the attributes of this element specify variable
+          names for generated code. Although Dynamator can generate
+          variable names when none are supplied, readability of the
+          generated code is greatly improved if names are supplied.
+        </p>
+        <p>
+          The 'foreach' element may have the following attributes:
+        </p>
+        <p>
+        </p>
+        <dl>
+          <dd>
+            <dl>
+              <dt>
+                <b>type="<i><a id="program-collection-type-name"
+                name="program-collection-type-name">program-collection-type-name</a></i>"</b>
+              </dt>
+              <dd>
+                (Required for typed target languages such as Java;
+                not available for all languages)<br />
+                 Identifies the type of the <i>
+                program-collection-expression</i>. The value of
+                this attribute is target-language-specific. 
+                <p>
+                </p>
+              </dd>
+              <dt>
+                <b>element="<i><a id="element-variable-name"
+                name="element-variable-name">program-variable-name</a></i>"</b>
+              </dt>
+              <dd>
+                (Required for most languages; not available for all
+                languages)<br />
+                 Identifies the name of the program variable that
+                refers to the current element of the collection. 
+                <p>
+                </p>
+              </dd>
+              <dt>
+                <b>i="<i><a id="foreach-iteration-variable-name"
+                name="foreach-iteration-variable-name">iteration-variable-name</a></i>"</b>
+              </dt>
+              <dd>
+                (Optional; not available for all languages)<br />
+                 Identifies the name of the iteration variable. The
+                iteration variable is in scope for the duration of
+                the iteration. Its value is the number of times the
+                iteration block has been completed (i.e. the offset
+                into the collection). 
+                <p>
+                  Dynamator generates code that uses this variable
+                  only for sequences that can be accessed using a
+                  numeric index. If not specified, Dynamator
+                  generates a name.
+                </p>
+                <p>
+                  If specified for a collection type that does not
+                  require it, Dynamator generates code to declare
+                  and increment the variable so that it is
+                  available within the iteration block.
+                </p>
+                <p>
+                </p>
+                <p>
+                </p>
+              </dd>
+              <dt>
+                <b>collection="<i><a id="foreach-collection-variable-name"
+                name="foreach-collection-variable-name">collection-variable-name</a></i>"</b>
+              </dt>
+              <dd>
+                (Optional; not available for all languages)<br />
+                 Identifies the name of the program variable that
+                references the collection. If this attribute is not
+                specified, Dynamator generates a name from <i>
+                program-collection-expression</i>. 
+                <p>
+                </p>
+              </dd>
+            </dl>
+          </dd>
+        </dl>
+        <h3 class="deprecated">
+          foreach (sequenced)
+        </h3>
+        <p class="deprecated">
+          <b>The sequenced form of the 'foreach' element has been
+          deprecated. Use the <a
+          style="color:#666666 text-decoration:none" href="#for">
+          for</a> element instead.</b>
+        </p>
+        <dl>
+          <dd>
+            <table border="1" width="100%">
+              <tr>
+                <td bgcolor="#f0f0f0" class="deprecated">
+                  <b>Deprecated</b> 
+                </td>
+              </tr>
+              <tr>
+                <td bgcolor="#f0f0f0">
+<pre class="deprecated">
+&lt;foreach 
+      i="<i><a style="text-decoration:none;color:#999999"
+href="#sequenced-iteration-variable-name">iteration-variable-name</a></i>"
+      first="<i><a style="text-decoration:none;color:#999999"
+href="#initial-value-expression">initial-value-expression</a></i>"
+      last="<i><a style="text-decoration:none;color:#999999"
+href="#final-value-expression">final-value-expression</a></i>"
+      { step="<i><a style="text-decoration:none;color:#999999"
+href="#increment-value-expression">increment-value-expression</a></i>" }
+/&gt;
+</pre>
+                </td>
+              </tr>
+            </table>
+            <p>
+            </p>
+          </dd>
+        </dl>
+        <p class="deprecated">
+          The sequenced form of the 'foreach' element allows
+          generation of a 'for' construct in languages that support
+          it. Since different languages use different forms of this
+          construct, the specific meaning of an element depends on
+          the target language.
+        </p>
+        <p class="deprecated">
+          For C-like languages, the form is<br />
+        </p>
+        <p align="center">
+          <code class="deprecated">for ( <i>first</i>; <i>last</i>;
+          <i>step</i> )</code>
+        </p>
+        <p class="deprecated">
+          For VB-like languages, the form is<br />
+        </p>
+        <p align="center">
+          <code class="deprecated">for <i>i</i> = <i>first</i> to
+          <i>last</i> step <i>step</i></code>
+        </p>
+        <p class="deprecated">
+          The sequenced values form of the 'foreach' element takes
+          no element content. It takes the following attributes:
+        </p>
+        <p class="deprecated">
+        </p>
+        <dl>
+          <dd>
+            <dl>
+              <dt>
+                <span class="deprecated"><b>i="<i><a
+                id="sequenced-iteration-variable-name" class="deprecated"
+                name="sequenced-iteration-variable-name">iteration-variable-name</a></i>"</b></span>
+              </dt>
+              <dd>
+                <span class="deprecated">(Used only if supported by
+                the target language's generator.)<br />
+                 The name of the iteration variable. The value of
+                the iteration variable changes with each iteration.
+                It is initialized to 'first' and incremented by the
+                value of 'step'.</span> 
+                <p>
+                </p>
+              </dd>
+              <dt>
+                <span class="deprecated"><b>first="<i><a
+                id="initial-value-expression" class="deprecated"
+                name="initial-value-expression">initial-value-expression</a></i>"</b></span>
+              </dt>
+              <dd>
+                <span class="deprecated">(Required)<br />
+                 A program language string identifying the value to
+                which the iteration variable will be initialized
+                for the first iteration. In C-like languages, this
+                should take a form like 'i = n'. In VB-like
+                languages, this should be a program language
+                expression yielding a value that can be assigned to
+                'i'.</span> 
+                <p>
+                </p>
+              </dd>
+              <dt>
+                <span class="deprecated"><b>last="<i><a
+                id="final-value-expression" class="deprecated"
+                name="final-value-expression">final-value-expression</a></i>"</b></span>
+              </dt>
+              <dd>
+                <span class="deprecated">(Required)<br />
+                 A program language string identifying the value of
+                the iteration variable for the last iteration. In
+                C-like languages, this should take a form like 'i
+                &lt; n'. In VB-like languages, this should be a
+                program language expression yielding a value that
+                can be compared against 'i'.</span> 
+                <p>
+                </p>
+              </dd>
+              <dt>
+                <span class="deprecated"><b>step="<i><a
+                id="increment-value-expression" class="deprecated"
+                name="increment-value-expression">collection-variable-name</a></i>"</b></span>
+              </dt>
+              <dd>
+                <span class="deprecated">(Required for C-like
+                languages; optional for VB-like languages)<br />
+                 A program language string identifying the means of
+                incrementing the iteration variable between
+                iterations. In C-like languages, this should take a
+                form like '++i'. In VB-like languages, this should
+                be a program expression yielding a value that can
+                be added to 'i'.</span> 
+                <p>
+                </p>
+              </dd>
+            </dl>
+          </dd>
+        </dl>
+        <h3>
+          <a id="lowlevel" name="lowlevel">Low-Level Tags</a>
+        </h3>
+        <p>
+          Low-level tags provide the ability to directly insert
+          code before and after tags and their corresponding end
+          tags. They are provided for completeness, but they should
+          be avoided if a higher-level tag will do.
+        </p>
+        <h4>
+          <a id="before" name="before">before</a>
+        </h4>
+        <dl>
+          <dd>
+            <table border="1" width="100%">
+              <tr>
+                <td bgcolor="#F0F0F0">
+<pre>
+&lt;before { indent="yes" } { indent-program="yes" }&gt;
+    <i>&lt;!-- Content: <a class="a"
+href="#target-file-text">target-file-text</a> --&gt;</i>
+&lt;/before&gt;
+</pre>
+                </td>
+              </tr>
+            </table>
+          </dd>
+        </dl>
+        <p>
+          The 'before' element is a low-level element that places
+          its contents directly before the referenced tag and any
+          generated code that may be placed before the tag. It may
+          be used to directly insert code in front of a tag. The
+          content of the 'before' element is copied as-is to the
+          generated file.
+        </p>
+        <p>
+          A 'before' element must be immediately subordinate to an
+          <a href="#id">id</a>, <a href="#class">class</a>, or <a
+          href="#tag">tag</a> element.
+        </p>
+        <p>
+          Text within a 'before' element is treated as CDATA; that
+          is, it may contain special characters such as '&lt;'.
+        </p>
+        <p>
+          The 'before' element has the following attribute:
+        </p>
+        <p>
+        </p>
+        <dl>
+          <dd>
+            <dl>
+              <dt>
+                <b>indent="yes"</b>
+              </dt>
+              <dd>
+                (Optional)<br />
+                 Indents the element referenced by the 'before'
+                element, and its content.
+              </dd>
+              <dt>
+                <b>indent-program="yes"</b>
+              </dt>
+              <dd>
+                (Optional)<br />
+                 Indents the program lines that output the element
+                referenced by the 'before' element, and the program
+                lines that output the element's content. Has effect
+                only for target languages that support program
+                lines that may be indented. (For example, this
+                attribute affects Java, but not JSP, output.)
+              </dd>
+            </dl>
+          </dd>
+        </dl>
+        <h4>
+          <a id="before-content"
+          name="before-content">before-content</a>
+        </h4>
+        <dl>
+          <dd>
+            <table border="1" width="100%">
+              <tr>
+                <td bgcolor="#F0F0F0">
+<pre>
+&lt;before-content { indent="yes" } { indent-program="yes" }&gt;
+    <i>&lt;!-- Content: <a class="a"
+href="#target-file-text">target-file-text</a> --&gt;</i>
+&lt;/before-content&gt;
+</pre>
+                </td>
+              </tr>
+            </table>
+          </dd>
+        </dl>
+        <p>
+          The 'before-content' element is a low-level element that
+          places its contents directly after the referenced tag and
+          before any content or generated code after the tag. It
+          may be used to directly insert code or text immediately
+          after a tag. The content of the 'before-content' element
+          is copied as-is to the generated file.
+        </p>
+        <p>
+          A 'before-content' element must be immediately
+          subordinate to an <a href="#id">id</a>, <a href="#class">
+          class</a>, or <a href="#tag">tag</a> element.
+        </p>
+        <p>
+          Text within a 'before-content' element is treated as
+          CDATA; that is, it may contain special characters such as
+          '&lt;'.
+        </p>
+        <p>
+          The 'before-content' element has the following attribute:
+        </p>
+        <p>
+        </p>
+        <dl>
+          <dd>
+            <dl>
+              <dt>
+                <b>indent="yes"</b>
+              </dt>
+              <dd>
+                (Optional)<br />
+                 Indents the content of the element referenced by
+                the 'before' element.
+              </dd>
+              <dt>
+                <b>indent-program="yes"</b>
+              </dt>
+              <dd>
+                (Optional)<br />
+                 Indents the program lines that output the content
+                of the element referenced by the 'before' element.
+                Has effect only for target languages that support
+                program lines that may be indented. (For example,
+                this attribute affects Java, but not JSP, output.)
+              </dd>
+            </dl>
+          </dd>
+        </dl>
+        <h4>
+          <a id="raw-content" name="raw-content">raw-content</a>
+        </h4>
+        <dl>
+          <dd>
+            <table border="1" width="100%">
+              <tr>
+                <td bgcolor="#F0F0F0">
+<pre>
+&lt;raw-content { indent="yes" } &gt;
+    <i>&lt;!-- Content: <a class="a"
+href="#target-file-text">target-file-text</a> --&gt;</i>
+&lt;/raw-content&gt;
+</pre>
+                </td>
+              </tr>
+            </table>
+          </dd>
+        </dl>
+        <p>
+          The 'raw-content' element is a low-level element that
+          replaces the content of the corresponding template
+          element with its content. It may be used to directly
+          insert code or text to replace the original content of
+          the element. The content of the 'raw-content' element is
+          copied as-is to the generated file.
+        </p>
+        <p>
+          When used within an 'id', 'class', or 'tag' element, the
+          content of the corresponding element is replaced with the
+          content of this element. When used within an 'attr'
+          element, the value of the corresponding attribute is
+          given the content of this element. If the attribute is
+          not in the original HTML, it is added.
+        </p>
+        <p>
+          If a 'content' and a 'raw-content' element are specified
+          for the same template element, the results are undefined.
+        </p>
+        <p>
+          An 'raw-content' element must be immediately subordinate
+          to an <a href="#id">id</a>, <a href="#class">class</a>,
+          or <a href="#tag">tag</a> element.
+        </p>
+        <p>
+          Text within an 'raw-content' element is treated as CDATA;
+          that is, it may contain special characters such as
+          '&lt;'.
+        </p>
+        <h4>
+          <a id="after" name="after">after</a>
+        </h4>
+        <dl>
+          <dd>
+            <table border="1" width="100%">
+              <tr>
+                <td bgcolor="#F0F0F0">
+<pre>
+&lt;after&gt;
+    <i>&lt;!-- Content: <a class="a"
+href="#target-file-text">target-file-text</a> --&gt;</i>
+&lt;/after&gt;
+</pre>
+                </td>
+              </tr>
+            </table>
+          </dd>
+        </dl>
+        <p>
+          The 'after' element is a low-level element that places
+          its contents directly after the end-tag corresponding to
+          the referenced tag and any generated code that may be
+          placed after the tag. It may be used to directly insert
+          code following an end-tag. The content of the 'after'
+          element is copied as-is to the generated file.
+        </p>
+        <p>
+          An 'after' element must be immediately subordinate to an
+          <a href="#id">id</a>, <a href="#class">class</a>, or <a
+          href="#tag">tag</a> element.
+        </p>
+        <p>
+          Text within an 'after' element is treated as CDATA; that
+          is, it may contain special characters such as '&lt;'. <a
+          id="after-content" name="after-content"></a>
+        </p>
+        <h4>
+          after-content
+        </h4>
+        <dl>
+          <dd>
+            <table border="1" width="100%">
+              <tr>
+                <td bgcolor="#F0F0F0">
+<pre>
+&lt;after-content &gt;
+    <i>&lt;!-- Content: <a class="a"
+href="#target-file-text">target-file-text</a> --&gt;</i>
+&lt;/after-content&gt;
+</pre>
+                </td>
+              </tr>
+            </table>
+          </dd>
+        </dl>
+        <p>
+          The 'after-content' element is a low-level element that
+          places its contents directly after the contents of the
+          end-tag corresponding to the referenced tag and before
+          any generated code associated with the end tag
+          corresponding to the referenced HTML tag. It may be used
+          to directly insert code immediately before an end tag.
+          The content of the 'after-content' element is copied
+          as-is to the generated file.
+        </p>
+        <p>
+          An 'after-content' element must be immediately
+          subordinate to an <a href="#id">id</a>, <a href="#class">
+          class</a>, or <a href="#tag">tag</a> element.
+        </p>
+        <p>
+          Text within an 'after-content' element is treated as
+          CDATA; that is, it may contain special characters such as
+          '&lt;'.
+        </p>
+        <h4>
+          <a id="raw-attrs" name="raw-attrs">raw-attrs</a>
+        </h4>
+        <dl>
+          <dd>
+            <table border="1" width="100%">
+              <tr>
+                <td bgcolor="#F0F0F0">
+<pre>
+&lt;raw-attrs { space="yes" } &gt;
+    <i>&lt;!-- Content: <a class="a"
+href="#target-file-text">target-file-text</a> --&gt;</i>
+&lt;/raw-attrs&gt;
+</pre>
+                </td>
+              </tr>
+            </table>
+          </dd>
+        </dl>
+        <p>
+          The 'raw-attrs' element is a low-level element that
+          places its contents at the end of the attribute list for
+          a tag. It may be used to add attributes to a tag at
+          run-time.
+        </p>
+        <p>
+          No checking is provided for invalid attribute list syntax
+          or duplicate attribute names.
+        </p>
+        <p>
+          A 'raw-attrs' element must be immediately subordinate to
+          an <a href="#id">id</a>, <a href="#class">class</a>, or
+          <a href="#tag">tag</a> element.
+        </p>
+        <p>
+          Text within an 'raw-attrs' element is treated as CDATA;
+          that is, it may contain special characters such as
+          '&lt;'. (However, note that such characters are invalid
+          as attribute values.)
+        </p>
+        <p>
+          The 'raw-attrs' element has the following attribute:
+        </p>
+        <p>
+        </p>
+        <dl>
+          <dd>
+            <dl>
+              <dt>
+                <b>space="no"</b>
+              </dt>
+              <dd>
+                (Optional)<br />
+                 Indicates that a space should not be inserted
+                before the content of the raw-attrs element. Use
+                this attribute when the content of the raw-attrs
+                element is a program expression that may not output
+                any attributes. This ensures that an HTML tag does
+                not have a space before the close '&gt;', which
+                would be invalid.
+              </dd>
+            </dl>
+          </dd>
+        </dl>
+        <h3>
+          Expressions
+        </h3>
+        <p>
+          This document uses the following special terms to denote
+          varieties of expressions allowed within a Dynamator file:
+        </p>
+        <dl>
+          <dd>
+            <dl>
+              <dt>
+                <a id="program-expression"
+                name="program-expression"><b>program-expression</b></a>
+              </dt>
+              <dd>
+                A program expression. Text within a
+                program-expression is treated as CDATA; that is, it
+                may contain special characters such as
+                '&lt;'.<br />
+                <br />
+              </dd>
+              <dt>
+                <a id="program-collection"
+                name="program-collection"><b>program-collection-expression</b></a>
+              </dt>
+              <dd>
+                A <i>program-expression</i> that evaluates to a
+                value with a type of Object[], Enumeration, Vector,
+                Dictionary, or Properties.<br />
+                <br />
+              </dd>
+              <dt>
+                <a id="program-conditional"
+                name="program-conditional"><b>program-conditional-expression</b></a>
+              </dt>
+              <dd>
+                A <i>program-expression</i> that evaluates to a
+                value with a type of <tt>boolean</tt>.<br />
+                <br />
+              </dd>
+              <dt>
+                <a id="target-file-text"
+                name="target-file-text"><b>target-file-text</b></a>
+              </dt>
+              <dd>
+                Text that is output as-is to the target file.
+                Target file text is treated as CDATA; that is, it
+                may contain special characters such as '&lt;'. 
+                <p>
+                </p>
+              </dd>
+            </dl>
+          </dd>
+        </dl>
+        <br />
+      </dd>
+      <dt>
+        <b><a id="SeeAlso" name="SeeAlso">SEE ALSO</a></b>
+      </dt>
+      <dd>
+        <p>
+          <a href="dynamate.html">dynamate</a>, <a
+          href="DynamatorFile_Default.html">Dynamator File for
+          Unspecified Languages</a>, <a
+          href="DynamatorFile_JSP.html">Dynamator File for JSP</a>,
+          <a href="DynamatorFile_Java.html">Dynamator File for
+          Java</a>, <a href="DynamatorFile_XSL.html">Dynamator File
+          for XSL</a>, <a href="DynamatorFile_PHP.html">Dynamator
+          File for PHP</a>, <a href="DynamatorFile_ASP.html">
+          Dynamator File for ASP</a><br />
+          <br />
+        </p>
+      </dd>
+      <dt>
+        <a id="Identification"
+        name="Identification"><b>IDENTIFICATION</b></a>
+      </dt>
+      <dd>
+        <table border="0">
+          <tr>
+            <td>
+              Author:
+            </td>
+            <td>
+              Jay Dunning
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Version:
+            </td>
+            <td>
+              1.5
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Copyright:
+            </td>
+            <td>
+              2000-2004, Jay Dunning
+            </td>
+          </tr>
+        </table>
+      </dd>
+    </dl>
+  </body>
+</html>
+

@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>
+      Extending Dynamator
+    </title>
+    <link rel="StyleSheet" type="text/css" href="style.css" />
+  </head>
+  <body>
+    <h1>
+      Extending Dynamator to support new languages
+    </h1>
+    <dl>
+      <dd>
+        <p>
+          Dynamator is designed to be easily extended to support
+          new languages. There's no comprehensive guide; you'll
+          have to look around the source code to figure things out.
+          But the existing language extensions should provide
+          sufficient examples.
+        </p>
+        <ol>
+          <li>
+            Determine which currently implemented language is most
+            like the target language. Dynamator/JSP should provide
+            a superset of the functionality needed for most
+            XML/template-based languages; Dynamator/Java should
+            provide a model for most traditional languages and for
+            line-oriented template languages.
+          </li>
+          <li>
+            Copy the source directory of the example language into
+            a directory named for the target language. (The
+            language-specific source directory trees are in the
+            source distribution under .../languages/dynamator.) So,
+            for example, if you've determined that JSP is the
+            closest language to your language PUFF, create
+            directory .../languages/dynamator/puff and copy
+            .../languages/dynamator/jsp/* to
+            .../languages/dynamator/puff.
+          </li>
+          <li>
+            Hack up the source code so that it does what you want.
+            For any language, only one class is required: a class
+            called "Generator".
+          </li>
+          <li>
+            No changes to the Dynamator core should be required.
+          </li>
+          <li>
+            You should be able to access your language-specific
+            module by creating a Dynamator file that specifies
+            your language name as the language in the dynamator
+            element: &lt;dynamator language="puff"&gt;.
+          </li>
+        </ol>
+      </dd>
+    </dl>
+  </body>
+</html>
+

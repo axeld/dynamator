@@ -1,0 +1,269 @@
+<!-- 
+    This example demonstrates two things: simple form handling
+    and basic demonstration site behavior.
+    
+    The standard form interaction pattern for a demo site is:
+        1.  System displays the form
+        2.  User submits the form (no data entry required)        
+        3.  System displays the form again with a sample error message.
+        4.  User submits the form again (no data entry required)
+        5.  System displays the form again with a success message,
+            or displays the next page.
+
+    Form pages in a demo site therefore have three possible states:
+        - initial
+        - error
+        - success (optional)
+        
+    The query parameter can be used to determine state:
+        - initial: (empty)
+        - error:   '?error'
+        - success: '?success'
+
+    Message display is handled using Javascript and CSS.
+    Javascript is used to set and query the state of the page 
+    and to write message text and CSS.  CSS is used to control whether
+    a message is displayed, and its color if it is displayed.
+
+    In production, there is no need to pass the state as a query
+    parameter since it is known at the server side as a byproduct of
+    request processing.  All the demo site Javascript is removed
+    (class="Discard").  Message presence and content should be
+    controlled programmatically at the server side, not via CSS and
+    Javascript.
+
+    This demo is self-contained; a real demo site would externalize
+    common CSS and Javascript into separate files.
+-->
+<!DOCTYPE  HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Language" content="en-us">
+<title>My Guestbook</title>
+
+<!-- 
+    ============================================================
+    Site-wide CSS. 
+    This would normally be an external file so it could be
+    reused across the site.
+    ============================================================ 
+-->
+<style type="text/css">
+*
+{
+    font-family: verdana;
+    font-size: 10pt;
+}
+h1
+{
+    font-size: 14pt;
+    text-align: center;
+}
+th
+{
+    background-color: #eeeeee;
+    color:#333333;
+    font-family: verdana, sans-serif;
+    font-size: 9pt;
+    font-weight: bold;
+    vertical-align: bottom;
+}
+form table
+{
+    background-color: #eeeeee;
+}
+
+.errorContainer
+{
+    background-color:#ff6600;
+}
+.errorMessage
+{
+    background-color:#ffee99;
+    color: #ff6600;
+    font-weight: bold;
+}
+
+.successContainer
+{
+    background-color:#0099cc;
+}
+.successMessage
+{
+    background-color:#ccffee;
+    color:#0099cc;
+    font-weight: bold;
+}
+</style>
+
+<!-- div class="Discard" -->
+<!--
+    ============================================================ 
+    Javascript to support demo site message appearance. 
+    This would also normally be an external file.
+    ============================================================ 
+-->
+<script language="JavaScript" type="text/javascript">
+if ( location.search == '?success' )
+{
+    document.write('<style type="text/css">');
+    document.write('.messageContainer { background-color:#0099cc; }');
+    document.write('.message          { background-color:#ccffee; color:#0099cc; font-weight: bold; }');
+    document.write('.errorContainer   { display:none; }');
+    document.write('</style>');
+}
+else
+if ( location.search == '?error' )
+{
+    document.write('<style type="text/css">');
+    document.write('.messageContainer { background-color:#ff6600; }');
+    document.write('.message          { background-color:#ffee99; color:#ff6600; font-weight: bold; }');
+    document.write('#DynNewName       { background-color:#ffffaa; }');
+    document.write('#YourEntry        { display:none; }');
+    document.write('</style>');
+}
+else
+{
+    document.write('<style type="text/css">');
+    document.write('.errorContainer      { display:none; }');
+    document.write('#YourEntry           { display:none; }');
+    document.write('</style>');
+}
+</script>
+<!-- /div -->
+
+</head>
+<body bgcolor="#ffffff">
+
+<h1>My Guestbook</h1>
+
+
+<!-- 
+    ============================================================
+    this is the page message area.  
+    It is always displayed, although normally it is empty.
+    Its color is determined by status.
+    ============================================================
+-->
+  <table border="0" align="center" cellpadding="5" cellspacing="1" 
+      class="messageContainer" id="DynPageMessageContainer">
+    <tr>
+      <td class="message" id="DynPageMessage">
+        <script language="JavaScript" class="Discard">
+          if ( location.search == '?success' )
+          {
+              document.write("Thank you for signing my guestbook!");
+          }
+          else
+          if ( location.search == '?error' )
+          {
+              document.write("Please correct the items indicated below.");
+          }
+          else
+          {
+              document.write("&nbsp;");
+          }
+        </script>
+      </td>
+    </tr>
+  </table>
+
+  <!-- 
+      ============================================================
+      Data entry.
+      ============================================================
+  -->
+<form action="Guestbook.html" method="POST" name="add">
+  <table border="1" align="center" cellpadding="0" cellspacing="1">
+  
+    <tr>
+      <td>
+        <table border="0" cellpadding="5" cellspacing="0">
+
+          <tr class="errorContainer" id="DynNameError">
+            <td class="errorMessage" align="center" colspan="2" id="DynNameMessage">Please enter your name.</td>
+          </tr>
+          <tr>
+            <td align="right">Your&nbsp;Name:</td>
+            <td align="left"><input id="DynNewName" size="50" value="" name="name"></td>
+          </tr>
+  
+          <tr class="errorContainer" id="DynCommentError">
+            <td class="errorMessage" align="center" colspan="2" id="DynCommentMessage">Please enter a comment.</td>
+          </tr>
+          <tr>
+            <td align="right">Your&nbsp;Comment:</td>
+            <td align="left"><textarea id="DynNewComment" name="comment" cols="50" rows="5"></textarea></td>
+          </tr>
+ 
+          <tr>
+            <td align="center" colspan="2">
+              <br>
+              <input 
+                  type="button"
+                  name="action"
+                  value="Add your entry!" 
+                  class="submit" 
+                  id="DynSubmitButton"
+                  onclick="
+                    document.location.href = 
+                      (location.search == '')
+                      ? document.location.href + '?error'
+                      : (location.search == '?error')
+                        ? document.location.pathname + '?success'
+                        : document.location.pathname;
+                    ">
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</form>
+
+<hr>
+
+<!-- 
+    ============================================================
+    Data display.  
+    In a normal app this might be on a separate page.
+    ============================================================
+-->
+<h1>Guest Comments</h1>
+
+<table align="center" border="1" cellpadding="5" cellspacing="0" width="50%">
+<tr>
+<th>Name</th>
+<th>Comment</th>
+</tr>
+
+<tr id="DynRow">
+<td id="DynName">Socrates</td>
+<td id="DynComment">To do is to be.</td>
+</tr>
+
+<tr class="Discard">
+<td>Plato</td>
+<td>To be is to do.</td>
+</tr>
+
+<tr class="Discard">
+<td>Sinatra</td>
+<td>Do be do be do.</td>
+</tr>
+<!--
+    The first two "quotes" above have also been attributed to various
+    other sources (Voltaire, Descartes, Sartre).
+    
+    The only one that everyone seems to agree on is the last ;-).
+-->
+
+<tr class="Discard" id="YourEntry">
+<td>[Your name]</td>
+<td>[Your comment]</td>
+</tr>
+
+</table>
+
+</body>
+</html>

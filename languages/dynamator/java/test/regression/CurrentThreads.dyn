@@ -1,0 +1,71 @@
+<dynamator language="java">
+<prolog>
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.http.*;
+
+public class CurrentThreads
+extends HttpServlet
+{
+    public 
+    void
+    doGet(
+        HttpServletRequest request,
+        HttpServletResponse response
+        )
+    throws IOException
+    {
+        PrintWriter out = response.getWriter();
+        response.setContentType("text/html");
+
+        ThreadGroup tg = Thread.currentThread().getThreadGroup();
+
+        Thread[] threads = new Thread[tg.activeCount()];
+        int n = tg.enumerate(threads);
+
+        if ( n < threads.length )
+        {
+            Thread[] newThreads = new Thread[n];
+            System.arraycopy(threads, 0, newThreads, 0, n);
+            threads = newThreads;
+        }
+</prolog>
+<id name="threads">
+  <foreach i="iThreads" type="Thread[]" element="thread">
+      threads
+  </foreach>
+  <attr name="id">
+    <discard/>
+  </attr>
+</id>
+<id name="name">
+  <content>thread.getName()</content>
+</id>
+<id name="priority">
+  <content>thread.getPriority()</content>
+</id>
+<id name="isDaemon">
+  <if>thread.isDaemon()</if>
+</id>
+<id name="isNotDaemon">
+  <if>!thread.isDaemon()</if>
+</id>
+<id name="isAlive">
+  <if>thread.isAlive()</if>
+</id>
+<id name="isNotAlive">
+  <if>!thread.isAlive()</if>
+</id>
+<id name="isInterrupted">
+  <if>thread.isInterrupted()</if>
+</id>
+<id name="isNotInterrupted">
+  <if>!thread.isInterrupted()</if>
+</id>
+<epilog>
+        out.flush();
+        out.close();
+    }
+}
+</epilog>
+</dynamator>

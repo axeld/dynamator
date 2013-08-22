@@ -1,0 +1,8 @@
+<dynamator language="jsp">
+  <include file="locale.dyn"/>
+  <id name="UserName">
+    <content>
+      session.getValue("username")
+    </content>
+  </id>
+</dynamator>

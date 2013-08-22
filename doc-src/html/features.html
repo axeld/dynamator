@@ -1,0 +1,294 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>
+      Dynamator: Features
+    </title>
+    <link type="text/css" href="style.css" rel="stylesheet" />
+  </head>
+  <body>
+    <h1>
+      Function
+    </h1>
+    <p>
+      Dynamator is a tool that takes as input an HTML or XML template
+      file and a Dynamator file containing program code and editing 
+      instructions, and produces as output a server page or program.
+    </p>
+    <h1>
+      Design Properties
+    </h1>
+    <ul>
+      <li>
+        <b>Technology-neutral.</b><br />
+         Dynamator can be used with any programming language,
+        page generation technology, and architecture.
+      </li>
+      <li>
+        <b>No strings attached.</b><br />
+         Dynamator is a pure tool that leaves no trace of itself
+        in generated files. No Dynamator components need to be
+        delivered to any execution environment.
+      </li>
+      <li>
+        <b>No performance penalty.</b><br />
+         Dynamator generates code that is as efficient as
+        hand-written code.
+      </li>
+      <li>
+        <b>No surprises.</b><br />
+         Software developers have complete control over generated
+        code. Anything a developer would want to do in a server
+        page can be done with Dynamator. Dynamator is not a CASE
+        tool; it just allows the code to be stored in a different
+        place.
+      </li>
+      <li>
+        <b>Walk away at any time.</b><br />
+         Dynamator generates maintainable code. If for some
+        reason it is necessary to discontinue use of Dynamator,
+        the generated code can usually be maintained without code
+        changes or reformatting.
+      </li>
+    </ul>
+    <h1>
+      Capabilities
+    </h1>
+    <p>
+      Execution<br />
+    </p>
+    <ul>
+      <li>
+        Runs from the command line.
+      </li>
+      <li>
+        Runs as an ant task.
+      </li>
+      <li>
+        Can be called programmatically from Java.
+      </li>
+    </ul>
+    <p>
+      Input (template) file types<br />
+    </p>
+    <ul>
+      <li>
+        HTML.
+      </li>
+      <li>
+        Partial HTML files.
+      </li>
+      <li>
+        XML.
+      </li>
+      <li>
+        Any XML-based file type.
+      </li>
+    </ul>
+    <p>
+      Output languages<br />
+    </p>
+    <dl>
+      <dd>
+        Dynamator provides two levels of language support. If
+        Dynamator knows about a language, it can generate
+        programmatic value substitutions and iteration and
+        selection constructs. If Dynamator doesn't know about a
+        language, programmers have to code those constructs. This
+        is the difference between coding <tt>
+        &lt;content&gt;a&lt;/content&gt;</tt> and coding <tt>
+        &lt;raw-content&gt;&lt;%= a %&gt;&lt;/raw-content&gt;</tt>.
+      </dd>
+    </dl>
+    <ul>
+      <li>
+        Language-aware support for: 
+        <ul>
+          <li>
+            JSP
+          </li>
+          <li>
+            ASP (VB)
+          </li>
+          <li>
+            XSL, producing XML, HTML, or text
+          </li>
+          <li>
+            PHP
+          </li>
+          <li>
+            Java (using out.println)
+          </li>
+          <li>
+            HTML (static text)
+          </li>
+          <li>
+            XML (static text)
+          </li>
+        </ul>
+      </li>
+      <li>
+        Non-language-aware support out-of-the-box for any
+        stream-based template language, such as Cold Fusion,
+        Velocity, ASP.NET, and HTML::Template.
+      </li>
+      <li>
+        Plug-in architecture makes it easy to add language-aware
+        support for other template and programming languages. 
+        <!--
+        <li>Language-aware support for JSP, ASP (VB), XSL, and PHP.
+        <li>Language-aware support for the Java programming language, using
+        out.println.
+        <li>General-purpose support out-of-the-box for any stream-based template
+        language, such as Cold Fusion, Velocity, WebMacro, and ClearSilver.
+        (Missing is support for any feature requiring knowledge of the target
+        language.)
+        <li>Complete support for output as HTML or XML static text.  
+        <li>Plug-in architecture makes it easy to add support for other
+        template and programming languages.
+        -->
+      </li>
+    </ul>
+    <p>
+      Identification of template elements to be changed<br />
+    </p>
+    <ul>
+      <li>
+        Address all elements having a certain id value.
+      </li>
+      <li>
+        Address all elements having a certain class value.
+      </li>
+      <li>
+        Address elements by a combination of name, attribute
+        values, and presence or absence of attributes.
+      </li>
+      <li>
+        Address arbitrary blocks of text using commented div
+        tags.
+      </li>
+    </ul>
+    <p>
+      Element manipulation<br />
+    </p>
+    <ul>
+      <li>
+        Replace the content of any element.
+      </li>
+      <li>
+        Remove any element and its children.
+      </li>
+      <li>
+        Remove any tag and its corresponding end tag.
+      </li>
+      <li>
+        Rename any element.
+      </li>
+      <li>
+        Replace the content of any element with code to output a
+        program-supplied value. (requires language awareness)
+      </li>
+      <li>
+        Extract an element and its children so that it can be used
+        as a subroutine.
+      </li>
+      <li>
+        Extract an element and its children into another file.
+      </li>
+      <li>
+        Insert code to cause any element and its children to be
+        repeated for each element of a collection. (requires
+        language awareness)
+      </li>
+      <li>
+        Insert code to cause any element to be output only if a
+        condition is met. (requires language awareness)
+      </li>
+    </ul>
+    <p>
+      Attribute manipulation<br />
+    </p>
+    <ul>
+      <li>
+        Add attributes to any element.
+      </li>
+      <li>
+        Add attributes to any element with code to output a
+        program-supplied value. (requires language awareness)
+      </li>
+      <li>
+        Change the value of any attribute to a textual value.
+      </li>
+      <li>
+        Replace the value of any attribute with code to output a
+        program-supplied value. (requires language awareness)
+      </li>
+      <li>
+        Remove any attribute from any element.
+      </li>
+      <li>
+        Perform textual substitutions on any attribute value.
+      </li>
+      <li>
+        Rename any attribute.
+      </li>
+      <li>
+        Insert code to cause any attribute to be output only if a
+        condition is met. 
+        (requires language awareness)
+      </li>
+    </ul>
+    <p>
+      Text insertion<br />
+    </p>
+    <ul>
+      <li>
+        Add text or code to the very top or bottom of the
+        generated file.
+      </li>
+      <li>
+        Add text or code before or after any element.
+      </li>
+      <li>
+        Add text or code before or after the content of any
+        element.
+      </li>
+    </ul>
+    <p>
+      Miscellaneous<br />
+    </p>
+    <ul>
+      <li>
+        Include another Dynamator file.
+      </li>
+      <li>
+        Remove all HTML comments from the generated file.
+      </li>
+      <li>
+        Remove all HTML indentation from the generated file.
+      </li>
+    </ul>
+    <p>
+      Internationalization<br />
+    </p>
+    <ul>
+      <li>
+        Supports international character sets.
+      </li>
+      <li>
+        Supports the traditional
+        replace-all-text-with-program-code approach to
+        internationalization without requiring text to be
+        replaced in the HTML.
+      </li>
+      <li>
+        Enables a static-demo-site-per-locale approach to
+        internationalization that results in improved
+        maintainability and application efficiency over the
+        traditional approach.
+      </li>
+    </ul>
+  </body>
+</html>
+

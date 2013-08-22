@@ -1,0 +1,48 @@
+<dynamator language="jsp">
+  <prolog>
+    <%@ page session="false" %>
+    <%!
+        private String getGreeting()
+        {
+            return "Hello World, says Dynamator!";
+        }
+    %>
+    <%
+        String countArgument = request.getParameter("count");
+        int count = 
+            ( countArgument == null || countArgument.length() == 0 )
+            ? 5
+            : Integer.parseInt(countArgument);
+    %>
+  </prolog>
+  <class name="DynamicText">
+    <content>
+        ( count == 0 ) 
+        ? getGreeting()
+        : String.valueOf(count)
+    </content>
+  </class>
+  <tag tag="title">
+    <content>
+        ( count == 0 ) 
+        ? getGreeting()
+        : String.valueOf(count)
+    </content>
+  </tag>
+  <tag tag="meta" http-equiv="Refresh-x">
+    <if>count > 0</if>
+    <attr name="http-equiv">
+      <raw-content>
+        Refresh
+      </raw-content>
+    </attr>
+    <attr name="content">
+      <content>
+        "1; URL=" + request.getRequestURI() + "?count=" + (count-1)
+      </content>
+    </attr>
+  </tag>
+  <tag tag="*" with-attrs="class">
+    <attr name="class"><discard/></attr>
+  </tag>
+</dynamator>

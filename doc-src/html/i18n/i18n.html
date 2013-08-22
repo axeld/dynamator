@@ -1,0 +1,1041 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>
+      Internationalizing with Dynamator
+    </title>
+    <link type="text/css" href="../style.css" rel="stylesheet" />
+  </head>
+  <body>
+    <h1>
+      Internationalizing&nbsp;with&nbsp;Dynamator
+    </h1>
+    <p>Contents:</p>
+    <ul class="toc">
+      <li>
+        <a href="#dir">Directory Structure for
+        Internationalization</a>
+      </li>
+      <li>
+        <a href="#static">Localizing Static Text</a>
+      </li>
+      <li>
+        <a href="#layout">Validating Internationalized Page
+        Layout</a>
+      </li>
+      <li>
+        <a href="#media">Localizing Media References</a>
+      </li>
+      <li>
+        <a href="#code">Consolidating Server Code</a>
+      </li>
+    </ul>
+    <p>
+      You've probably read the articles and books about how to
+      internationalize a web application. You're prepared to
+      replace all HTML text with program calls and move that text
+      into resource files. Before you go to all that trouble, you
+      owe it to yourself to consider Dynamator.
+    </p>
+    <p>
+      If you've read the <a href="../guide.html">20-Minute
+      Guide</a>, you know you can use Dynamator to
+      internationalize server pages without replacing all text
+      with program calls. You know you can instead leave the text
+      in the HTML and put the program calls in a separate file.
+      That's already a better way to internationalize server
+      pages than the usual approach. This guide doesn't tell you
+      how to do that, because you already know how to do that.
+    </p>
+    <p>
+      Instead, this guide goes much further, presenting a radical
+      approach possible only with Dynamator. This approach may be
+      too radical for some. You won't find this approach
+      documented anywhere else, because no other technology can
+      internationalize in quite the same way. So please remember
+      that you can still reap benefits from internationalizing
+      with Dynamator even if you just use it to improve the
+      traditional approach.
+    </p>
+    <p>
+      Dynamator offers a radical approach to internationalizing
+      and localizing static content. If you use this approach,
+      you will reduce the complexity of your internationalized
+      application's presentation layer. Your project's
+      programmers, HTML authors, and localizers will work more
+      efficiently and effectively. And your application will be
+      more efficient and more maintainable.
+    </p>
+    <p>
+      Here's how the Dynamator internationalization process
+      works:
+    </p>
+    <ol>
+      <li>
+        HTML authors create a static demonstration site for the
+        original locale.
+      </li>
+      <li>
+        Localizers create a static demonstration site for each
+        locale.
+      </li>
+      <li>
+        Programmers create a Dynamator file for each HTML page,
+        then use Dynamator to transform each HTML page to a
+        server page. The same Dynamator files are used for all
+        locales.
+      </li>
+    </ol>
+    <p>
+      The result is a web site for each locale.
+    </p>
+    <p>
+      I can already hear the gasps.
+    </p>
+    <p>
+      I told you this approach is radical.
+    </p>
+    <p>
+      But before you stop reading, consider the benefits:
+    </p>
+    <ul>
+      <li>
+        Less work for programmers. Programmers have no
+        responsibility for static content. They don't have to set
+        up resource files containing static text. They don't have
+        to replace static text with program calls. They don't
+        have to test for and debug errors caused by mistyping the
+        key of a resource file entry.
+      </li>
+      <li>
+        Easier work for HTML authors. They maintain pure HTML
+        pages, not resource files plus server pages full of
+        program calls.
+      </li>
+      <li>
+        More autonomy for localizers. Localizers can choose the
+        degree of localization needed. For some sites and
+        locales, only the text needs to be localized. Localizers
+        can use Dynamator for this without involving programmers.
+        For other sites or locales, the entire HTML needs to be
+        localized. (For example, when moving from a left-to-right
+        language to a right-to-left language.) The decision as to
+        which approach is most appropriate can be made by the
+        localizer on a per-locale (or even per-page) basis,
+        without affecting any other part of the project or
+        application.
+      </li>
+      <li>
+        Greater application efficiency. Sure, this approach uses
+        more disk space. Disk space is cheap. This approach
+        eliminates all the CPU time required to determine the
+        user's locale and obtain the appropriate text for that
+        locale, over and over again for each page request.
+        High-volume sites are often partitioned by locale,
+        anyway.
+      </li>
+      <li>
+        Greatly improved testability. HTML authors and localizers
+        can test their work without involving a programmer or
+        deploying to a server. Most importantly, localized static
+        demonstration sites can be easily reviewed early in the
+        lifecycle, before programming effort is expended.
+      </li>
+      <li>
+        Shorter lifecycle enabled by more opportunities for
+        parallel development. Localizers and programmers can work
+        independently. HTML can change drastically without any
+        change to server code.
+      </li>
+      <li>
+        Improved maintainability. Server page code isn't
+        duplicated for each locale. Instead, it's maintained in a
+        single location. <!-- when would this be needed ???
+        <li>Programming-language independence.  Even if some locales are
+        implemented using different technology, the same HTML can be used.
+        The implementation can be changed from JSP to XSL with no effect on the
+        HTML. 
+        -->
+      </li>
+    </ul>
+    <p>
+      Dynamator is only one part of the internationalizer's
+      toolset. Application messages still need to be placed in
+      resource files, and programmers still need to write
+      locale-aware code. But Dynamator can provide a tremendous
+      productivity boost to any internationalization project.
+    </p>
+    <p>
+      Here are the internationalization tasks Dynamator can help
+      with:
+    </p>
+    <ul>
+      <li>
+        Localizing static text.
+      </li>
+      <li>
+        Validating internationalized page layout.
+      </li>
+      <li>
+        Localizing media references.
+      </li>
+      <li>
+        Consolidating server-side code for all localized versions
+        of a page.
+      </li>
+    </ul>
+    <p>
+      Examples in this article are excessively simple so that
+      they can be easily understood. The locale used is a dialect
+      of Pig Latin, a simple artificial language based on
+      English. A nice thing about Pig Latin is that it uses the
+      ASCII character set. (We'll deal with other character sets
+      in the <a href="i18n_advanced.html">advanced guide</a>.) A
+      basic understanding of Dynamator is assumed (see the <a
+      href="../guide.html">20-Minute Guide</a>). <!--
+      <p>
+      If you're comparing this article with other internationalization
+      approaches, keep in mind that some of the internationalization tasks
+      described by other authors are unnecessary, or made unnecessary by
+      Dynamator.  Here is a (probably incomplete) list of differences:
+      <ul>
+        <li>Internationalizing Form Elements.
+            <br>
+            Czarnecki's 
+            <a target="ex2" href="http://java.oreilly.com/news/javaintl_0701.html">
+            article</a> shows how to use a custom tag to display a localized
+            sorted selection list.  The list is apparently populated within
+            the JSP from hard-coded text.  But in real-world applications,
+            selection lists are populated from databases.  With Dynamator,
+            the same approach used to translate text will also work with
+            hard-coded selection lists.  
+        <li>Displaying multiple languages on the same page.
+            <br>
+            This is only used in textbook examples; never in real life.
+            And if you did want it, the languages displayed would not depend
+            on the user's locale, so that text would not be localized.
+        <li>Internationalizing Media References.
+            <br>
+            Czarnecki's 
+            <a target="ex2" href="http://java.oreilly.com/news/javaintl_0701.html">
+            article</a> shows how to use a custom tag to display a localized
+            image.  
+            If you use the approach recommended for localizing static text,
+            this too can be hard-coded in the localized page.  
+      -->
+    </p>
+    <h2>
+      <a id="dir" name="dir">Directory Structure for
+      Internationalization</a>
+    </h2>
+    <p>
+      Before starting an internationalization project, it's
+      important to work out an appropriate directory structure.
+      Here's an example of a directory structure for working with
+      Dynamator.
+    </p>
+    <p>
+      <img src="../images/i18n_dirtree.png" width="200"
+      height="257" border="1"
+      alt="directory hierarchy; see text below." />
+    </p>
+    <p>
+      Here's what each directory contains:
+    </p>
+<pre>
+myapp
+  +-dyn                <i
+class="comment">Dynamator server code files, owned by programmers</i>
+  |                    
+  +-html               <i
+class="comment">Default HTML files and static demo site,</i> 
+      |                <i class="comment">owned by HTML authors</i>
+      +-images         <i
+class="comment">Images for static demo site</i>
+      |
+      +-en_us          <i
+class="comment">Localized version of static demo site</i>
+      |   |            <i
+class="comment">for default locale, owned by central localization team</i>
+      |   +-dyn        <i
+class="comment">Dynamator localization files for default locale</i>
+      |   |
+      |   +-html       <i
+class="comment">HTML files for locale en_us, generated by Dynamator</i>
+      |   |   |
+      |   |   +-images <i
+class="comment">Images for default locale,</i>
+      |   |            <i
+class="comment">copied from /myapp/html/images</i>
+      |   +-htdocs     <i
+class="comment">Server pages for locale en_us, generated by Dynamator</i>
+      |       |
+      |       +-images <i
+class="comment">Images for default locale,</i>
+      |                <i
+class="comment">copied from /myapp/html/images</i>
+      |
+      +-<i>xx_xx</i>          <i
+class="comment">Localized version of static demo site</i>
+          |            <i
+class="comment">for locale xx_xx, owned by locale xx_xx team</i>
+          +-dyn        <i
+class="comment">Dynamator localization files for locale xx_xx</i>
+          |
+          +-html       <i
+class="comment">Localized HTML files, generated by Dynamator</i>
+          |   |
+          |   +-images <i
+class="comment">Images for locale xx_xx, owned by locale xx_xx team</i>
+          |            
+          +-htdocs     <i
+class="comment">Server pages for locale xx_xx, generated by Dynamator</i>
+              |
+              +-images <i
+class="comment">Images for locale xx_xx,</i>
+                       <i
+class="comment">copied from /myapp/xx_xx/html/images</i>
+</pre>
+    <p>
+      With this structure, the document root for the original
+      static demonstration site is in the myapp/html directory,
+      the document root for each localized static demonstration
+      site is in the myapp/html/<i>locale</i>/html directory, and
+      the document root for each localized server page site is in
+      the myapp/html/<i>locale</i>/htdocs directory.
+    </p>
+    <p>
+      This structure separates hand-written files from generated
+      files. This makes it easy to clean out generated files
+      without accidentally deleting hand-written files.
+    </p>
+    <p>
+      This structure also simplifies deployment, because each
+      html and htdocs directory tree contains only deployable
+      files.
+    </p>
+    <p>
+      A large application will have multiple directories, one for
+      each area of the site. The <tt>html</tt> and <tt>dyn</tt>
+      directories should have a parallel structure for all
+      locales, so that files in <tt>html/es/html/admin</tt>
+      correspond to files in <tt>html/es/dyn/admin</tt> as well
+      as <tt>html/en_us/html/admin</tt>.
+    </p>
+    <p>
+      The locale-specific <tt>dyn</tt> directories are only
+      needed if localizers use Dynamator to specify text strings
+      rather than completely redesigning HTML.
+    </p>
+    <h2>
+      <a id="static" name="static">Internationalizing Static
+      Text</a>
+    </h2>
+    <p>
+      We'll start with a Hello World example.
+    </p>
+    <div class="column">
+      <div class="column-filename">
+        HelloWorld.html
+      </div>
+      <div class="html">
+<pre>
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;A Simple Page&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;p&gt;Hello, World!
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+      </div>
+    </div>
+    <div class="clear">
+    </div>
+    <p>
+      Most web applications contain static text. Static text is
+      text that is hard-coded on an HTML page. In an
+      internationalized application, this text should appear in
+      the language of the user.
+    </p>
+    <p>
+      Before Dynamator, the best way to make this happen was to
+      replace the text with a program call that would access a
+      resource file containing translated text. This was
+      inefficient, and made server pages harder to maintain.
+    </p>
+    <p>
+      You can use Dynamator to replace text with program calls.
+      But there's a much better way to internationalize static
+      text with Dynamator.
+    </p>
+    <p>
+      Dynamator can create localized versions of static HTML
+      pages. Localizers translate text in a Dynamator file;
+      Dynamator replaces the original text with the translated
+      text. This makes things easier for localizers, who can
+      validate their translations without having to deploy them
+      to a web server. It also reduces programmer effort, since
+      programmers don't have to code text access calls.
+    </p>
+    <p>
+      Here's how to use Dynamator to localize static text:
+    </p>
+    <ol>
+      <li>
+        Create HTML files for the default locale.<br />
+      </li>
+      <li>
+        Update the HTML files by adding an <b>id</b> attribute
+        for each block of static text. (This is the same thing
+        you would do if you were going to use Dynamator to
+        replace the static text with a program call.)<br />
+         
+        <div class="column">
+          <div class="column-filename">
+            HelloWorld.html
+          </div>
+          <div class="html">
+<pre>
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;A Simple Page&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;p <b>id="HelloText"</b>&gt;Hello, world!
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+          </div>
+        </div>
+        <div class="clear">
+        </div>
+        <br />
+      </li>
+      <li>
+        For each HTML file, create a Dynamator file containing
+        the static text from the HTML file. This is the reference
+        translation. In the <tt><b>dynamator</b></tt> root
+        element, specify <tt><b>language="none"</b></tt> and <tt>
+        <b>suffix="html"</b></tt>. (In this case, "language"
+        means programming language.) Place text within a <tt><b>
+        &lt;content&gt;</b></tt> element. 
+        <div class="column">
+          <div class="column-filename">
+            html/en_us/dyn/HelloWorld.dyn
+          </div>
+          <div class="dyn">
+<pre>
+&lt;dynamator language="none" suffix="html"&gt;
+  &lt;tag tag="title"&gt;
+    &lt;content&gt;
+        A Simple Page
+    &lt;/content&gt;
+  &lt;/tag&gt;
+  &lt;id name="HelloText"&gt;
+    &lt;content&gt;
+        Hello, world!
+    &lt;/content&gt;
+  &lt;/id&gt;
+&lt;/dynamator&gt;
+</pre>
+          </div>
+        </div>
+        <div class="clear">
+        </div>
+        <br />
+      </li>
+      <li>
+        For each language, copy the Dynamator files into the
+        locale-specific directory, and translate. 
+        <div class="column">
+          <div class="column-filename">
+            html/en_us_pig/dyn/HelloWorld.dyn
+          </div>
+          <div class="dyn">
+<pre>
+&lt;dynamator language="none" suffix="html"&gt;
+  &lt;tag tag="title"&gt;
+    &lt;content&gt;
+        An Implesay Agepay
+    &lt;/content&gt;
+  &lt;/tag&gt;
+  &lt;id name="HelloText"&gt;
+    &lt;content&gt;
+        Elohay, Orldway!
+    &lt;/content&gt;
+  &lt;/id&gt;
+&lt;/dynamator&gt;
+</pre>
+          </div>
+        </div>
+        <div class="clear">
+        </div>
+        <br />
+      </li>
+      <li>
+        Create localized HTML by running Dynamator. 
+        <div class="shell">
+          prompt&gt; cd html/en_us_pig/dyn<br />
+          prompt&gt; java dynamate -d ../html
+          ../../HelloWorld.html
+        </div>
+        <div class="clear">
+        </div>
+        <br />
+      </li>
+      <li>
+        The output from the last step will be a localized HTML
+        file in the language-specific HTML directory. 
+        <div class="column">
+          <div class="column-filename">
+            html/en_us_pig/html/HelloWorld.html
+          </div>
+          <div class="out">
+<pre>
+<span
+class="dyn-text">&lt;!-- generated by Dynamator Fri Dec 28 13:56:25 CST 2001
+--&gt;</span>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;<span
+class="dyn-inline">An Implesay Agepay</span>&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p id="HelloText"&gt;
+        <span class="dyn-inline">Ellohay, Orldway!</span>
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+          </div>
+        </div>
+        <div class="clear">
+        </div>
+      </li>
+    </ol>
+    <h2>
+      <a id="layout" name="layout">Validating Internationalized
+      Pages</a>
+    </h2>
+    <p>
+      One of the difficulties of internationalization is that the
+      lengths of words, phrases, and text blocks vary greatly by
+      language. Internationalized HTML must be designed to
+      account for the variety of possible lengths. The problem is
+      that localization typically happens after the HTML is
+      designed, and at any time, the next translation may produce
+      an unexpectedly long string.
+    </p>
+    <p>
+      Harry Robinson and Arne Thormodsen describe a creative
+      approach to this issue in their paper, <a
+      href="http://www.geocities.com/harry_robinson_testing/klingon.htm">
+      <i>Parlez-Vous Klingon? Testing Internationalized Software
+      with Artificial Locales</i></a>. They translate English
+      text into artificial languages like Klingon and Swedish
+      Chef to test user interface designs without dependence on
+      real localizations.
+    </p>
+    <p>
+      To facilitate similar testing for internationalized
+      Dynamator applications, the Dynamator examples directory
+      includes an XSL script that translates content elements
+      within Dynamator files to Pig Latin. This tool provides
+      HTML authors with an easy way to check that all text has
+      been internationalized, and that formatting passes a simple
+      sanity test.
+    </p>
+    <p>
+      For example, to automatically translate the English
+      Dynamator HelloWorld file to Pig Latin with <a
+      href="http://saxon.sourceforge.net/">Saxon</a>, assuming
+      that DynToPigLatin.xsl is in the en_us_pig directory:
+    </p>
+    <div class="shell">
+      prompt&gt; cd html/en_us_pig<br />
+      prompt&gt; saxon ../en_us/dyn/HelloWorld.dyn
+      DynToPigLatin.xsl &gt; dyn/HelloWorld.dyn
+    </div>
+    <div class="clear">
+    </div>
+    <p>
+      Then to create the Pig Latin file:
+    </p>
+    <div class="shell">
+      prompt&gt; java dynamate -d ../html ../HelloWorld.html
+    </div>
+    <div class="clear">
+    </div>
+    <p>
+      The Dynamator Pig Latin translator only illustrates one
+      kind of testing that can be done before localization.
+      Robinson and Thormodsen describe a more comprehensive set
+      of testing strategies.
+    </p>
+    <h2>
+      <a id="media" name="media">Localizing Media References</a>
+    </h2>
+    <p>
+      As with static text, the goal for media file references is
+      to resolve them in the HTML rather than at runtime. It is
+      not enough to localize the name of the file; other
+      attributes such as image height and width may also change
+      between locales. Dynamator can do this easily.
+    </p>
+    <p>
+      If each locale uses the same directory structure and file
+      names, the media source filename does not need to change at
+      all. Place media files in a subdirectory of the
+      locale-specific directory, and make all media references
+      relative.
+    </p>
+    <p>
+      In the following example, we replace the static text of the
+      HelloWorld example with an image.
+    </p>
+    <p>
+      The default image looks like this:<br />
+      <img src="../images/i18n_english.png" width="207"
+      height="56" alt="English Hello" />
+    </p>
+    <p>
+      The Pig Latin image looks like this:<br />
+      <img src="../images/i18n_piglatin.png" width="297"
+      height="56" alt="Pig Latin Hello" />
+    </p>
+    <p>
+      The image file names are the same, and they are in the same
+      location in the directory tree relative to the HTML file.
+      But as is often the case, the image sizes are different.
+    </p>
+    <p>
+      The original HTML page is coded to reference the default
+      image:
+    </p>
+    <div class="column">
+      <div class="column-filename">
+        html/HelloImage.html
+      </div>
+      <div class="html">
+<pre>
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;An Image Page&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;img id="HelloImage" src="../images/hello.png" width="207" height="56"
+alt="Hello, World!"&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+      </div>
+    </div>
+    <div class="clear">
+    </div>
+    <p>
+      The locale-specific Dynamator file corrects the image width
+      and changes the alt text.
+    </p>
+    <div class="column">
+      <div class="column-filename">
+        html/en_us_pig/dyn/HelloImage.dyn
+      </div>
+      <div class="dyn">
+<pre>
+&lt;dynamator language="none" suffix="html"&gt;
+  &lt;tag tag="title"&gt;
+    &lt;content&gt;An Imageway Agepay&lt;/content&gt;
+  &lt;/tag&gt;
+  &lt;id name="HelloImage"&gt;
+    &lt;attr name="width"&gt;
+      &lt;content&gt;297&lt;/content&gt;
+    &lt;/attr&gt;
+    &lt;attr name="height"&gt;
+      &lt;content&gt;56&lt;/content&gt;
+    &lt;/attr&gt;
+    &lt;attr name="alt"&gt;
+      &lt;content&gt;Ellohay, Orldway!&lt;/content&gt;
+    &lt;/attr&gt;
+  &lt;/id&gt;
+&lt;/dynamator&gt;
+</pre>
+      </div>
+    </div>
+    <div class="clear">
+    </div>
+    <p>
+      After processing with Dynamator, the localized page looks
+      like this:
+    </p>
+    <div class="column">
+      <div class="column-filename">
+        html/en_us_pig/html/HelloImage.html
+      </div>
+      <div class="out">
+<pre>
+<span
+class="dyn-text">&lt;!-- generated by Dynamator Fri Dec 28 18:48:55 CST 2001
+--&gt;</span>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;<span
+class="dyn-inline">An Imageway Agepay</span>&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+  <span
+class="dyn-inline">&lt;img width="297" height="56" id="HelloImage" src="../images/hello.png"&gt;</span>
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+      </div>
+    </div>
+    <div class="clear">
+    </div>
+    <p>
+      Using Dynamator, we have changed just the parts of the
+      original pages that needed to be localized. We have created
+      static demonstration pages in the local language. And we
+      have done all this without the need to involve programmers.
+      Localizers and programmers can work concurrently:
+      localizers on localized static demonstration sites;
+      programmers on server code for the server pages.
+    </p>
+    <h2>
+      <a id="code" name="code">Consolidating Server Code</a>
+    </h2>
+    <p>
+      Before Dynamator, duplication of server page code across
+      locales was a fact of life for most internationalized
+      applications. The way many resolved this issue was to
+      replace text with program calls, so that a single server
+      page template could serve up any language. But this didn't
+      always work, because UI designs sometimes change for
+      different locales. And it was always ugly.
+    </p>
+    <p>
+      With Dynamator, it is never necessary to duplicate server
+      page code across locales.
+    </p>
+    <p>
+      The following example shows how a single Dynamator file can
+      be applied to HTML files for multiple locales. The Hello
+      World example is enhanced to display the user's name, which
+      is assumed to reside in a session variable.
+    </p>
+    <p>
+      Although this example uses JSP, Dynamator can work just as
+      well with any page generation language.
+    </p>
+    <p>
+      Here's the default HTML page:
+    </p>
+    <div class="column">
+      <div class="column-filename">
+        html/HelloUser.html
+      </div>
+      <div class="html">
+<pre>
+&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;User Greeting&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;p id="HelloText"&gt;Hello, &lt;span id="UserName"&gt;User&lt;/span&gt;!&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+      </div>
+    </div>
+    <div class="clear">
+    </div>
+    <p>
+      "User" is surrounded with a <code>&lt;span&gt;</code> tag
+      so that it can be referenced by Dynamator.
+    </p>
+    <p>
+      The default Dynamator file looks like this:
+    </p>
+    <div class="column">
+      <div class="column-filename">
+        html/en_us/dyn/HelloUser.dyn
+      </div>
+      <div class="dyn">
+<pre>
+&lt;dynamator language="none" suffix="html"&gt;
+  &lt;tag tag="title"&gt;
+    &lt;content&gt;
+        User Greeting
+    &lt;/content&gt;
+  &lt;/tag&gt;
+  &lt;id name="HelloText"&gt;
+    &lt;content&gt;
+        Hello, &lt;span id="UserName"&gt;User&lt;/span&gt;!
+    &lt;/content&gt;
+  &lt;/id&gt;
+&lt;/dynamator&gt;
+</pre>
+      </div>
+    </div>
+    <div class="clear">
+    </div>
+    <p>
+      The whole paragraph is specified here, rather than
+      fragments. The <tt><b>&lt;span&gt;</b></tt> tag is also
+      here, as is the exclamation point. This is because the
+      order of these may change depending on the language.
+      Translations should always be applied to entire sentences,
+      not sentence fragments.
+    </p>
+    <p>
+      If we were using resource files, the resource file entry
+      for the HelloText id might look like this:
+    </p>
+    <div class="column">
+      <div class="neutral">
+<pre>
+HelloText: Hello, {0}!
+</pre>
+      </div>
+    </div>
+    <div class="clear">
+    </div>
+    <p>
+      The <tt><b>{0}</b></tt> would be replaced at run-time
+      through a call to <tt>
+      java.text.MessageFormat.format()</tt>. While the resource
+      format entry is more concise, the Dynamator entry is more
+      self-explanatory. The Dynamator way is also more efficient,
+      since it eliminates the run-time call to MessageFormat.
+    </p>
+    <p>
+      Here's the Pig Latin version of the Dynamator file:
+    </p>
+    <div class="column">
+      <div class="column-filename">
+        html/en_us_pig/dyn/HelloUser.dyn
+      </div>
+      <div class="dyn">
+<pre>
+&lt;dynamator language="none" suffix="html"&gt;
+  &lt;tag tag="title"&gt;
+    &lt;content&gt;
+        Userway Eetinggray
+    &lt;/content&gt;
+  &lt;/tag&gt;
+  &lt;id name="HelloText"&gt;
+    &lt;content&gt;
+        Ellohay, &lt;span id="UserName"&gt;Userway&lt;/span&gt;!
+    &lt;/content&gt;
+  &lt;/id&gt;
+&lt;/dynamator&gt;
+</pre>
+      </div>
+    </div>
+    <div class="clear">
+    </div>
+    <p>
+      After processing with Dynamator, the localized Pig Latin
+      page looks like this:
+    </p>
+    <div class="column">
+      <div class="column-filename">
+        html/en_us_pig/html/HelloUser.html
+      </div>
+      <div class="out">
+<pre>
+<span
+class="dyn-text">&lt;!-- generated by Dynamator Fri Dec 28 22:24:02 CST 2001
+--&gt;</span>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;<span
+class="dyn-inline">Userway Eetinggray</span>&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p id="HelloText"&gt;
+        <span
+class="dyn-inline">Ellohay, &lt;span id="UserName"&gt;Userway&lt;/span&gt;!</span>
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+      </div>
+    </div>
+    <div class="clear">
+    </div>
+    <p>
+      Now that we have a localized static page, we need to
+      transform it into a server page.
+    </p>
+    <p>
+      The Dynamator file for this page replaces the content of
+      the element with <code>id="UserName"</code> with the user's
+      name from the session. It is placed in a directory tree
+      rooted at "dyn", a sibling of the html directory.
+    </p>
+    <div class="column">
+      <div class="column-filename">
+        dyn/HelloUser.dyn
+      </div>
+      <div class="dyn">
+<pre>
+&lt;dynamator language="jsp"&gt;
+  &lt;id name="UserName"&gt;
+    &lt;content&gt;
+      session.getValue("username")
+    &lt;/content&gt;
+  &lt;/id&gt;
+&lt;/dynamator&gt;
+</pre>
+      </div>
+    </div>
+    <div class="clear">
+    </div>
+    <p>
+      This file is applied to the Pig Latin HTML with the
+      following command:
+    </p>
+    <div class="shell">
+      prompt&gt; cd html/en_us_pig/html<br />
+      prompt&gt; java dynamate -d ../htdocs -f ../../../dyn
+      HelloUser.html
+    </div>
+    <div class="clear">
+    </div>
+    <p>
+      The result is:
+    </p>
+    <div class="column">
+      <div class="column-filename">
+        html/en_us_pig/htdocs/HelloUser.jsp
+      </div>
+      <div class="out">
+<pre>
+<span
+class="dyn-text">&lt;%-- generated by Dynamator Fri Dec 28 23:05:50 CST 2001
+--%&gt;</span>&lt;!--  generated by Dynamator Fri Dec 28 22:24:02 CST 2001
+ --&gt;
+&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;Userway Eetinggray&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+<span class="dyn-text"><span
+class="html-inline">   &lt;p id="HelloText"&gt;Ellohay, &lt;span id="UserName"&gt;</span>&lt;%= 
+      session.getValue("username")</span><!--
+--> <span
+class="dyn-inline">    %&gt;</span>&lt;/span&gt;!&lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+      </div>
+    </div>
+    <div class="clear">
+    </div>
+    <p>
+      Note the two Dynamator generation stamps, one for the HTML
+      translation, the other for the server code. Each could be
+      removed by using the <tt><b>-G</b></tt> flag when invoking
+      <tt>dynamate</tt>. The <a href="../faq.html">FAQ</a> shows how
+      to remove <tt>id</tt> attributes and <tt>span</tt> tags
+      from generated files.
+    </p>
+    <p>
+      The same Dynamator file can be applied to any localized
+      version of the same HTML file to create a localized server
+      page.
+    </p>
+    <p>
+      Often, localization requires changes to HTML. Without
+      Dynamator, the same server code must be duplicated across
+      each locale. No matter how you try to insulate server pages
+      from changes to program logic, server code is likely to
+      change. Without Dynamator, the effort required to change
+      server page program logic could be multipled by the number
+      of locales. With Dynamator, the effort for 100 locales is
+      the same as the effort for one locale.
+    </p>
+    <h2>
+      <a id="conclusion" name="conclusion">Conclusion</a>
+    </h2>
+    <p>
+      There are at least three reasons Dynamator works so well
+      for internationalization.
+    </p>
+    <p>
+      First, Dynamator divides things into appropriate modules. A
+      site internationalized with Dynamator has three kinds of
+      presentation sources: HTML, Dynamator translation files,
+      and Dynamator server code files. There is no duplication
+      between the files. This reduces overall development and
+      maintenance workload. It also reduces sequence dependencies
+      between team members. While localizers are still dependent
+      on HTML authors, all other dependencies are improved:
+      Programmers and HTML authors are much more independent, and
+      programmers and localizers are completely independent.
+    </p>
+    <p>
+      Second, Dynamator allows static text to be
+      internationalized without making it dynamic. The ability to
+      maintain localized static demonstration sites empowers HTML
+      authors and localizers. Dynamator makes it easy for HTML
+      authors and localizers to test their work without involving
+      programmers. Not replacing text with program calls benefits
+      everyone.
+    </p>
+    <p>
+      Finally, Dynamator moves as much internationalization
+      processing as possible from the runtime environment to the
+      development environment. This improves application
+      efficiency and testability.
+    </p>
+    <p>
+      Most advice about internationalizing web applications is
+      technically primitive and limited in scope. Written from a
+      programmer's perspective, articles on internationalization
+      rarely consider the perspectives of authors and localizers.
+      They often concentrate on new technology, describing how to
+      code but ignoring larger issues such as process and
+      configuration.
+    </p>
+    <p>
+      Success in the real world requires optimization of the
+      entire process, not just the parts that programmers see. It
+      requires selection of the most effective technologies, not
+      the coolest technologies. And it requires careful
+      organization and planning, from system architecture to
+      software configuration to development process.
+    </p>
+    <p>
+      Dynamator originated not from a desire to invent something
+      cool, but from a desire to solve real problems in the
+      development of web applications. Dynamator is effective as
+      an internationalization and localization tool because it
+      helps to optimize processes for authors, localizers, and
+      programmers, and for teams as a whole.
+    </p>
+    <p>
+      The process described in this guide can make an
+      internationalization project easier for authors,
+      localizers, and programmers. By reducing dependencies and
+      increasing individual autonomy, Dynamator can shorten the
+      development and maintenance cycles of internationalized
+      applications. And the resulting architecture is more
+      efficient and maintainable.
+    </p>
+    <p>
+      Give Dynamator a try for your next internationalization
+      project. You'll be glad you did.
+    </p>
+    <p>
+      Next: <a href="i18n_advanced.html">Advanced
+      Internationalization: Working with Character Sets</a>
+    </p>
+  </body>
+</html>
+

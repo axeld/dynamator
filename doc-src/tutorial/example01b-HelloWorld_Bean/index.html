@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="generator" content="HTML Tidy, see www.w3.org" />
+<title>Dynamator Example 1b: Hello World (Bean version)</title>
+<link rel="StyleSheet" type="text/css" href="../../style.css" />
+</head>
+<body>
+<h1>Hello World, Bean Version</h1>
+
+<p>This example demonstrates Dynamator's support for XML-based
+programming constructs such as JSP directives and actions.
+The HTML page from the Hello World example is used, but the Dynamator
+file is changed to use the 'jsp:useBean' and 'jsp:getProperty'
+elements.</p>
+
+<h2>Step 1: Create the HTML file</h2>
+<p>
+The same HTML is used as in the Hello World example: 
+</p>
+
+<iframe width="600" height="170" src="HelloWorld2.html"></iframe>
+
+<h2>Step 2: Update the HTML file to identify elements requiring 
+server-side behavior</h2>
+
+<p>
+The same HTML is used as in the Hello World example:</p>
+
+<div class="column">
+<div class="column-filename">HelloWorld2.html</div>
+
+<div class="html">
+<div class='insert'>HelloWorld2.html</div>
+</div>
+</div>
+
+<div class="clear"></div>
+
+<h2>Step 3: Create a JavaBean to support the page</h2>
+<p>
+Normally you would create a JavaBean class to hold values displayed on
+the page. This example takes a short-cut and uses java.awt.Label as the
+bean class, since it's close enough.</p> 
+
+<h2>Step 4: Create a Dynamator File</h2>
+
+<p>This Dynamator file is similar to that of the previous example,
+except for the 'jsp:useBean' and 'jsp:getProperty' elements.</p>
+
+<div class="column">
+<div class="column-filename">HelloWorld2.dyn</div>
+
+<div class="dyn">
+<div class='insert'>HelloWorld2.dyn</div>
+</div>
+</div>
+
+<div class="clear"></div>
+
+<h2>Step 5: Run dynamate</h2>
+
+<div class="shell">
+<pre>
+...\doc\tutorial\example01b_HelloWorld&gt;<b>java dynamate HelloWorld2.html</b>
+
+Tidy (vers 4th August 2000) Parsing "HelloWorld2.html"
+
+HelloWorld.html: Doctype given is "-//W3C//DTD HTML 4.01 Transitional//EN"
+HelloWorld.html: Document content looks like HTML 4.01 Transitional
+no warnings or errors were found
+</pre>
+</div>
+
+<div class="clear"></div>
+
+<h2>Generated JSP file</h2>
+
+<div class="column">
+<div class="column-filename">HelloWorld2.jsp</div>
+
+<iframe src="HelloWorld2_jsp.html" width="600" height="250" frameborder="1" scrolling="auto"></iframe>
+</div>
+
+<div class="clear"></div>
+
+<div class="in-action">
+<h2>In Action</h2>
+
+<p>If you are viewing this page in a servlet engine, you can see <a
+href="HelloWorld2.jsp">the generated page in action</a>.</p>
+</div>
+
+<h2>Observations</h2>
+
+<p>Dynamator allows modifiers to contain any arbitrary XML.  So 
+instead of standard JSP elements, we could have used JSP tag libraries,
+or XML elements for any other technology.</p>
+
+<p>This example shows that Dynamator allows the server code
+implementation to change drastically without affecting HTML. Even more
+drastic changes could have been made; for example, we could even have
+changed implementation languages without any change required to the
+HTML.</p>
+</body>
+</html>
+

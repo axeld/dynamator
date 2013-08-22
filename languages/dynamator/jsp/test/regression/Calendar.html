@@ -1,0 +1,148 @@
+<!--
+    Calendar
+    
+    Calendar months have varying numbers of weeks and varying
+    patterns of days (starting and ending on different days of the
+    week).  Therefore the HTML markup for this example uses the notion
+    of "prototypes".  This HTML demo page shows a single, real month.
+    Out of the five weeks in the month, one week is selected as the
+    prototype week.  Out of the 7 days in that week, one is selected as
+    the prototype day.  This day shows all possible data that might be
+    displayed for any given day.
+    
+    Each prototype is given an id.  The programmer instructs Dynamator
+    to remove all non-prototype weeks and days, and uses the prototype
+    ones to build the calendar at runtime.
+-->
+<html>
+<head>
+<title>February 2002</title>
+<style type="text/css">
+a
+{
+    text-decoration: none;
+    color: #f9f9ee;
+    font-weight: bold;
+}
+td
+{
+    font-size: 10pt;
+    font-family: sans-serif;
+}
+.month-header
+{
+    background-color: #666666;
+    color: #f9f9ee;
+}
+#month-title
+{
+    background-color: #666666;
+    color: #f9f9ee;
+}
+.day-header
+{
+    background-color: #778899;
+    color: #f9f9ee;
+    text-align: center;
+}
+.weekday-name
+{
+    background-color: #778899;
+    color: #f9f9ee;
+    text-align: center;
+}
+.other-month
+{
+    background-color: #f9f9ee;
+    width: 75px;
+    height: 75px;
+    vertical-align: top;
+}
+.this-month
+{
+    background-color: #f0f0cc;
+    width: 75px;
+    height: 75px;
+    vertical-align: top;
+}
+#today
+{
+    background-color: #ffff99;
+    height: 75px;
+    vertical-align: top;
+}
+.event
+{
+    font-size: 8pt;
+}
+</style>
+</head>
+<body>
+<table align="center" border="1" cellspacing="0" cellpadding="1">
+  <tr class="month-header">
+    <td colspan="7">
+      <table border="0" width="100%"><tr>
+        <td align="left"><a id="prev" href="?">&#171;</a></td>
+        <td id="month-title" align="center">February 2002</td>
+        <td align="right"><a id="next" href="?">&#187;</a></td>
+        </tr></table>
+    </td>
+  </tr>
+  <tr class="day-header">
+    <td class="weekday-name" id="prototype-weekday-name">Sun</td>
+    <td class="weekday-name">Mon</td>
+    <td class="weekday-name">Tue</td>
+    <td class="weekday-name">Wed</td>
+    <td class="weekday-name">Thu</td>
+    <td class="weekday-name">Fri</td>
+    <td class="weekday-name">Sat</td>
+  </tr>
+  <tr class="week" id="prototype-week">
+    <td class="other-month" height="75" width="75">&nbsp;</td>
+    <td class="other-month" height="75" width="75">&nbsp;</td>
+    <td class="other-month" height="75" width="75">&nbsp;</td>
+    <td class="other-month" height="75" width="75">&nbsp;</td>
+    <td class="other-month" height="75" width="75">&nbsp;</td>
+    <td class="this-month" height="75" width="75">1</td>
+    <td id="prototype-day" class="this-month" height="75" width="75">
+      <span class="day">2</span><p class="event">Composer Name, year born</td>
+  </tr>
+  <tr class="week">
+    <td class="this-month" height="75" width="75">3</td>
+    <td class="this-month" height="75" width="75">4</td>
+    <td class="this-month" height="75" width="75">5</td>
+    <td class="this-month" height="75" width="75">6</td>
+    <td class="this-month" height="75" width="75">7</td>
+    <td class="this-month" height="75" width="75">8</td>
+    <td width="75" height="75" id="today">9</td>
+  </tr>
+  <tr class="week">
+    <td class="this-month" height="75" width="75">10</td>
+    <td class="this-month" height="75" width="75">11</td>
+    <td class="this-month" height="75" width="75">12</td>
+    <td class="this-month" height="75" width="75">13</td>
+    <td class="this-month" height="75" width="75">14</td>
+    <td class="this-month" height="75" width="75">15</td>
+    <td class="this-month" height="75" width="75">16</td>
+  </tr>
+  <tr class="week">
+    <td class="this-month" height="75" width="75">17</td>
+    <td class="this-month" height="75" width="75">18</td>
+    <td class="this-month" height="75" width="75">19</td>
+    <td class="this-month" height="75" width="75">20</td>
+    <td class="this-month" height="75" width="75">21</td>
+    <td class="this-month" height="75" width="75">22</td>
+    <td class="this-month" height="75" width="75">23</td>
+  </tr>
+  <tr class="week">
+    <td class="this-month" height="75" width="75">24</td>
+    <td class="this-month" height="75" width="75">25</td>
+    <td class="this-month" height="75" width="75">26</td>
+    <td class="this-month" height="75" width="75">27</td>
+    <td class="this-month" height="75" width="75">28</td>
+    <td class="other-month" height="75" width="75">&nbsp;</td>
+    <td class="other-month" height="75" width="75">&nbsp;</td>
+  </tr>
+</table>
+</body>
+</html>

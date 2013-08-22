@@ -1,0 +1,9 @@
+<dynamator language="jsp">
+  <prolog>
+    <%@ page session="false" %>
+    <jsp:useBean id="subject" class="Dynamator_tutorial.HelloWorldBean" />
+  </prolog>
+  <id name="DynamicText">
+    <content><jsp:getProperty name="subject" property="greeting"/></content>
+  </id>
+</dynamator>

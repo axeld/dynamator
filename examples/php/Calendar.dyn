@@ -1,0 +1,248 @@
+<dynamator language="php">
+
+<prolog>
+<?php
+    $dates = array(
+        "1/27"  => "Wolfgang Amadeus Mozart, 1756",
+        "2/3"   => "Felix Mendelssohn, 1809",
+        "2/23"  => "Georg Friedrich Handel, 1685",
+        "3/21"  => "Johann Sebastian Bach, 1685",
+        "3/25"  => "Bela Bartok, 1881",
+        "3/31"  => "Franz Joseph Haydn, 1732",
+        "4/27"  => "Sergei Prokofiev, 1891",
+        "5/5"   => "Johannes Brahms, 1833",
+        "6/2"   => "Sir Edward Elgar, 1857",
+        "6/15"  => "Edward Grieg, 1843",
+        "7/3"   => "Leos Janacek, 1854",
+        "7/7"   => "Gustav Mahler, 1860",
+        "8/22"  => "Claude Debussy, 1862",
+        "9/4"   => "Anton Bruckner, 1824",
+        "9/8"   => "Anton Dvorak, 1841",
+        "9/26"  => "George Gershwin, 1898",
+        "10/20" => "Charles Ives, 1874",
+        "10/22" => "Franz List, 1811",
+        "11/18" => "Carl Weber, 1786",
+        "12/10" => "Cesar Franck, 1822",
+        "12/15" => "Ludwig van Beethoven, 1770",
+        "12/30" => "Dmitri Kabalevsky, 1904"
+        );
+    $datekeys = array_keys($dates);
+    $dayNames = array("Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat");
+    $monthNames = array(NULL, "January", "February", "March", "April",
+        "May", "June", "July", "August", "September", "October",
+        "November", "December"); 
+    $daysInMonth = array(NULL, 31, "?", 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
+
+    $today = getdate();
+    $thisDay = $today['mday'];
+    $thisMonth = $today['mon'];
+    $thisYear = $today['year'];
+    if ( ! isset($month) )
+    {
+        $month = $thisMonth;
+        $year  = $thisYear;
+    }
+    $monthName = $monthNames[$month];    
+
+    /* find first day of month */
+    $firstDateOfMonth = getDate(mktime(0,0,0,$month,1,$year));
+    $calendarDay = 1 - $firstDateOfMonth['wday'] - 1;
+
+    /* find last day of month */
+    $lastDayOfMonth = $daysInMonth[$month];
+    if ( $lastDayOfMonth == '?' )
+    {
+        $lastDayOfMonth = 
+            ( $year%400 == 0 || ( $year%100 != 0 && $year%4 == 0  ) )
+            ? 29
+            : 28;
+    }
+
+    $prevMonth = $month - 1;
+    $prevYear  = $year;
+    if ( $prevMonth <= 0 )
+    {
+        $prevMonth = 12;
+        --$prevYear;
+    }
+    
+    $nextMonth = $month + 1;
+    $nextYear  = $year;
+    if ( $nextMonth >= 12 )
+    {
+        $nextMonth = 1;
+        ++$nextYear;
+    }
+?>
+</prolog>
+
+<tag tag="title">
+  <content>
+    "$monthName $year"
+  </content>
+</tag>
+
+<id name="month-title">
+  <content>
+    "$monthName $year"
+  </content>
+</id>
+
+<!--
+    Select the first day-name heading cell and replicate it for each
+    day of the week.
+-->
+<id name="prototype-weekday-name">
+  <foreach>
+    $dayNames as $dayName
+  </foreach>
+  <content>
+    $dayName
+  </content>
+  <attr name="id">
+    <discard/>
+  </attr>
+</id>
+
+<!--
+    Discard all the other day-name heading cells.
+-->
+<tag tag="td" class="weekday-name" without-attr="id">
+  <discard/>
+</tag>
+
+<!--
+    Select the table row for the first week of the month and replicate
+    it for each week in the month.
+-->
+<id name="prototype-week">
+  <before indent="yes">
+    <?php while ( $calendarDay < $lastDayOfMonth ) { ?>
+  </before>
+  <after>
+    <?php } ?>
+  </after>
+
+  <attr name="id">
+    <discard/>
+  </attr>
+</id>
+
+<!--
+    Discard all the other week rows.
+-->
+<tag tag="tr" class="week" without-attr="id">
+  <discard/>
+</tag>
+
+<!--
+    Select the date cell containing the complete prototype formatting
+    and replicate it for each day in the week.
+-->
+<id name="prototype-day">
+  <before>
+    <?php
+        for ($dayOfWeek = 0; $dayOfWeek < 7; ++$dayOfWeek) {
+            ++$calendarDay;
+    ?>
+  </before>
+  <after>
+    <?php } ?>
+  </after>
+
+  <!-- 
+        Add an id attribute only for the calendar day 
+        corresponding to today.
+  -->
+  <attr name="id">
+    <if>$calendarDay == $thisDay && $month == $thisMonth && $year == $thisYear</if>
+    <raw-content>today</raw-content>
+  </attr>
+
+  <!-- 
+        Set the class for the table cell to be either this-month
+        or other-month, depending on whether the calendar cell
+        represents a day in this month.
+  -->
+  <attr name="class">
+    <content>
+      1 <= $calendarDay && $calendarDay <= $lastDayOfMonth
+        ? "this-month"
+        : "other-month"
+    </content>
+  </attr>
+
+</id>
+
+<!--
+    This class is associated with a span tag inside the prototype
+    day cell that contains the day of the month.  
+-->
+<class name="day">
+
+  <!-- Discard the span tag (but not its content) -->
+  <discard-tag/>
+
+  <!-- Output the day of the month -->
+  <content>
+    1 <= $calendarDay && $calendarDay <= $lastDayOfMonth
+    ? $calendarDay
+    : "&nbsp;"
+  </content>
+
+</class>
+
+<!--
+    This class is associated with a paragraph tag inside the prototype
+    day cell that contains an event.
+-->
+<class name="event">
+
+  <content>
+    in_array("$month/$calendarDay", $datekeys) 
+    ? $dates["$month/$calendarDay"] 
+    : ""
+  </content>    
+
+</class>
+
+<!--
+    Discard all the table cells in the template that represent a 
+    day in another month.
+-->
+<class name="other-month">
+  <discard/>
+</class>
+
+<!--
+    Discard all the table cells in the template that represent a 
+    day in this month, except for any that have 'id' attributes.
+    (There's only one, the prototype referenced above.)
+-->
+<tag tag="td" class="this-month" without-attr="id">
+  <discard/>
+</tag>
+
+<!--
+    Set the target of the link to the previous month.
+-->
+<id name="prev">
+  <attr name="href">
+    <content>
+      $_SERVER['SCRIPT_NAME'] . "?month=$prevMonth&year=$prevYear"
+    </content>
+  </attr>
+</id>
+
+<!--
+    Set the target of the link to the next month.
+-->
+<id name="next">
+  <attr name="href">
+    <content>
+      $_SERVER['SCRIPT_NAME'] . "?month=$nextMonth&year=$nextYear"
+    </content>
+  </attr>
+</id>
+
+</dynamator>

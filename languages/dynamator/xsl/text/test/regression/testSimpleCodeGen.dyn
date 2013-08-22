@@ -1,0 +1,208 @@
+<dynamator language="xsl.text" suffix="xsl">
+<tag tag="module">
+  <rename to="xsl:stylesheet"/>
+  <attr name="xmlns:xsl">
+    <raw-content>http://www.w3.org/1999/XSL/Transform</raw-content>
+  </attr>
+  <attr name="version">
+    <raw-content>1.0</raw-content>
+  </attr>
+
+  <before-content>
+    <xsl:preserve-space elements="*"/>
+    <xsl:output method="text"/>
+    
+    <xsl:key name="attributes" match="attr" use="@name"/>
+    
+    <xsl:variable name="keyattrs" select="type/attr[@key]"/>
+    
+    <xsl:template name="interfaces">
+    <xsl:param name="interfaces"/>
+    
+      <xsl:variable name="car" 
+          select="substring-before(interfaces, ',')"/>
+      <xsl:variable name="cdr"
+          select="substring-after(interfaces, ',')"/>
+      
+      <xsl:choose>
+        <xsl:when test="$car!=''">
+          <xsl:value-of select="normalize-space($car)"/>
+          <xsl:text>, 
+        </xsl:text>
+          <xsl:call-template name="interfaces">
+            <xsl:with-param name="interfaces" select="$cdr"/>
+          </xsl:call-template>
+        </xsl:when>
+       <xsl:otherwise>
+          <xsl:value-of select="normalize-space($interfaces)"/>
+          <xsl:if test="position()!=last()"><xsl:text>, 
+        </xsl:text></xsl:if>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:template>
+    <xsl:template match="type">
+  </before-content>
+
+  <after-content>
+    </xsl:template>
+  </after-content>
+
+</tag>
+
+
+<tag tag="package">
+  <discard-tag/>
+  <content><xsl:value-of select="@package"/></content>
+</tag>
+
+<tag tag="short-description">
+  <discard-tag/>
+  <content>
+    <xsl:value-of select="@short-description"/>
+  </content>
+</tag>
+
+<tag tag="description">
+  <discard-tag/>
+  <content>
+    <xsl:value-of select="description"/>
+  </content>
+</tag>
+
+<tag tag="if-has-description">
+  <discard-tag/>
+  <if>
+    description
+  </if>
+</tag>
+
+<tag tag="if-has-sort-attrs">
+  <discard-tag/>
+  <if>
+    sort-attrs
+  </if>
+</tag>
+
+<tag tag="choose">
+  <rename to="xsl:choose"/>
+</tag>
+
+<tag tag="otherwise">
+  <rename to="xsl:otherwise"/>
+</tag>
+
+<tag tag="when-has-one-sort-attr">
+  <rename to="xsl:when"/>
+  <attr name="test">
+    <content>
+      count(sort-attrs/sort-attr) = 1
+    </content>
+  </attr>
+</tag>
+
+<tag tag="when-has-two-sort-attrs">
+  <rename to="xsl:when"/>
+  <attr name="test">
+    <content>
+      count(sort-attrs/sort-attr) = 2
+    </content>
+  </attr>
+</tag>
+
+<tag tag="first-sort-attr">
+  <discard-tag/>
+  <content>
+    <xsl:value-of select="sort-attrs/sort-attr/@name"/>
+  </content>
+</tag>
+
+<tag tag="last-sort-attr">
+  <discard-tag/>
+  <content>
+    <xsl:value-of select="sort-attrs/sort-attr[last()]/@name"/>
+  </content>
+</tag>
+
+<tag tag="for-each-sort-attr">
+  <discard-tag/>
+
+  <foreach>
+    sort-attrs/sort-attr
+  </foreach>
+</tag>
+
+<tag tag="if-last">
+  <discard-tag/>
+  <if>position() = last()</if>  
+</tag>
+
+<tag tag="if-not-last">
+  <discard-tag/>
+  <if>position() != last()</if>  
+</tag>
+
+<tag tag="name">
+  <discard-tag/>
+  <content>
+    <xsl:value-of select="@name"/>
+  </content>
+</tag>
+
+<tag tag="simple-class-name">
+  <discard-tag/>
+  <content><xsl:value-of select="@simple-class-name"/></content>
+</tag>
+
+<tag tag="interfaces">
+  <discard-tag/>
+  <content>
+    <xsl:if test="@interfaces">
+      <xsl:call-template name="interfaces">
+        <xsl:with-param name="interfaces" select="@interfaces"/>
+      </xsl:call-template>
+    </xsl:if>
+  </content>
+</tag>
+
+<tag tag="if-not-derived">
+  <discard-tag/>
+  <if>
+    @derived = 'false'
+  </if>
+</tag>
+
+<tag tag="if-non-null">
+  <discard-tag/>
+  <if>
+    @required = 'true' or @key
+  </if>
+</tag>
+
+<tag tag="datatype">
+  <discard-tag/>
+  <content>
+    <xsl:value-of select="@datatype"/>
+  </content>
+</tag>
+
+<tag tag="accessor-name">
+  <discard-tag/>
+  <content>
+    <xsl:value-of select="@accessor-name"/>
+  </content>
+</tag>
+
+<tag tag="for-each-attr">
+  <discard-tag/>
+  <foreach>
+    attr
+  </foreach>
+</tag>
+
+<tag tag="p">
+  <discard-tag/>
+  <before>&lt;p&gt;</before>
+  <after>&lt;/p&gt;</after>
+</tag>
+
+</dynamator>

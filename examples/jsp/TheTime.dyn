@@ -1,0 +1,23 @@
+<dynamator language="jsp">
+<prolog>
+<%@ page session="false" %>
+<%@ page import="java.util.Calendar"%>
+<%@ page import="java.util.Hashtable"%>
+<%
+    Calendar calendar = Calendar.getInstance();
+    int hour = calendar.get(Calendar.HOUR_OF_DAY);
+%>
+</prolog>
+<id name="CurrentTime">
+  <content>calendar.getTime()</content>
+</id>
+<id name="IfMorning">
+  <if>hour < 12</if>
+</id>
+<id name="IfAfternoon">
+  <if>12 <= hour && hour < 18</if>
+</id>
+<id name="IfEvening">
+  <if>18 <= hour</if>
+</id>
+</dynamator>

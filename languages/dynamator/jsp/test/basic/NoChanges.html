@@ -1,0 +1,19 @@
+<html>
+<head>
+  <title>Test No Changes</title>
+</head>
+<body>
+<p>Actually, this tests for the browser whitespace bug
+<table>
+  <tr>
+    <td><img src="x"></td>
+    <td><img src="x"> 
+    </td>
+  </tr>
+</table>
+<a href="xxx">text</a>
+<br>
+<a href="xxx">text
+</a><!-- tidy fixes this last one -->
+</body>
+</html>

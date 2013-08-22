@@ -1,0 +1,7 @@
+$Id: CONTRIBUTORS.txt,v 1.1 2004/03/30 13:44:43 jaydunning Exp $
+
+Alexander Ovsiankin provided the first PDF version of the Quick
+Reference.
+
+Chris Felaco provided performance enhancements that improved Dynamator
+execution speed by 66-95%, as well as other useful ideas.

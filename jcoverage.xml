@@ -1,0 +1,144 @@
+<!-- 
+    This ant build file performs coverage testing using JCoverage
+    and the tests in test.xml.
+
+    Usage:
+        ant -Djcoverage.home=.../jcoverage-1.0.5 -f jcoverage.xml
+
+    JCoverage may be obtained from http://www.jcoverage.com.
+-->
+
+<project name="dynamator" default="all">
+  
+  <!-- user-defined configuration -->
+  <property name="configuration.file" value="build.properties"/> 
+  <property file="${user.home}/dynamator.build.properties" /> 
+  <property file="${user.home}/build.properties" />
+  <property file="${basedir}/${configuration.file}" />
+
+  <!-- destination directories -->
+  <property name="dir.build"    location="${basedir}/build"/>
+  <property name="dir.classes"  location="${dir.build}/classes"/>
+  <property name="dir.coverage-report"   
+      location="${dir.build}/coverage-report"/>
+  <property name="dir.coverage-src" 
+      location="${dir.build}/coverage/src"/>
+  <property name="dir.coverage-classes" 
+      location="${dir.build}/coverage/classes"/>
+  <property name="dir.coverage-instrumented" 
+      location="${dir.build}/coverage/coverage-classes"/>
+
+  <property name="jcoverage.home" value=""/>
+  
+  <path id="classpath.jcoverage">
+    <fileset dir="${jcoverage.home}">
+      <include name="**/*.jar"/>
+    </fileset>
+  </path>
+  <path id="classpath.ant">
+    <fileset dir="${ant.home}/lib">
+      <include name="**/*.jar"/>
+    </fileset>
+  </path>
+  
+  <path id="classpath.override">
+    <pathelement location="${dir.coverage-instrumented}"/>
+    <path refid="classpath.jcoverage"/>
+  </path>
+  
+  <path id="classpath.project">
+    <path refid="classpath.override"/>
+    <fileset dir="${basedir}">
+      <include name="lib/**/*.jar"/>
+    </fileset>
+    <pathelement path="${java.class.path}"/>
+  </path>
+
+  <taskdef classpathref="classpath.jcoverage" 
+      resource="tasks.properties"/>
+  
+  <target name="check-preconditions">
+    <available property="preconditions.satisfied"
+        classname="com.jcoverage.ant.InstrumentTask"
+        classpathref="classpath.jcoverage"/>
+  </target>
+  
+  <target name="preconditions"
+      depends="check-preconditions"
+      unless="preconditions.satisfied">
+    <fail>
+JCoverage not found in classpath.
+Property 'jcoverage.home' = '${jcoverage.home}'.</fail>
+  </target>
+  
+  <!-- Merge all the source directory trees so JCoverage can find them. -->
+  <target name="merge-src"
+      depends="preconditions">
+    <mkdir dir="${dir.coverage-src}"/>
+    <copy todir="${dir.coverage-src}">
+      <fileset dir="src">
+        <include name="**/*.java"/>
+      </fileset>
+      <fileset dir="languages">
+        <include name="**/*.java"/>
+        <exclude name="**/test/**"/>
+      </fileset>
+      <fileset dir="tools">
+        <include name="**/*.java"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile"
+      depends="merge-src">
+    <mkdir dir="${dir.coverage-classes}"/>
+    <javac
+        srcdir="${dir.coverage-src}"
+        destdir="${dir.coverage-classes}"
+        debug="true"
+        >
+      <classpath refid="classpath.project"/>
+    </javac>
+  </target>    
+
+  <target name="instrument"
+      depends="compile">
+    <delete file="jcoverage.ser"/>
+    <delete dir="${dir.coverage-instrumented}"/>
+    <instrument todir="${dir.coverage-instrumented}">
+      <fileset dir="${dir.coverage-classes}">
+        <include name="**/*.class"/>
+      </fileset>
+    </instrument>
+  </target>
+  
+  <target name="coverage"
+      depends="instrument">
+    <!-- For some reason the Dynamate task can't find Tidy unless
+         the whole classpath is provided in the override -->
+    <property name="classpath.override" refid="classpath.project"/>
+    <property name="classpath.ant" refid="classpath.ant"/>
+    <java classname="org.apache.tools.ant.Main"
+        fork="true"
+        classpath="${classpath.override};${classpath.ant}"
+        >
+      <jvmarg value="-Xms64m"/>
+      <jvmarg value="-Xmx128M"/>
+      <arg value="-Dtrace=${dir.build}/trace.out"/>
+      <arg value="-Dclasspath.override=${classpath.project}"/>
+      <arg value="-f"/>
+      <arg value="test.xml"/>
+    </java>
+  </target>
+
+  <target name="report">
+    <report srcdir="${dir.coverage-src}" destdir="${dir.coverage-report}"/>
+
+    <echo message="Coverage report is at ${dir.coverage-report}/index.html"/>
+  </target>
+
+  <target name="all"
+      depends="coverage, report"
+      />
+
+</project>

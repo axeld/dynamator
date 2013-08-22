@@ -1,0 +1,18 @@
+<dynamator language="jsp">
+  <prolog>
+    <%@ page session="false" %>
+    <%!
+        private String getGreeting()
+        {
+            return "Hello World, says Dynamator!";
+        }
+    %>
+    <%
+        String countArgument = request.getParameter("count");
+        int count = 
+            ( countArgument == null || countArgument.length() == 0 )
+            ? 5
+            : Integer.parseInt(countArgument);
+    %>
+  </prolog>
+</dynamator>

@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+ <head>
+  <title>Guess a Number</title>
+ </head>
+<body>
+<hr>
+<form method="GET">
+<center>
+<p>Guess a number between 1 and
+<span id="HighValue" class="DiscardTag">100</span>.
+</p>
+<table align="center">
+<tr class="HistoryRow"><td>
+<span id="ItemValue" class="DiscardTag">(first number)</span> is 
+<span id="ItemRelation" class="DiscardTag">high</span>
+</td></tr>
+<tr class="Discard"><td>
+(second number)
+</td></tr>
+<tr class="Discard"><td>
+...
+</td></tr>
+<tr><td id="NewGuess">New guess:
+<input type="TEXT" name="guess" value="" maxlength="3" size="3">
+</td></tr>
+</table>
+<input type="SUBMIT" value="Guess">
+</center>
+</form>
+</body>
+</html>

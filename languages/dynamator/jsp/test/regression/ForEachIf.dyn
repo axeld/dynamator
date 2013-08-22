@@ -1,0 +1,44 @@
+<dynamator language="jsp">
+
+<tag tag="dl">
+  <foreach type="Properties" element="property">
+    System.getProperties()
+    <if> ! "java.class.path".equals(propertyName) </if>
+  </foreach>
+</tag>
+
+<tag tag="tr">
+  <foreach type="Properties" element="property">
+    System.getProperties()
+    <if> ! "java.class.path".equals(propertyName) </if>
+  </foreach>
+</tag>
+
+<class name="1">
+  <foreach type="Properties" element="property">
+    System.getProperties()
+    <if> ! "java.class.path".equals(propertyName) </if>
+  </foreach>
+</class>
+
+<class name="2">
+  <before>before</before>
+  <before-content>before-content</before-content>
+  <after-content>after-content</after-content>
+  <after>after</after>
+  <if>true</if>
+  <foreach type="Properties" element="property">
+    System.getProperties()
+    <if> ! "java.class.path".equals(propertyName) </if>
+  </foreach>
+</class>
+
+<class name="name">
+  <content>propertyName</content>
+</class>
+
+<class name="value">
+  <content>property</content>
+</class>
+
+</dynamator>

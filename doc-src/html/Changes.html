@@ -1,0 +1,850 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta name="generator" content="HTML Tidy, see www.w3.org" />
+    <title>
+      Dynamator Change Log
+    </title>
+    <link type="text/css" href="style.css" rel="stylesheet" />
+  </head>
+  <body>
+    <h1>
+      Dynamator Change Log
+    </h1>
+    <dl>
+      <dt>
+        v 1.6 (????/??/??)
+      </dt>
+      <dd>
+        <p>
+          New Features:
+        </p>
+        <ul>
+        </ul>
+        <p>
+          Enhancements:
+        </p>
+        <ul>
+        </ul>
+        <p>
+          Bug fixes:
+        </p>
+        <ul>
+          <li>
+            Bug 1003120: Rename of tag for which HTML expects no
+            end tag results in no end tag. All tag-specific processing
+            now uses the renamed tag name; prior behavior was
+            inconsistent. 
+          </li>
+          <li>
+            Bug 990054: Comment divs with content overrides result in
+            empty content.
+          </li>
+          <li>
+            Made PHP escape consistent everywhere: '&lt;?php'.
+            In several places (notably the Dynamator generation
+            signature) it was simply '&lt;?', which was not 
+            considered valid by XML validators.
+          </li>
+          <li>
+            Corrected HTML for documentation banner to render
+            properly in Netscape.
+          </li>
+        </ul>
+        <br />
+        <br />
+      </dd>
+      <dt>
+        v 1.5 (2004/03/29)
+      </dt>
+      <dd>
+        <p>
+          New Features:
+        </p>
+        <ul>
+          <li>
+            Added Dynamator file validation. Validation is the
+            default behavior; to disable, use 'dynamate -V' 
+            (or in ant, 'validate="false"').
+          </li>
+          <li>
+            Added &lt;extract&gt; modifier to support recursion and
+            fragment reuse. The &lt;extract&gt; modifier moves the
+            associated element and its children to the file
+            specified by the 'to-file' attribute, or to the end of
+            the current file, immediately before the epilog. Added
+            &lt;before-extracts&gt; and &lt;after-extracts&gt;
+            low-level elements to specify code to be placed around
+            the set of extracts.
+          </li>
+          <li>
+            Added dynamate option '-F[<i>file</i>]' (ant attribute 'dynfile')
+            to specify the Dynamator file to be applied to template
+            files instead of using name matching.
+          </li>
+        </ul>
+        <p>
+          Removed Features:
+        </p>
+        <ul>
+          <li>
+            Removed <b>dynamator:copy</b>. This was a problematic
+            feature. Syntactically, it didn't belong with the rest of
+            the language (as might be inferred from the name).
+            Its implementation added significant complexity,
+            and had a high performance cost. And when I searched my
+            catalog of Dynamator applications, I found no remaining
+            uses. 
+            <p>
+              If you need this feature, please 
+              <a href="http://sourceforge.net/users/jaydunning"
+              class="offsite">send me</a> a description of how you are
+              using it. 
+            </p>
+          </li>
+        </ul>
+        <p>
+          Enhancements:
+        </p>
+        <ul>
+          <li>
+            Documentation changes:
+            <ul>
+              <li>
+                Made download documentation identical to the website.
+                Source for the website is now stored in CVS, as is the
+                process used to create the website.
+              </li>
+              <li>
+                Integrated the tutorial into the website.
+                The tutorial now requires a browser that supports
+                iframes.
+              </li>
+              <li>
+                Revised the tutorial to eliminate tutorial.jar.
+              </li>
+              <li>
+                Moved Changes.html (this file) and Install.html
+                to the documentation directory.
+              </li>
+              <li>
+                Converted the website to XHTML.
+              </li>
+            </ul>
+          </li>
+          <li>
+            (Patch 896127, Chris Felaco) Implemented major
+            performance enhancements and refactorings based on this
+            patch: 
+            <ul>
+              <li>
+                Language-specific factory classes have been removed.
+                After several years of evolution, Annotations objects
+                are no longer language-specific. Factory behavior has
+                therefore been moved to Generator, which is by
+                nature language-specific. Generator prototypes are
+                cached and cloned.
+              </li>
+              <li>
+                The priming Dynamator file read has been removed,
+                since creation of Annotations objects no longer
+                requires knowledge of the language.
+              </li>
+              <li>
+                Dynamator directives automatically added for
+                body-only HTML (-B) are now inserted
+                programmatically via the DOM. Previously they were
+                stored in a string and parsed for each file.
+              </li>
+              <li>
+                Included files are now cached. Since most projects
+                use a set of included files throughout all
+                Dynamator files, and document inclusion is
+                expensive, this has a major impact. In testing with
+                my current real-world application, this single
+                change cut Dynamator processing time by 40%. (YMMV)
+              </li>
+              <li>
+                Dynamator file elements are now accessed via
+                indices rather than sequentially. In my tests, this
+                change cut Dynamator processing time by 25%. (YMMV)
+              </li>
+            </ul>
+            <p>
+            This change impacts the plugin interface.
+            </p>
+          </li>
+          <li>
+            Added Taxonomy example showing recursive invocation
+            using the 'extract' feature (or, in the case of JSP, an
+            inline class).
+          </li>
+          <li>
+            Improved internal resource management so that Dynamator
+            can be used within a long-running task.
+          </li>
+          <li>
+            For templates declaring an XHTML doctype, elements that
+            have an empty content model are now output using
+            minimized tag syntax (e.g. &lt;br /&gt;).
+          </li>
+          <li>
+            Enhanced the ant task to create the output directory if
+            it doesn't already exist.
+          </li>
+          <li>
+            Execution is now terminated in all cases when Tidy
+            detects errors.
+          </li>
+          <li>
+            Changed error output to omit "execution terminated"
+            message.
+          </li>
+          <li>
+            Added 'final' declaration specifier to variables
+            declared by Dynamator for language="java", to appease
+            Checkstyle.
+          </li>
+          <li>
+            Improved examples structure a bit: generated files are
+            now placed in a subdirectory ('generated'); added
+            overall build.xml and Makefile, improved ant clean
+            targets.
+          </li>
+          <li>
+            Integrated ant task logging behavior with ant. 'ant -v'
+            and 'ant -debug' now work as expected.
+          </li>
+          <li>
+            Moved dynamator.jar in release file from 'lib' directory to
+            root directory. 
+          </li>
+          <li>
+            (Internal) Most tests are now whitespace-sensitive,
+            allowing whitespace errors to be detected.
+          </li>
+          <li>
+            (Internal) Added some tests for invalid input.
+          </li>
+          <li>
+            (Internal) Added compile step to regression test for
+            language=java to make sure generated code is valid
+            Java. Fixed compiler errors in TextEcho2 example.
+          </li>
+          <li>
+            (Internal) Removed build dependency on sed and diff.
+            Build and regression testing now require <a
+            href="http://ant.apache.org">ant</a> 1.5.3-1, <a
+            href="http://ant-contrib.sourceforge.net">
+            ant-contrib</a> and, under JDKs earlier than 1.4, <a
+            href="http://jakarta.apache.org/oro/">jakarta-oro</a>.
+            Regression testing is a little more awkward, since
+            there's no diff for ant.
+          </li>
+          <li>
+            (Internal) Revised build to conform to best practices:
+            <ul>
+              <li>
+                Most generated files are now placed under the 'build'
+                directory.  
+              </li>
+              <li>
+                Project properties may now be overridden through
+                user-defined properties files. 
+              </li>
+              <li>
+                Build scripts now directly reference the Dynamator jar
+                instead of expecting it to be in the classpath. 
+              </li>
+            </ul>
+          </li>
+          <li>
+            Added dynamator-build-libs download to provide all
+            libraries used to build Dynamator. (Ant, PMD, JSDK, 
+            and JCoverage are not included.)
+          </li>
+          <li>
+            Added CONTRIBUTORS.txt to acknowledge contributors.
+          </li>
+        </ul>
+        <p>
+          Bug fixes:
+        </p>
+        <ul>
+          <li>
+            For language=none, moved the file generation comment to
+            end of file, to prevent <a
+            href="http://gutfeldt.ch/matthias/articles/doctypeswitch.html">
+            browser quirk mode</a> caused by outputting it at the
+            beginning of the file.
+          </li>
+          <li>
+            For language=xsl, moved the file generation comment to
+            end of file, to allow generated files to begin with 
+            the XML processing instruction.
+          </li>
+          <li>
+            For body-only HTML, eliminated output of DOCTYPE,
+            CDATA, and processing instructions appearing outside
+            the body.
+          </li>
+          <li>
+            Ignore contents of comments within Dynamator file. When
+            a Dynamator file comment contained a partial element of
+            interest to Dynamator (e.g. a start tag without an end
+            tag), a parse error would result.
+          </li>
+          <li>
+            For language="java", eliminated occasional spurious
+            output of the text <tt>");</tt>.
+          </li>
+          <li>
+            Made significant improvements in whitespace handling.
+            In most cases, whitespace in generated file should
+            match template (or .asxml file) whitespace, when
+            indentation is accounted for. 
+            <ul>
+              <li>
+                Eliminated whitespace around emitted content within
+                an if block. This was a potential source of the <a
+                href="http://www.emf.net/~estephen/htmlner/whitespacebugs.html">
+                browser whitespace bug</a>. This change eliminates
+                whitespace even when the whitespace would have been
+                OK, decreasing the readability of emitted content
+                in those cases. But correct browser rendering is a
+                higher priority than (generated) source code
+                readability. 
+              </li>
+              <li>
+                Indentation is no longer applied to CDATA content.
+                (Whitespace within CDATA is significant.)
+              </li>
+              <li>
+                Whitespace is no longer discarded between elements
+                that are separated only by spaces and/or tabs. The
+                HTML sequence "&lt;/x&gt; \n\t &lt;y&gt;" had been
+                rendered "&lt;/x&gt;&lt;y&gt;"; it is now rendered
+                "&lt;/x&gt; &lt;y&gt;".
+              </li>
+              <li>
+                Eliminated the addition of white space between
+                element tags and text data outside the element. For
+                example, '.&lt;span&gt;' was rendered
+                '.\n&lt;span&gt;'.
+              </li>
+              <li>
+                For non-template languages like Java, terminate
+                program lines before emitting the content of
+                &lt;before&gt; and &lt;raw-content&gt; elements.
+              </li>
+              <li>
+                For language=java, remove end-of-lines after
+                conditionally output flag attributes.
+              </li>
+            </ul>
+          </li>
+          <li>
+            Execution is now terminated when Tidy detects a missing
+            &lt;/script&gt; tag. This is required because Tidy treats
+            this as a recoverable error: it tries to fix the
+            problem by escaping all subsequent tags.
+          </li>
+          <li>
+            Corrected several bugs in trace output handling. When
+            outputting to a file under Ant, the trace output file
+            was overwritten for each template file processed. The
+            output writer was buffered but never closed, so in some
+            implementations the end of the buffer may not have been
+            written to the file.
+          </li>
+          <li>
+            Revised code that prevented compilation under JDK 1.1.
+          </li>
+        </ul>
+        <br />
+        <br />
+      </dd>
+      <dt>
+        v 1.4 (2003/07/12)
+      </dt>
+      <dd>
+        <ul>
+          <li>
+            Beefed up unit tests to bring test coverage to 80% line
+            coverage. Untested code is mostly error handling.
+          </li>
+          <li>
+            Removed dependency on Xerces. Tested with the XML
+            parser included with JDK 1.4.1. For JDK releases prior
+            to 1.4, Xerces is still recommended, since Dynamator
+            requires both a SAX and a DOM parser. Dynamator uses
+            the standard JAXP facility for identifying the parser
+            implementation (see the documentation for
+            javax.xml.parsers.SAXParserFactory).
+          </li>
+          <li>
+            Corrected bug in raw-attr processing for
+            language="java": if raw-attr contained a quote, the
+            quote was not escaped. This will break current files
+            that accommodated for this by adding an escape.
+          </li>
+          <li>
+            Cleaned up body-only HTML output: Removed &lt;!DOCTYPE
+            ...&gt; directives and comments outside of body.
+          </li>
+          <li>
+            Caused attribute values containing quotes to be output
+            within single quotes. No support yet for attribute
+            values containing both quotes and single quotes.
+          </li>
+          <li>
+            Corrected script processing (see change log for
+            Dynamator 1.1). The content of each script element is
+            now treated as CDATA, except for no-content span tags.
+            Since Dynamator 1.1, Dynamator had tried to handle all
+            span and div tags within script elements, but this was
+            based on an incomplete understanding of the HTML syntax
+            for script elements (the character sequence '&lt;/'
+            terminates a script element). A review of the use cases
+            concluded that the only reason for processing elements
+            within a script is variable replacement, which can be
+            accomplished using a no-content span tag. (See the 
+            <!-- <a href="doc/tutorial/example08_WhereNoHtmlBelongs/index.html"> -->
+            tutorial<!--</a>--> on script manipulation, which has
+            also been updated.)
+          </li>
+          <li>
+            Some enhancements to Tidy message processing: 
+            <ul>
+              <li>
+                Output only warning and error messages from JTidy,
+                to make builds look cleaner. (Tidy does not provide
+                the option to omit warning messages.)
+              </li>
+              <li>
+                If error messages are found, output the file name
+                before the error messages. (Tidy doesn't output the
+                file name and Dynamator is usually used to process
+                a set of files at a time.)
+              </li>
+            </ul>
+          </li>
+          <li>
+            Properly handle class="Discard" and class="DiscardTag"
+            for comment divs. (Previously, the comments were
+            retained even when these were specified.)
+          </li>
+          <li>
+            Improved performance of generated programs for
+            language="java". Previously, each line was output using
+            a single 'out.write(...)' statement. If a line
+            contained a variable value, string concatenation was
+            used within the output argument. Now, lines that
+            contain variable values are split into multiple
+            'out.write(...)' statements. Example: 
+            <div class="column">
+              <div class="neutral">
+                Before
+              </div>
+              <div class="out">
+<pre>
+out.write("    &lt;p&gt;" + ( getGreeting() ) + "&lt;/p&gt;\n");
+</pre>
+              </div>
+            </div>
+            <div class="clear">
+            </div>
+            <div class="column">
+              <div class="neutral">
+                After
+              </div>
+              <div class="out">
+<pre>
+out.write("    &lt;p&gt;");
+    out.write(String.valueOf(getGreeting()));
+    out.write("&lt;/p&gt;\n");
+</pre>
+              </div>
+            </div>
+            <div class="clear">
+            </div>
+            <p>
+              (Thanks to Bill Field for ranting about the evils of
+              String concatenation enough times that I finally
+              realized I could do something about it in this case.)
+            </p>
+          </li>
+          <li>
+            Corrected compilation errors in the Java implementation
+            of the Calendar example.
+          </li>
+          <li>
+            Added a new Guestbook example to demonstrate HTML form
+            processing.
+          </li>
+          <li>
+            Added a new FAQ entry, "How do I associate an HTML
+            element with multiple classes?" (Thanks to Chris Felaco
+            for suggesting this.)
+          </li>
+          <li>
+            Make is no longer supported as a tool for building
+            Dynamator. It is still supported for building examples.
+          </li>
+          <li>
+            (Internal) Dynamator Quick Reference is now maintained
+            using <a href="http://www.openoffice.org">Open
+            Office</a> (currently at 1.1beta2). Until PDF export
+            improves, though, the PDF is being created by printing
+            to a postscript printer configured to use <a
+            href="http://www.cs.wisc.edu/~ghost/redmon/">redmon</a>
+            and routing the output through <a
+            href="http://www.cs.wisc.edu/~ghost/">Ghostscript</a>
+            using directions found 
+            <a href="http://free.pages.at/dpaehl/pdfwriter/">
+            here</a>. (PDF created using OOo: 200K. PDF created
+            using GS: 13K.)
+          </li>
+          <li>
+            (Internal) Added ability to perform coverage testing
+            using <a href="http://www.jcoverage.com">JCoverage</a>.
+            Ant script is in jcoverage.xml.
+          </li>
+          <li>
+            (Internal) Added ability to lint Dynamator source code
+            using <a href="http://pmd.sourceforge.net">PMD</a>. Ant
+            script is in pmd.xml; rules are in ruleset.pmd.
+          </li>
+          <li>
+            (Internal) Commented out rcsID constant declarations in
+            Dynamator source code. This retains the CVS file
+            version ID in the source code, but removes them from
+            the class files. The rcs ID string is not a definitive
+            source of version information, since someone can update
+            the source code without changing the ID string. (Thanks
+            to Keith Ackley for pointing this out to me.)
+          </li>
+          <li>
+            (Internal) Improved the tutorial generation process
+            slightly. This is an internal change but it should
+            ensure that tutorial code examples always show the
+            current code.
+          </li>
+        </ul>
+        <br />
+        <br />
+      </dd>
+      <dt>
+        v 1.3 (2002/11/17)
+      </dt>
+      <dd>
+        <ul>
+          <li>
+            Added first-class support for <a
+            href="http://www.php.net">PHP</a>.
+          </li>
+          <li>
+            Added ability to define div elements in template file
+            comments to allow grouping of HTML elements where
+            &lt;div&gt; tags would be invalid. This is especially
+            useful within HTML tables to group rows or cells when
+            the template requires more than one row or cell to be
+            output for each element of a collection. For example: 
+            <div class="column">
+              <div class="html">
+<pre>
+&lt;table&gt;
+  <b>&lt;!-- div id="row-group" --&gt;</b>
+    &lt;tr class="data-row"&gt;
+      &lt;td&gt;...&lt;/td&gt;
+      &lt;td&gt;...&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr class="delimiter-row"&gt;
+      &lt;td colspan="2"&gt;
+        &lt;img src="horizontal_line.png" height="1" width="100"&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;
+  <b>&lt;!-- /div --&gt;</b>
+&lt;/table&gt;
+</pre>
+              </div>
+            </div>
+            <div class="clear">
+            </div>
+          </li>
+          <li>
+            Added ability to insert a conditional expression within
+            a for or foreach. The condition is evaluated for each
+            iteration, and applies to the content of the element
+            addressed by the foreach. Syntax: 
+            <div class="column">
+              <div class="dyn">
+<pre>
+&lt;foreach...&gt;
+  <i>collection-expression</i>
+  &lt;if&gt;<i>conditional-expression</i>&lt;/if&gt;
+&lt;/foreach...&gt;
+</pre>
+              </div>
+            </div>
+            <div class="clear">
+            </div>
+          </li>
+          <li>
+            Added <tt>-t</tt> option to specify the directory
+            containing templates referenced by the <tt>
+            template</tt> attribute of the &lt;dynamator&gt;
+            element.
+          </li>
+          <li>
+            Added <a href="http://ant.apache.org">ant</a>
+            task: dynamator.ant.DynamateTask to allow Dynamator to
+            be used from ant.
+          </li>
+          <li>
+            Changed internal build process to use ant. Examples now
+            include both Makefile and ant build.xml files.
+          </li>
+          <li>
+            Added ability to specify multiple replacements of the
+            same attribute value string using syntax <code>
+            [[@/a/b/+/c/d/+/e/f/...]]</code>.
+          </li>
+          <li>
+            Removed several causes of the dreaded <a
+            href="http://www.emf.net/~estephen/htmlner/whitespacebugs.html">
+            browser whitespace bug</a>. Disabled line wrapping in
+            Tidy (wrap=0), made most scriptlets start immediately
+            following previous text (without an intervening
+            newline), and eliminated whitespace before and after
+            &lt;before{-content}&gt; and &lt;after{-content}&gt;
+            element content.
+          </li>
+          <li>
+            Corrected bug that prevented without-attrs from working
+            if more than one attribute name was specified.
+          </li>
+          <li>
+            Corrected handling of overrides to content of discarded
+            template elements. If a template element's content is
+            discarded (i.e. using &lt;discard/&gt; or
+            class="Discard", any overrides that might result in it
+            having content are ignored. This includes overrides
+            that apply directly to the content of the discarded
+            element (&lt;content&gt;, &lt;raw-content&gt;,
+            &lt;before-content&gt;, &lt;after-content&gt;), as well
+            as all overrides to child elements. Previously,
+            overrides were generated even when content was
+            discarded.
+          </li>
+          <li>
+            Corrected several bugs associated with the Trace
+            feature: one that occasionally resulted in an
+            exception, one that resulted in improper indentation
+            for discarded elements, and one caused by line lengths
+            greater than 999. Also slightly improved Trace messages
+            for discarded elements.
+          </li>
+          <li>
+            Corrected handling of DOS file paths. Previously, if
+            the template filename contained backlashes, an error
+            would result (with the confusing message, "Annotations
+            file not found").
+          </li>
+          <li>
+            Improved handling of &lt;/textarea&gt; tags by
+            preventing the output formatter from adding preceding
+            whitespace, which caused trailing blanks in textarea
+            fields when indentation was enabled.
+          </li>
+        </ul>
+        <br />
+        <br />
+      </dd>
+      <dt>
+        v 1.2 (2002/02/09)
+      </dt>
+      <dd>
+        <ul>
+          <li>
+            Added &lt;for&gt; element for sequenced iterations.
+          </li>
+          <li>
+            Deprecated sequenced &lt;foreach&gt; element. (The
+            collection version of &lt;foreach&gt; is still
+            available.) The new &lt;for&gt; element is simpler to
+            use. The primary motivator for deprecation was that
+            compare expressions often contain a '&lt;', which had
+            to be written as '&amp;lt;' because it appeared within
+            an attribute.
+          </li>
+          <li>
+            Added '-B' option to generate body-only HTML. This
+            allows HTML fragments to be input as templates. Without
+            -B, Tidy ensures that HTML files contain &lt;html&gt;,
+            &lt;head&gt;, and &lt;body&gt; elements. Fragments are
+            useful for dynamic assembly of site content using
+            server page inclusion facilities.
+          </li>
+          <li>
+            Added 'without-attr' to Dynamator &lt;tag&gt; element.
+            This makes it easier to locate prototype elements that
+            may co-exist with similar elements.
+          </li>
+          <li>
+            Corrected some bugs in code generation for sequenced
+            iteration blocks for JSP, ASP, and Java, before I
+            decided to deprecate that functionality.
+          </li>
+          <li>
+            Finally documented &lt;dynamator:copy&gt;, and got it
+            to work.
+          </li>
+        </ul>
+        <br />
+        <br />
+      </dd>
+      <dt>
+        v 1.1 (2002/01/07)
+      </dt>
+      <dd>
+        <ul>
+          <li>
+            Renamed -I option (don't indent) to -N.
+          </li>
+          <li>
+            Added include directory path feature. The path is
+            searched to locate files referenced using the Dynamator
+            &lt;include&gt; directive. The path always contains one
+            directory: the directory containing the original
+            Dynamator file.
+          </li>
+          <li>
+            Added new -I option: '-I dir' adds a directory to the
+            include path.
+          </li>
+          <li>
+            Changes to correctly process international character
+            sets: 
+            <ul>
+              <li>
+                Tell SAX to read input file in specified encoding.
+              </li>
+              <li>
+                Allow XML parser to see XML processing instructions
+                in Dynamator file when they occur before the
+                &lt;dynamator&gt; element. This allows Dynamator
+                files to specify XML encoding.
+              </li>
+              <li>
+                Transcode HTML input files that are not in an
+                encoding understood by JTidy into UTF-8, then
+                transcode the JTidy output back to the original
+                encoding.
+              </li>
+            </ul>
+          </li>
+          <li>
+            Dynamator has now been successfully tested with
+            ISO-8859-1, UTF-8, and Big5. It is believed to work
+            with any character encoding supported by both Java and
+            Xerces.
+          </li>
+          <li>
+            Retain HTML entities as originally written. Previously,
+            Dynamator allowed JTidy to decide how to output HTML
+            entities (such as <tt>&amp;nbsp;</tt> and <tt>
+            &amp;#161;</tt>). This was confusing, because entities
+            were often output in a different form. Worse, for most
+            non-Ascii character encodings, JTidy outputs entities
+            as raw characters. Now, Dynamator obfuscates all HTML
+            <tt>&amp;</tt> characters so that JTidy cannot
+            recognize them. This allows entities to pass through
+            unchanged. A side-effect of this change is that JTidy
+            cannot correct any errors in entity coding, such as
+            unknown entities and missing terminating semicolons. To
+            prevent propagation of entity encoding errors, HTML
+            files should be validated with Tidy before processing
+            with Dynamator.
+          </li>
+          <li>
+            Correctly support HTML &lt;script&gt; elements. These
+            elements are now treated as CDATA by the parser, so
+            that special characters such as <tt>&lt;</tt> (as in
+            <tt>x &lt; y</tt>) don't cause the parser to fail. As a
+            side-effect of this change, only &lt;span&gt; and
+            &lt;div&gt; tags within a script are recognized by
+            Dynamator.
+          </li>
+          <li>
+            Allow multiple prologs and epilogs. Each is inserted in
+            order of appearance. This will make &lt;include&gt;
+            more useful.
+          </li>
+          <li>
+            Corrected some errors in the JSP examples.
+          </li>
+        </ul>
+        <br />
+        <br />
+      </dd>
+      <dt>
+        v 1.0.1a (2001/12/02)
+      </dt>
+      <dd>
+        <ul>
+          <li>
+            Changes to help JTidy correctly output character
+            entities: 
+            <ul>
+              <li>
+                Changed Dynamator's default encoding to ASCII.
+              </li>
+              <li>
+                Forced JTidy to output entities in numeric rather
+                than name form, since some browsers don't correctly
+                display entities referenced by name.
+              </li>
+            </ul>
+          </li>
+          <li>
+            Moved examples to documentation zip file.
+          </li>
+        </ul>
+        <br />
+        <br />
+      </dd>
+      <dt>
+        v 1.0.1 (2001/10/19)
+      </dt>
+      <dd>
+        <ul>
+          <li>
+            Added &lt;rename to="new-name"&gt; to allow name
+            changes for tags and attributes.
+          </li>
+          <li>
+            All id or class elements with the same name are now
+            applied. (Before, if more than one element had the same
+            name, the results were undefined.) This improves
+            support for Dynamator annotations file libraries.
+            However, only the first override encountered for any
+            relative location slot (e.g. after-content) is applied.
+          </li>
+        </ul>
+        <br />
+        <br />
+      </dd>
+      <dt>
+        v 1.0 (2001/05/30)
+      </dt>
+      <dd>
+        <p>
+          Initial Release.
+        </p>
+      </dd>
+    </dl>
+  </body>
+</html>
+

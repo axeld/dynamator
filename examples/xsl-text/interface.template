@@ -1,0 +1,43 @@
+<module>
+package <package/>;
+
+import java.io.Serializable;
+
+/**
+    <short-description/>
+    <if-has-description>
+    <p/>
+    <description/>
+    </if-has-description>
+    <if-has-sort-attrs>
+    <p>
+    The natural ordering of objects of this type is determined by<!--
+ --><choose
+    ><when-has-one-sort-attr>
+    the value of the <first-sort-attr/> attribute.</when-has-one-sort-attr
+    ><when-has-two-sort-attrs>
+    the value of the <first-sort-attr/> and <last-sort-attr/> attributes.</when-has-two-sort-attrs
+    ><otherwise>
+    the value of attributes <for-each-sort-attr>
+    <if-last>and </if-last>
+    <name/><if-last>, </if-last></for-each-sort-attr>.</otherwise
+    ></choose>
+    </p>
+</if-has-sort-attrs>
+**/
+public 
+interface <simple-class-name/>
+extends <interfaces/>
+{<for-each-attr>
+
+    /**
+        <short-description/><if-has-description>
+        <p/>
+        <description/>
+</if-has-description>
+    **/    
+    <datatype/>
+    <accessor-name/>();
+</for-each-attr>
+}
+</module>

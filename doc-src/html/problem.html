@@ -1,0 +1,292 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>
+      The Server Pages Maintenance Problem
+    </title>
+    <link type="text/css" href="style.css" rel="stylesheet" />
+  </head>
+  <body>
+    <h1>
+      The Server Pages Maintenance Problem
+    </h1>
+    <p>
+      Server pages are fundamentally unmaintainable because they
+      combine code that should be developed and maintained by
+      people in two different roles with two different skill
+      sets.
+    </p>
+    <ul class="toc">
+      <li>
+        <a href="#separationmyth">Page Generation Technologies
+        Don't Separate</a>
+      </li>
+      <li>
+        <a href="#effects">The Effects of Non-Separation</a>
+        <ul class="toc">
+          <li>
+            <a href="#effectsOnHTMLAuthors">On HTML Authors</a>
+          </li>
+          <li>
+            <a href="#effectsOnDevelopers">On Software Developers</a>
+          </li>
+          <li>
+            <a href="#effectsOnOrganizations">On Organizations</a>
+          </li>
+          <li>
+            <a href="#effectsOnQuality">On Product Quality</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="#engineering">A Software Engineering View</a>
+      </li>
+      <li>
+        <a href="#solution">Dynamator: A Solution to Separation</a>
+      </li>
+    </ul>
+    <h2>
+      <a name="separationmyth">Page Generation Technologies Don't
+      Separate</a> 
+    </h2>
+    <p>
+      Every page generation technology claims to separate program
+      logic from HTML. But there's a simple test for separation,
+      and nearly every page generation technology fails the test:
+    </p>
+    <p
+    style="text-align:center; margin-left: 15%; margin-right:15%;">
+      Does the technology require the same file to contain both
+      server-side program code and client-side page content?
+    </p>
+    <p>
+      Regardless of how technology providers may define
+      "separation", this is the definition that matters most. Any file
+      that needs to be maintained by people in two different
+      roles is not maintainable.
+    </p>
+    <p>
+      Simplifying the programming language doesn't solve the
+      problem. Assuming that a simpler language enables
+      non-programmers to program is like assuming that a simple
+      painting program confers artistic skills.
+    </p>
+    <p>
+      Using an HTML-like syntax doesn't solve the problem. A
+      programming language that looks like HTML is still a
+      programming language.
+    </p>
+    <p>
+      Enhancing HTML with a small set of language extensions
+      doesn't solve the problem. Although fewer is better, even
+      one non-standard HTML construct means that the resulting
+      file is not standard HTML.
+    </p>
+    <p>
+      The truth is, server pages technologies and template
+      languages are designed to <b>combine</b> program logic and
+      static content, not to separate them.
+    </p>
+    <h2>
+      <a name="effects">The Effects of Non-Separation</a>
+    </h2>
+    <p>
+      Combining server-side code with client-side content causes
+      problems for HTML authors, software developers, and the
+      organizations that employ them.
+    </p>
+    <h3>
+      <a name="effectsOnHTMLAuthors">Effects on HTML authors</a>
+    </h3>
+    <p>
+      HTML authors have difficulty working with server pages
+      because they are not HTML:
+    </p>
+    <ul>
+      <li>
+        Server pages usually don't display correctly in browsers,
+        so HTML authors have to deploy them to a server to see
+        the effects of their changes.
+      </li>
+      <li>
+        Server pages are incompatible with most HTML authoring
+        tools.
+      </li>
+      <li>
+        Server pages usually can't be validated by HTML
+        validators.
+      </li>
+      <li>
+        Server pages have program logic that an HTML author has
+        to wade around.
+      </li>
+      <li>
+        Server pages that use a language (like taglibs) similar
+        to HTML can be very confusing, especially when the
+        language provides elements that are just slightly
+        different from standard HTML.
+      </li>
+    </ul>
+    <p>
+      Claims that server pages are designed to be maintained by
+      HTML authors are completely unfounded. Even when a
+      programming language is made to look like HTML, HTML
+      authors still need to learn the semantics of the language.
+      This is a much larger task than most programmers realize.
+    </p>
+    <p>
+      There are HTML authors who can maintain server pages, just
+      as there are programmers who can paint. But assuming that
+      all HTML authors can maintain server pages is as invalid as
+      assuming that all programmers can paint.
+    </p>
+    <h3>
+      <a name="effectsOnDevelopers">Effects on Software Developers</a>
+    </h3>
+    <p>
+      Few software developers consider server pages a problem, at
+      first. Software developers enjoy challenges, so complexity
+      doesn't bother them. Software developers relish new
+      technologies, and server pages have seen more than their
+      share. And server pages (or their older cousins, template
+      languages) are certainly superior to programs that embed
+      static content.
+    </p>
+    <p>
+      The problem for software developers is much more subtle.
+      The problem is that software developers usually end up
+      maintaining the HTML in server pages.
+    </p>
+    <p>
+      Now any software developer is capable of maintaining HTML.
+      But few software developers aspire to be HTML authors. And
+      the rate of change to the static content of most
+      commercially produced web applications is so high that
+      server page developers can spend most of their time
+      tweaking HTML.
+    </p>
+    <p>
+      That wasn't the theory. The theory was that HTML authors
+      would maintain the HTML. But in practice, once HTML has
+      been converted to server pages, software developers
+      typically own the server page.
+    </p>
+    <h3>
+      <a name="effectsOnOrganizations">Problems for Organizations</a>
+    </h3>
+    <p>
+      The problems caused by combining server-side logic with
+      client-side content worsen when HTML and program logic are
+      created by two different organizations or companies.
+    </p>
+    <p>
+      An organization responsible for HTML development does not
+      want to support every possible page generation technology.
+      The changes in JSP syntax alone over the past few years
+      have been much greater than the changes in HTML. Nor would
+      such an organization want to be held accountable for
+      introducing programming errors, since it doesn't have the
+      means to test for them.
+    </p>
+    <p>
+      An organization responsible for server pages development
+      probably does not want to export program logic to a
+      different organization responsible for HTML. Nor would such
+      an organization want to be held accountable for programming
+      errors that might have been introduced by the
+      HTML-producing organization.
+    </p>
+    <p>
+      Both kinds of organizations are less efficient than they 
+      could be.  The organization responsible for server pages
+      development bears the larger burden, since it is employing
+      software developers to fill essentially HTML authoring roles.
+    </p>
+    <h3>
+      <a name="effectsOnQuality">Effects on Product Quality</a>
+    </h3>
+    <p>
+      Because server page source code is less testable than pure HTML,
+      quality is more difficult to achieve.
+      Browser compatibility testing, standards compliance validation,
+      and accessibility validation are all much easier with pure HTML.
+    </p>
+    <p>
+      Because this kind of testing is repetitive, time-consuming, and
+      tedious, it tends to not be performed by programmers, who own
+      server pages code.
+    </p>
+    <h2>
+      <a name="engineering">A Software Engineering View</a>
+    </h2>
+    <p>
+      The combination of server-side code with client-side
+      content violates a basic software engineering principle:
+      modularity.
+    </p>
+    <p>
+      It's bad enough that server pages interpose two (or more)
+      languages that execute at different times and places with
+      different execution models.
+    </p>
+    <p>
+      The real problem is that a single file contains code that
+      should be developed and maintained by people in two
+      different roles with two different skill sets.
+    </p>
+    <p>
+      This is so fundamental a violation of modularity that it is
+      not even addressed in the software engineering literature.
+      David Parnas gets as close as anyone in his classic
+      article, <a href="http://www.acm.org/classics/may96"
+      style="font-style:italic">On the Criteria to be used in
+      Decomposing Systems into Modules</a>, when he states that
+      one benefit of modularity is that "development time should
+      be shortened because separate groups would work on each
+      module with little need for communication."
+    </p>
+    <h2>
+      <a name="solution">Dynamator: A Solution to Separation</a>
+    </h2>
+    <p>
+      Dynamator was invented specifically to solve the 
+      Server Pages Maintenance Problem.
+      With Dynamator, server-side code and client-side content are
+      stored in separate files so they can be maintained independently.
+    </p>
+    <p>
+      With Dynamator, HTML authors can maintain pure, standard HTML
+      even after a site goes live.  
+      Pure HTML is much easier to work with than server pages.
+      It is easily validated, and 
+      can be tested in a browser without deploying to a server.
+      With Dynamator, HTML authors are more productive.
+    </p>
+    <p>
+      With Dynamator, software developers don't even have to touch
+      HTML.  
+      Instead, they maintain Dynamator files, which specify how to 
+      transform an HTML file into a server page.
+      Dynamator provides a loosely coupled HTML interface,
+      making server code much more resilient to change.
+    </p>
+    <p>
+      With Dynamator, teams and applications become more agile.
+      HTML is decoupled from server code, and server code dependencies
+      on HTML are minimized, with the result that HTML authors and
+      software developers can work in parallel with minimal
+      interactions. 
+    </p>
+    <p>
+      Dynamator's approach to separation has other benefits beyond just
+      solving the Server Pages Maintenance Problem.
+      For example, server code can be modularized to enable a high
+      degree of reuse. 
+      And architects are free to choose the right technology for the job: 
+      it's as easy to use Dynamator to generate Java servlets as it is
+      to generate JSP.
+    </p>
+  </body>
+</html>
+

@@ -1,0 +1,13 @@
+<dynamator language="jsp">
+  <!-- Test raw content -->
+  <id name="div_3">
+    <raw-content>
+      <p>success!</p>
+    </raw-content>
+  </id>
+  <class name="div_4">
+    <raw-content>
+      <p>success!</p>
+    </raw-content>
+  </class>
+</dynamator>

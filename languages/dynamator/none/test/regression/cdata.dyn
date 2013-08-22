@@ -1,0 +1,7 @@
+<dynamator language="none">
+  <tag tag="is">
+    <attr name="added">
+      <content>true</content>
+    </attr>
+  </tag>
+</dynamator>

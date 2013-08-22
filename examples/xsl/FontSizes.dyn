@@ -1,0 +1,39 @@
+<dynamator language="xsl">
+
+<prolog>
+<xsl:stylesheet
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	version="1.0" >
+
+<xsl:output method="html"/>
+
+<xsl:template match="/">
+</prolog>
+
+  <class name="size">
+    <foreach>
+      //size
+    </foreach>
+    <discard-tag/>
+  </class>
+
+  <class name="font">
+    <attr name="size">
+      <raw-content>{.}</raw-content>
+    </attr>
+    <attr name="class">
+      <discard/>
+    </attr>
+  </class>
+
+  <class name="fontsize">
+    <raw-content><xsl:value-of select="."/></raw-content>
+    <discard-tag/>
+  </class>
+
+<epilog>
+</xsl:template>
+</xsl:stylesheet>
+</epilog>
+
+</dynamator>

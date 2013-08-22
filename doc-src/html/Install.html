@@ -1,0 +1,439 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta name="generator" content="HTML Tidy, see www.w3.org" />
+    <title>
+      Dynamator Installation
+    </title>
+    <link type="text/css" href="style.css" rel="stylesheet" />
+  </head>
+  <body>
+    <h1>
+      Dynamator Installation
+    </h1>
+    <h2>
+      Requirements
+    </h2>
+    <dl>
+      <dd>
+        <p>
+          Dynamator requires the following software:
+        </p>
+        <ul>
+          <li>
+            <a href="http://java.sun.com/j2se/">Java Runtime
+            Environment, version JDK 1.1.6 or greater.</a>
+            Dynamator will also run under jview on Windows,
+            although this is not recommended.
+          </li>
+          <li>
+            (For JDK versions earlier than JDK 1.4) <a
+            href="http://xml.apache.org/xerces-j/index.html">
+            Xerces-J</a>.
+          </li>
+          <li>
+            (For HTML processing) <a
+            href="http://jtidy.sourceforge.net">JTidy</a>.
+          </li>
+        </ul>
+      </dd>
+    </dl>
+    <h2>
+      Installation
+    </h2>
+    <dl>
+      <dd>
+        <ol>
+          <li>
+            If you are using a JDK version earlier than JDK 1.4,
+            download Xerces and add the xerces jar files to the
+            classpath. (Depending on the version of Xerces, this
+            will be either xerces.jar or xml-apis.jar and
+            xercesImpl.jar.)
+          </li>
+          <li>
+            If you will be using Dynamator on HTML files, download
+            JTidy and add Tidy.jar to the classpath.
+          </li>
+          <li>
+            Unzip the Dynamator distribution. It will create a
+            directory named <b>dynamator-<i>r</i>.<i>v</i></b>,
+            where <b><i>r</i></b> is the release number and <b><i>
+            v</i></b> is the version number. This directory
+            contains the following directories and files: 
+            <table border="0" cellspacing="1" cellpadding="5"
+            class="tabular" summary="Distribution contents">
+              <tr class="heading">
+                <th>
+                  File
+                </th>
+                <th>
+                  Description
+                </th>
+              </tr>
+              <tr>
+                <td>
+                  LICENSE
+                </td>
+                <td>
+                  The Dynamator license.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Readme.html
+                </td>
+                <td>
+                  Information about the current release.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  doc/
+                </td>
+                <td>
+                  Documentation.
+                  See doc/index.html.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  dynamator.jar
+                </td>
+                <td>
+                  The Dynamator JAR file.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  examples/
+                </td>
+                <td>
+                  Dynamator examples.
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  src.zip
+                </td>
+                <td>
+                  Dynamator source code.
+                </td>
+              </tr>
+            </table>
+          </li>
+          <li>
+            Add the dynamator.jar file to the classpath. The
+            location of dynamator.jar is <b>
+            .../dynamator-<i>r</i>.<i>v</i>/dynamator.jar</b>.
+          </li>
+        </ol>
+      </dd>
+    </dl>
+    <h2>
+      Verifying the Installation
+    </h2>
+    <dl>
+      <dd>
+        <p>
+          This procedure describes how to verify JSP generation. It
+          can be used as a model for other target languages.
+        </p>
+        <p>
+          The distribution includes an "examples" directory that
+          contains some example files, a makefile, and an Ant build
+          script.
+        </p>
+        <ol>
+          <li>
+            CD to directory 'examples/jsp'.
+          </li>
+          <li>
+            Copy the 'generated' subdirectory to a different
+            directory (say, 'generated-original').
+          </li>
+          <li>
+            If you have ant: 
+            <ol>
+              <li>
+                Run "ant clean".
+              </li>
+              <li>
+                Run "ant".
+              </li>
+            </ol>
+          </li>
+          <li>
+            If you don't have ant, but you have make: 
+            <ol>
+              <li>
+                Run "make clean_dos" or "make clean_unix",
+                depending on your OS.
+              </li>
+              <li>
+                Run "make all".
+              </li>
+            </ol>
+          </li>
+          <li>
+            Otherwise, run 'java dynamate ../<i>x</i>.html' for some
+            file <i>x</i>.dyn in the directory.
+          </li>
+          <li>
+            Compare the generated JSP file(s) in the 'generated'
+            subdirectory with the generated JSP files in the
+            original directory. The only thing that should be
+            different is the generation timestamp. If you have GNU
+            diff, you can do this with a single command: 
+            <div class="shell">
+<pre>
+diff -I "&lt;%-- generated by *" generated-original generated
+</pre>
+            </div>
+            <div class="clear">
+            </div>
+          </li>
+        </ol>
+      </dd>
+    </dl>
+    <h2>
+      Source code
+    </h2>
+    <dl>
+      <dd>
+        <p>
+          Source code is delivered as a zip file within the
+          Dynamator file distribution. Unzipping the src.zip file will
+          add the following files relative to the Dynamator root
+          directory (i.e. .../dynamator-<i>r</i>.<i>v</i>/):
+        </p>
+        <table border="0" cellspacing="1" cellpadding="5"
+        class="tabular" summary="Source distribution contents">
+          <tr class="heading">
+            <th>
+              File
+            </th>
+            <th>
+              Description
+            </th>
+          </tr>
+          <tr>
+            <td>
+              doc-src/
+            </td>
+            <td>
+              Documentation source directory.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              languages/
+            </td>
+            <td>
+              Source code directory for language extensions.<br />
+              Regression tests are under
+              languages/dynamator/<i>language-name</i>/test/regression.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              src/
+            </td>
+            <td>
+              Main source code directory.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              tools/
+            </td>
+            <td>
+              Source code directory for tools delivered with
+              Dynamator. Currently the only tool is the Dynamator
+              ant task.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              build.xml
+            </td>
+            <td>
+              Main ant build script.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              doc.xml
+            </td>
+            <td>
+              Ant script to build Dynamator documentation.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              jcoverage.xml
+            </td>
+            <td>
+              Ant script for coverage testing using 
+              <a href="http://www.jcoverage.com">jcoverage</a>. 
+              See file for requirements.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              pmd.xml
+            </td>
+            <td>
+              Ant script for linting source code using 
+              <a href="http://pmd.sourceforge.net">PMD</a>. 
+              See file for requirements.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              test.xml
+            </td>
+            <td>
+              Ant script for regression testing.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              test-invalid.xml
+            </td>
+            <td>
+              Ant script for regression testing (invoked by
+              test.xml).
+            </td>
+          </tr>
+          <tr>
+            <td>
+              test-syntax.xml
+            </td>
+            <td>
+              Ant script for regression testing (invoked by
+              test.xml).
+            </td>
+          </tr>
+          <tr>
+            <td>
+              testall.bat
+            </td>
+            <td>
+              Batch file for comprehensive testing.
+            </td>
+          </tr>
+        </table>
+      </dd>
+    </dl>
+    <h2>
+      Building
+    </h2>
+    <dl>
+      <dd>
+        <p>
+          In addition to the runtime requirements listed above,
+          building Dynamator requires a Java compilation
+          environment supporting the following:
+        </p>
+        <ul>
+          <li>
+            <a href="http://ant.apache.org">Ant</a> 1.5.3-1.
+          </li>
+          <li>
+            To build documentation and run regression tests,
+            <a href="http://ant-contrib.sourceforge.net">
+            ant-contrib</a> 0.5.
+            To build under JDK 1.1 or JDK 1.2, ant-contrib must be
+            recompiled under JDK 1.2 (the binary distribution
+            was compiled using the modern compiler, which is 
+            incompatible).
+          </li>
+          <li>
+            To build documentation and run regression tests under
+            a JDK version earlier than 1.4,
+            <a href="http://jakarta.apache.org/oro/">jakarta-oro</a> 
+            2.0.8.
+            Under JDK 1.1, jakarta-oro must be patched to replace JDK
+            1.2 API calls with JDK 1.1 API calls.
+          </li>
+        </ul>
+        <p>
+          Ant-contrib and Jakarta-oro jars are expected to reside
+          in ${ANT_HOME}/lib.
+          Versions identified above are the versions used to build
+          Dynamator. The build has not been tested with other versions.
+        </p>
+        <p>
+          Libraries required to build Dynamator for distribution 
+          (except for Ant) are provided as a separate download. 
+          The Dynamator distribution is JDK 1.1 and jview compatible, 
+          and is compiled under JDK 1.2.2.
+        </p>
+        <p>
+          To execute build commands, cd to 
+          <b>.../dynamator-<i>r</i>.<i>v</i></b>.
+          The following commands are available:
+        </p>
+        <table border="0" cellspacing="1" cellpadding="5"
+        class="tabular" summary="Build commands">
+          <tr class="heading">
+            <th>
+              Command
+            </th>
+            <th>
+              Description
+            </th>
+          </tr>
+          <tr>
+            <td>
+              ant
+            </td>
+            <td>
+              Compiles Dynamator classes and builds jar.
+              Files are placed in directory 'build'.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              ant clean
+            </td>
+            <td>
+              Deletes compiled class files.
+              Attempts to delete jar file.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              ant doc
+            </td>
+            <td>
+              Builds Dynamator documentation.
+              Generated documentation is placed in directory
+              'build/doc'. 
+            </td>
+          </tr>
+          <tr>
+            <td>
+              ant test
+            </td>
+            <td>
+              Runs Dynamator regression tests.
+            </td>
+          </tr>
+        </table>
+        <p>
+          To run under jview, Dynamator must be built using the 
+          JDK 1.2 compiler.
+        </p>
+        <p>
+          To run regression tests under jview, enter the command
+          <b>jview /d:ant_home=%ANT_HOME% org.apache.tools.ant.Main
+          -f test.xml</b>. Not all tests will be performed.
+        </p>
+      </dd>
+    </dl>
+  </body>
+</html>
+

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<dynamator language="none" suffix="html">
+  <tag tag="head">
+    <before-content>
+      <meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+      <meta http-equiv="content-language" content="es">
+    </before-content>
+  </tag>
+  <tag tag="title">
+    <content>
+      Una paginación simple
+    </content>
+  </tag>
+  <id name="HelloText">
+    <content>
+      ¡Ola Mundo!
+    </content>
+  </id>
+</dynamator>

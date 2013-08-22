@@ -1,0 +1,17 @@
+<dynamator language="none">
+  <!-- Test discard and discard-tag -->
+  <class name="discard_x">
+    <discard/>
+  </class>
+  <class name="discard_tag">
+    <discard-tag/>
+  </class>
+  <id name="test">
+    <before>
+      Shouldn't see this! (before)
+    </before>
+    <raw-content>
+      Shouldn't see this! (raw-content)
+    </raw-content>
+  </id>
+</dynamator>

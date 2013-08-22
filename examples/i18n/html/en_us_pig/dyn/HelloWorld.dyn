@@ -1,0 +1,12 @@
+<dynamator language="none" suffix="html">
+  <tag tag="title">
+    <content>
+        An Implesay Agepay
+    </content>
+  </tag>
+  <id name="HelloText">
+    <content>
+        Ellohay, Orldway!
+    </content>
+  </id>
+</dynamator>

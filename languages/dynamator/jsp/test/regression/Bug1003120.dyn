@@ -1,0 +1,12 @@
+<dynamator language="jsp">
+  <tag tag="img">
+    <attr name="src">
+      <rename to="page"/>
+      <raw-content>/[[@]]</raw-content>
+    </attr>
+    <attr name="name">
+      <rename to="imageName"/>
+    </attr>
+    <rename to="html:img"/>
+  </tag>
+</dynamator>

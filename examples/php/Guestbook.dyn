@@ -1,0 +1,194 @@
+<dynamator language="php">
+<!--
+    Note: 
+    In order to prevent unseemly use, this version of the
+    guestbook only displays the last text entered by the 
+    current user.
+-->
+
+<prolog><?
+    $pageMessage = '';
+    $fieldErrors = array();
+    $hasErrors = 0;
+    $entries = array(
+        array( 
+            "name"      => "Socrates", 
+            "comment"   => "To do is to be."
+            ),
+        array(
+            "name"      => "Plato", 
+            "comment"   => "To be is to do."
+            ),
+        array(
+            "name"      => "Sinatra", 
+            "comment"   => "Do be do be do."
+            )
+        );
+
+    if ( $_SERVER['REQUEST_METHOD'] == 'POST' )
+    {
+        if ( $_POST['name'] )
+        {
+            $name = $_POST['name'];
+        }
+        else
+        {
+            $hasErrors = 1;
+            $fieldErrors["name"] = "Please enter your name";
+            $name = '';
+        }
+
+        if ( $_POST['comment'] )
+        {
+            $comment = $_POST['comment'];
+        }
+        else
+        if ( ! isset($comment) )
+        {
+            $hasErrors = 1;
+            $fieldErrors["comment"] = "Please enter a comment";
+            $comment = '';
+        }
+
+        if ( $hasErrors )
+        {
+            $pageMessage = "Please correct the items below";
+        }
+        else
+        {
+            array_push($entries, 
+                array("name" => $name, "comment" => $comment));
+            $pageMessage = "Thank you for signing my guestbook!";
+            $name = '';
+            $comment = '';
+        }
+    }
+    else
+    {
+        $name = '';
+        $comment = '';
+    }
+?></prolog>
+
+<tag tag="form" name="add">
+  <attr name="action">
+    <content>
+      $_SERVER['SCRIPT_NAME']
+    </content>
+  </attr>
+</tag>
+
+<!-- page message handling -->
+<id name="DynPageMessageContainer">
+  <attr name="id">
+    <discard/>
+  </attr>
+  <attr name="class">
+    <content>
+      $hasErrors == 1
+      ? "errorContainer"
+      : ($pageMessage
+        ? "successContainer"
+        : "emptyMessageContainer")
+    </content>
+  </attr>
+</id>
+
+<id name="DynPageMessage">
+  <attr name="id">
+    <discard/>
+  </attr>
+  <attr name="class">
+    <content>
+      $hasErrors == 1
+      ? "errorMessage"
+      : ($pageMessage
+        ? "successMessage"
+        : "emptyMessage")
+    </content>
+  </attr>
+  <content>
+    $pageMessage ? $pageMessage : "&nbsp;"
+  </content>
+</id>
+
+<!-- input field handling -->
+<id name="DynNewName">
+  <attr name="id">
+    <discard/>
+  </attr>
+  <attr name="value">
+    <content>$name</content>
+  </attr>
+</id>
+<id name="DynNameError">
+  <attr name="id">
+    <discard/>
+  </attr>
+  <if>array_key_exists('name', $fieldErrors)</if>
+</id>
+
+
+<id name="DynNewComment">
+  <attr name="id">
+    <discard/>
+  </attr>
+  <content>$comment</content>
+</id>
+<id name="DynCommentError">
+  <attr name="id">
+    <discard/>
+  </attr>
+  <if>array_key_exists('comment', $fieldErrors)</if>
+</id>
+
+<!-- Make the submit button work correctly -->
+
+<id name="DynSubmitButton">
+  <attr name="id">
+    <discard/>
+  </attr>
+  <attr name="type">
+    <raw-content>
+      submit
+    </raw-content>
+  </attr>
+  <attr name="onclick">
+    <discard/>
+  </attr>
+</id>
+
+<!-- output the guestbook entries -->
+
+<id name="DynRow">
+  <attr name="id">
+    <discard/>
+  </attr>
+
+  <foreach>
+    $entries as $entry
+  </foreach>
+</id>
+
+<id name="DynName">
+  <attr name="id">
+    <discard/>
+  </attr>
+
+  <content>
+    $entry['name']
+  </content>
+</id>
+
+<id name="DynComment">
+  <attr name="id">
+    <discard/>
+  </attr>
+
+  <content>
+    $entry['comment']
+  </content>
+</id>
+
+</dynamator>
+

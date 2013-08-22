@@ -1,0 +1,32 @@
+<dynamator language="java">
+<prolog>
+import java.io.PrintWriter;
+
+public class HelloWorld
+{
+    private static String getGreeting()
+    {
+        return "Hello World, says Dynamator!";
+    }
+
+    public static void main(String[] args)
+    {
+        PrintWriter writer = new PrintWriter(System.out, true);
+        output(writer);
+        writer.flush();
+        writer.close();
+    }
+
+    public static void output(PrintWriter out)
+    {
+</prolog>
+
+<id name="DynamicText">
+  <content>getGreeting()</content>
+</id>
+
+<epilog>
+    }
+}
+</epilog>
+</dynamator>

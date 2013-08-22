@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="generator" content="HTML Tidy, see www.w3.org" />
+<title>Dynamator Example 2: Dynamic Text</title>
+<link rel="StyleSheet" type="text/css" href="../../style.css" />
+</head>
+<body>
+<h1>Arbitrary Text</h1>
+
+<p>In the Hello World example, the text replaced was associated
+with an HTML element; specifically, the &lt;p&gt; element. It
+didn't have to be the &lt;p&gt; element; it could have been any
+element. But what if the text that needs to be replaced is not
+delimited by an HTML element?</p>
+
+<p>The bad news is that Dynamator requires an HTML element. It
+can't locate arbitrary text. The good news is that there is an HTML
+4.0 element created specifically for this purpose: &lt;span&gt;.
+The &lt;span&gt; element can be used to wrap arbitrary text.
+According to the HTML spec, &lt;span&gt; has no effect on the
+rendered browser output.</p>
+
+<h2>The Page</h2>
+
+<p>This example extends the original Hello World example
+slightly.</p>
+
+<iframe width="600" height="170" src="ArbitraryText.html"></iframe>
+
+<h2>HTML</h2>
+
+<p>Once marked up with a &lt;span&gt; element, the file looks like
+this:</p>
+
+<div class="column">
+<div class="column-filename">ArbitraryText.html (updated)</div>
+
+<div class="html">
+<div class='insert'>ArbitraryText.html</div>
+</div>
+</div>
+
+<div class="clear"></div>
+
+<h2>Other Files</h2>
+
+<p>Because this file uses the same ID value as the original
+HelloWorld example, and the behavior is the same, we could use the
+same Dynamator file. But because Dynamator expects the Dynamator
+file to have the same base name as the HTML file, we need to create
+a file with the name 'ArbitraryText.dyn'. This file could use the
+directive '&lt;include file="HelloWorld.dyn"/&gt; to reuse the
+original content.</p>
+
+<h2>Running dynamate</h2>
+
+<p>As in the first example, the HTML file needs to be processed by
+<tt>dynamate</tt>:</p>
+
+<div class="shell">
+<pre>
+prompt=&gt; <b>java dynamate ArbitraryText.html</b>
+</pre>
+</div>
+
+<div class="clear"></div>
+
+<h2>Generated JSP file</h2>
+
+<p>The above command produces the following file. Changes to the
+original HTML are <span class="dyn-inline">highlighted</span>.</p>
+
+<div class="column">
+<div class="column-filename">ArbitraryText.jsp</div>
+
+<iframe src="ArbitraryText_jsp.html" width="600" height="250" frameborder="1" scrolling="auto"></iframe>
+</div>
+
+<div class="clear"></div>
+
+<div class="in-action">
+<h2>In Action</h2>
+
+<p>If you are viewing this page in a servlet engine, you can see <a
+href="ArbitraryText.jsp">the generated page in action</a>.</p>
+</div>
+
+<h2>Observations</h2>
+
+<p>Because they provide a structured way to address arbitrary portions
+of an HTML document, the &lt;span&gt; and &lt;div&lt; elements are
+essential to site building with Dynamator.</p>
+
+<p>This lesson only hints at an extremely powerful capability of
+Dynamator. Dynamator's loose coupling to HTML and it's &lt;include&gt;
+mechanism, combined with a strong naming convention, can enable a
+tremendous degree of reuse.</p>
+
+</body>
+</html>
+

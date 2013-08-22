@@ -1,0 +1,34 @@
+<type 
+    name="test.dynamator.Test"
+    simple-class-name="Test"
+    package="test.dynamator"
+    interfaces="Cloneable, Serializable"
+    short-description="This is a test type."
+    >
+  <description>
+    &lt;p&gt;
+    This is the type's long description.
+    &lt;/p&gt;
+    &lt;p&gt;
+    It has multiple paragraphs.
+    &lt;/p&gt;
+  </description>
+  <sort-attrs>
+    <sort-attr name="name"/>
+  </sort-attrs>
+
+  <attr 
+      name="name"
+      datatype="String"
+      short-description="Name of the object."
+      derived="false"
+      accessor-name="getName"
+      />
+  <attr
+      name="value"
+      datatype="int"
+      short-description="Value of the object."
+      derived="false"
+      accessor-name="getValue"
+      />
+</type>

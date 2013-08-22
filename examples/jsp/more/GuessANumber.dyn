@@ -1,0 +1,74 @@
+<dynamator language="jsp">
+<prolog>
+<%@ page session="true" %>
+<%@ page import="java.util.Vector"%>
+<%!
+    private static final int highValue = 100;
+%>
+<%
+    Integer answerValue = (Integer) session.getValue("answer");
+    if ( answerValue == null )
+    {
+        answerValue = new Integer(
+            Math.abs(
+                new Random(System.currentTimeMillis()).nextInt() 
+                % highValue));
+        session.putValue("answer", answerValue);
+    }
+    int answer = answerValue.intValue();
+    Vector history = (Vector) session.getValue("history");
+    if ( history == null )
+    {
+        history = new Vector();
+        session.putValue("history", history);
+    }
+    String guessValue = request.getParameter("guess");
+    int guess;
+    if ( guessValue == null )
+    {
+        guessValue = "";
+        guess = -1;
+    }
+    else
+    {
+        guess = Integer.parseInt(guessValue);
+        history.addElement(new Integer(guess));
+    }
+%>
+</prolog>
+<id name="HighValue">
+  <content>
+    highValue
+</content>
+</id>
+<class name="HistoryRow">
+  <foreach type="Vector[Integer]" i="iItem" element="item">
+    history
+  </foreach>
+</class>
+<id name="ItemValue">
+  <content>item</content>
+</id>
+<id name="ItemRelation">
+  <content>item.intValue() < answer ? "low" : item.intValue() > answer ? "high" : "equal"</content>
+</id>
+<id name="NewGuess">
+  <if>guess != answer</if>
+</id>
+<tag tag="form">
+  <attr name="action">
+    <content>
+      guess != answer 
+      ? response.encodeURL(request.getRequestURI())
+      : request.getRequestURI()
+    </content>
+  </attr>
+</tag>
+<tag tag="input" type="SUBMIT">
+  <attr name="value">
+    <content>
+      guess != answer ? "Guess" : "New Game"
+    </content>
+  </attr>
+</tag>
+</dynamator>

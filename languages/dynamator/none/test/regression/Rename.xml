@@ -1,0 +1,8 @@
+<xml>
+  <tag1 attr="val1">
+    <tag/>
+    <tag attr="val"/>
+    <tag attr="val2" z="1">abc</tag>
+  </tag1>
+  <tag2 id="id" attr="val3"/>
+</xml>

@@ -1,0 +1,32 @@
+<project name="dynamator-examples" default="all">
+  
+  <target name="all">
+    <ant dir="asp"/>
+    <ant dir="i18n"/>
+    <ant dir="java"/>
+    <ant dir="jsp"/>
+    <ant dir="perl"/>
+    <ant dir="php"/>
+    <ant dir="velocity"/>
+    <ant dir="webmacro"/>
+    <ant dir="xsl"/>
+    <ant dir="xsl-text"/>
+  </target>
+
+  <target name="clean">
+    <delete>
+      <fileset dir="." includes="*.asxml" />
+    </delete>
+    <ant dir="asp" target="clean"/>
+    <ant dir="i18n" target="clean"/>
+    <ant dir="java" target="clean"/>
+    <ant dir="jsp" target="clean"/>
+    <ant dir="perl" target="clean"/>
+    <ant dir="php" target="clean"/>
+    <ant dir="velocity" target="clean"/>
+    <ant dir="webmacro" target="clean"/>
+    <ant dir="xsl" target="clean"/>
+    <ant dir="xsl-text" target="clean"/>
+  </target>
+
+</project>

@@ -1,0 +1,13 @@
+<dynamator language="none" suffix="html">
+  <tag tag="title">
+    <content>An Image Page</content>
+  </tag>
+  <id name="HelloImage">
+    <attr name="width">
+      <content>207</content>
+    </attr>
+    <attr name="height">
+      <content>56</content>
+    </attr>
+  </id>
+</dynamator>

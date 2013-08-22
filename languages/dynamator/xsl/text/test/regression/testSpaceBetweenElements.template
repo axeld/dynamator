@@ -1,0 +1,20 @@
+<module>
+<a/> <b/>
+<a/> <if-condition><b/></if-condition>
+
+public
+class X
+implements
+    <if-serializable>Serializable</if-serializable>
+    <if-cloneable>Cloneable</if-cloneable>
+{
+}
+
+public
+class X
+implements
+    <if-cloneable>Cloneable</if-cloneable>
+    <if-serializable>Serializable</if-serializable>
+{
+}
+</module>

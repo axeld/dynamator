@@ -1,0 +1,13 @@
+<dynamator language="jsp">
+  <tag tag="a" with-attr="href">
+    <attr name="href">
+      <raw-content>[[@/.html/.htm]]</raw-content>
+    </attr>
+  </tag>
+
+  <tag tag="img">
+    <attr name="alt">
+      <raw-content>This image shows: [[@]]</raw-content>
+    </attr>
+  </tag>
+</dynamator>

@@ -1,0 +1,131 @@
+<dynamator language="xsl">
+
+<prolog>
+<!DOCTYPE xsl:stylesheet 
+[
+    <!ENTITY nbsp "&#160;">
+]>
+
+<xsl:stylesheet 
+    version="1.1"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:xhtml="http://www.w3.org/1999/xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    exclude-result-prefixes="xsl xhtml"
+    >
+
+<xsl:output method="html" indent="yes"/>
+
+<xsl:param name="last-update"/>
+<xsl:param name="last-update-year"/>
+<xsl:param name="nav-file-name"/>
+
+<xsl:include href="extra-prolog.xsl"/>
+
+<!-- identity transform -->
+<xsl:template match="@*|node()">
+  <xsl:copy>
+    <xsl:apply-templates select="@*|node()"/>
+  </xsl:copy>
+</xsl:template>
+
+<!-- identity transform -->
+<xsl:template match="@*" mode="nav">
+  <xsl:copy/>
+</xsl:template>
+
+<xsl:template match="node()" mode="nav">
+  <xsl:copy exclude-result-prefixes="xhtml xsl">
+    <xsl:apply-templates select="@*|node()" mode="nav"/>
+  </xsl:copy>
+</xsl:template>
+
+<!-- For current page, replace <a href="..."> with <span> -->
+<xsl:template match="xhtml:a[@href]" mode="nav">
+  <xsl:choose>
+    <xsl:when test="@href=$nav-file-name">
+      <span id="thispage">
+        <xsl:if test="@class">
+          <xsl:attribute name="class">
+            <xsl:value-of select="@class"/>
+          </xsl:attribute>
+        </xsl:if>
+        <xsl:apply-templates select="text()|node()" mode="nav"/>
+      </span>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:copy>
+        <xsl:apply-templates select="@*|node()" mode="nav"/>
+      </xsl:copy>
+    </xsl:otherwise>
+  </xsl:choose>
+</xsl:template>
+
+<xsl:template match="/">
+</prolog>
+
+<epilog>
+</xsl:stylesheet>
+</epilog>
+
+<id name="last-update">
+  <discard-tag/>
+  <content>
+    <xsl:value-of select="$last-update"/>
+  </content>
+</id>
+
+<id name="last-update-year">
+  <discard-tag/>
+  <content>
+    <xsl:value-of select="$last-update-year"/>
+  </content>
+</id>
+
+<tag tag="body">
+  <before-content>
+    <xsl:if test="//xhtml:body/@onload">
+      <xsl:attribute name="onload">
+        <xsl:value-of select="//xhtml:body/@onload"/>
+      </xsl:attribute>
+    </xsl:if>
+  </before-content>
+</tag>
+
+<tag tag="title">
+  <content>
+    <xsl:copy-of select="normalize-space(//xhtml:title/text())"/>
+  </content>
+  <after>
+    <xsl:copy-of 
+        select="//xhtml:head/*[not(name()='link' or name()='title')]"/>
+  </after>
+</tag>
+
+<id name="nav">
+  <extract>
+    <xsl:apply-templates mode="nav" 
+        select="document('')//xhtml:nav/*"/>
+  </extract>
+  <before>
+<xhtml:nav xsl:exclude-result-prefixes="xhtml xsl">
+  </before>
+  <after>
+</xhtml:nav>
+  </after>
+</id>
+
+<id name="page-content">
+  <content>
+    <xsl:copy>
+      <xsl:apply-templates select="//xhtml:body/*"/>
+    </xsl:copy>
+  </content>
+</id>
+
+<before-extracts>
+</xsl:template>
+
+</before-extracts>
+
+</dynamator>

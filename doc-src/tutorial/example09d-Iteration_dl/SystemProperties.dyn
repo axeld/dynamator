@@ -1,0 +1,16 @@
+<dynamator language="jsp">
+  <prolog>
+    <%@ page session="false" %>
+  </prolog>
+  <class name="Properties">
+    <foreach type="Properties" element="property">
+        System.getProperties()
+    </foreach>
+  </class>
+  <class name="PropertyName">
+    <content>propertyName</content>
+  </class>
+  <class name="PropertyValue">
+    <content>property</content>
+  </class>
+</dynamator>

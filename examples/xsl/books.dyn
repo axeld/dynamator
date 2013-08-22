@@ -1,0 +1,45 @@
+<dynamator language="xsl">
+<prolog>
+<xsl:stylesheet
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	version="1.0" >
+
+<xsl:template match="/">
+</prolog>
+
+<class name="book">
+  <foreach>
+    //book
+  </foreach>
+</class>
+
+<class name="author">
+          <content>
+            <xsl:value-of select="author"/>
+          </content>
+</class>
+
+<class name="title">
+          <content>
+            <xsl:value-of select="title"/>
+          </content>
+</class>
+
+<class name="category">
+          <content>
+            <xsl:value-of select="@category"/>
+          </content>
+</class>
+
+<class name="price">
+          <content>
+            <xsl:value-of select="price"/>
+          </content>
+</class>
+
+<epilog>
+</xsl:template>
+</xsl:stylesheet>
+</epilog>
+
+</dynamator>

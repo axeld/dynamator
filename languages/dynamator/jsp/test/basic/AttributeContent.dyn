@@ -1,0 +1,12 @@
+<dynamator language="jsp">
+  <class name="right">
+    <attr name="align">
+      <raw-content>right</raw-content>
+    </attr>
+  </class>
+  <class name="left">
+    <attr name="align">
+      <discard/>
+    </attr>
+  </class>
+</dynamator>

@@ -1,0 +1,385 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta name="generator" content="HTML Tidy, see www.w3.org" />
+    <title>
+      Dynamator File for XSL
+    </title>
+    <link rel="StyleSheet" type="text/css" href="../style.css" />
+  </head>
+  <body>
+    <table width="600">
+      <tr>
+        <td>
+          <h1>
+            Dynamator File for XSL
+          </h1>
+          <hr />
+          <h2>
+            Contents
+          </h2>
+          <dl>
+            <dd>
+              <a href="#Description">Description</a>
+            </dd>
+            <dd>
+              <a href="#HTML">Using HTML templates</a>
+            </dd>
+            <dd>
+              <a href="#Identification">Identification</a>
+            </dd>
+          </dl>
+          <hr />
+          <dl>
+            <dt>
+              <a id="Description"
+              name="Description"><b>DESCRIPTION</b></a>
+            </dt>
+            <dd>
+              <p>
+                This document describes the language-specific
+                format and code generation behavior of a <a
+                href="DynamatorFile.html">Dynamator File</a> with
+                language specified as "xsl".
+              </p>
+              <p>
+                A Dynamator File with a root element of
+                "<b>&lt;dynamator language="xsl"&gt;</b>"
+                identifies a file containing transformations to be
+                applied to an HTML or XML template in order to
+                produce an XSL source file (i.e. a file with
+                filetype ".xsl"). Dynamator applies the Dynamator
+                file to an HTML or XML file (the "template") to
+                create an XSL template that outputs an HTML or XML
+                file with structure corresponding to the template
+                and behavior specified by the Dynamator file. <a
+                id="ProgramLanguageElement"
+                name="ProgramLanguageElement"></a>
+              </p>
+              <h3>
+                XSL Elements
+              </h3>
+              <p>
+                Where a Dynamator File allows program lines, any
+                XSL code may be used. Unlike other programming
+                languages supported by Dynamator, XSL code is
+                placed as-is in the generated file. Because XSL
+                syntax varies depending on the context, annotations
+                file authors must take care to use the correct XSL
+                expression for the affected context. For example,
+                an &lt;xsl:value-of...&gt; element must not be used
+                within the content of a &lt;attr&gt; element,
+                because XML attributes may not contain XML
+                elements. Instead, the value of an attribute must
+                be specified using an attribute value template
+                expression ('{...}'). (Curly braces cannot be
+                automatically inserted around an expression because
+                an attribute value might be built from multiple
+                attribute value templates.)<br />
+              </p>
+              <dl>
+                <dd>
+                  <table border="1" width="500">
+                    <tr>
+                      <td>
+                        <b>How to produce an invalid XSL
+                        template:</b> 
+                      </td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#F0F0F0">
+<pre>
+    &lt;attr name="value"&gt;
+      &lt;!-- <b>don't do this!</b> --&gt;
+      &lt;content&gt;
+        <b>&lt;xsl:value-of select="@myvalue"/&gt;</b>
+      &lt;/content&gt;
+    &lt;/attr&gt;
+</pre>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+<pre>
+    &lt;!-- the above produces:
+        &lt;... value="&lt;xsl:value-of select="@myvalue"&gt;"&gt;
+    --&gt;
+</pre>
+                      </td>
+                    </tr>
+                  </table>
+                  <br />
+                   
+                  <table border="1" width="500">
+                    <tr>
+                      <td>
+                        <b>How to produce a valid XSL template:</b>
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td bgcolor="#F0F0F0">
+<pre>
+    &lt;attr name="value"&gt;
+      &lt;!-- <b>do this instead!</b> --&gt;
+      &lt;content&gt;
+        <b>{@myvalue}</b>
+      &lt;/content&gt;
+    &lt;/attr&gt;
+</pre>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+<pre>
+    &lt;!-- the above produces:
+        &lt;... value="{@myvalue}"&gt;
+    --&gt;
+</pre>
+                      </td>
+                    </tr>
+                  </table>
+                </dd>
+              </dl>
+              <p>
+                A Dynamator XSL file is structured in the following
+                way:
+              </p>
+              <h4>
+                Prolog
+              </h4>
+              <p>
+                The prolog contains the xsl stylesheet element,
+                output method element, and template match element.
+                In some cases it may also contain the beginning of
+                the HTML template.
+              </p>
+              <p>
+                The prolog must not contain an xml declaration
+                (e.g. &lt;?xml&nbsp;version="1.0"?&gt;), because
+                Dynamator will not place the declaration at the
+                first character of the output file.
+              </p>
+              <p>
+                The following is a typical Dynamator XSL file
+                prolog:
+              </p>
+              <dl>
+                <dd>
+                  <table border="1" width="500" bgcolor="#F0F0F0">
+                    <tr>
+                      <td>
+<pre>
+&lt;prolog&gt;
+&lt;xsl:stylesheet 
+    version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"&gt;
+
+&lt;xsl:output method="html"/&gt;
+
+&lt;xsl:template match="/"&gt;
+&lt;/prolog&gt;
+</pre>
+                      </td>
+                    </tr>
+                  </table>
+                </dd>
+              </dl>
+              <h4>
+                Epilog
+              </h4>
+              <p>
+                The epilog contains the xsl template-end element
+                and the xsl stylesheet-end element.
+              </p>
+              <p>
+                The following is a typical Dynamator XSL file
+                epilog:
+              </p>
+              <dl>
+                <dd>
+                  <table border="1" width="500" bgcolor="#F0F0F0">
+                    <tr>
+                      <td>
+<pre>
+&lt;epilog&gt;
+    &lt;/xsl:template&gt;
+
+    &lt;/xsl:stylesheet&gt;
+&lt;/epilog&gt;
+</pre>
+                      </td>
+                    </tr>
+                  </table>
+                </dd>
+              </dl>
+              <h3>
+                <a id="if" name="if">if</a>
+              </h3>
+              An 'if' element within a Dynamator XSL file has the
+              following structure: 
+              <dl>
+                <dd>
+                  <table border="1" width="500">
+                    <tr>
+                      <td bgcolor="#F0F0F0">
+<pre>
+&lt;if&gt;
+    <i>&lt;!-- Content: xsl-boolean-expression --&gt;</i>
+&lt;/if&gt;
+</pre>
+                      </td>
+                    </tr>
+                  </table>
+                </dd>
+              </dl>
+              <p>
+                The content of the 'if' element must be an XSL
+                boolean expression. The boolean expression is
+                inserted into the xsl:if element as the value of
+                the 'test' attribute:
+              </p>
+<pre>
+&lt;xsl:if test="<i>xsl-boolean-expression</i>"&gt;
+</pre>
+              <p>
+                An 'if' element may only be applied to an XSL <b>
+                element</b>, not to an attribute. To conditionally
+                output an attribute, discard the attribute, then
+                conditionally add it using &lt;before-content&gt;
+                and the &lt;xsl:attribute&gt; element.
+              </p>
+<pre>
+&lt;id name="optional-attribute-example"&gt;
+    &lt;attr name="optional-attribute"&gt;
+        &lt;discard/&gt;
+    &lt;/attr&gt;
+    &lt;before-content&gt;
+        &lt;xsl:if test="$optional-attribute-should-be-output"&gt;
+            &lt;xsl:attribute name="optional-attribute"&gt;
+                <i>optional attribute value</i>
+            &lt;/xsl:attribute&gt;
+        &lt;/xsl:if&gt;
+    &lt;/before-content&gt;
+&lt;/id&gt;
+</pre>
+              <h3>
+                <a id="foreach" name="foreach">foreach</a>
+              </h3>
+              <p>
+                A 'foreach' element within a Dynamator XSL file has
+                the following structure:
+              </p>
+              <dl>
+                <dd>
+                  <table border="1" width="500" bgcolor="#F0F0F0">
+                    <tr>
+                      <td>
+<pre>
+&lt;foreach&gt;
+    <i>&lt;!-- Content: xsl-node-set-expression --&gt;</i>
+&lt;/foreach&gt;
+</pre>
+                      </td>
+                    </tr>
+                  </table>
+                  <p>
+                  </p>
+                </dd>
+              </dl>
+              <p>
+                Unlike other languages supported by Dynamator, no
+                attributes are supported within the 'foreach'
+                element.
+              </p>
+              <p>
+                The content of the 'foreach' element must be an XSL
+                node-set expression. The node-set expression is
+                inserted into an xsl:for-each element as the value
+                of the 'select' attribute:
+              </p>
+<pre>
+&lt;xsl:for-each select="<i>xsl-node-set-expression</i>"&gt;
+</pre>
+              <h3>
+                <a id="HTML" name="HTML"><b>Using a Dynamator XSL
+                file with an HTML Template</b></a>
+              </h3>
+              <p>
+                An XSL template must be a valid XML file. When an
+                HTML file (that isn't XHTML) is input to Dynamator,
+                the output is not a valid XML file. Although
+                Dynamator processing would succeed, the generated
+                XSL template may fail at runtime. Therefore, to
+                create an XSL template from an HTML file, the HTML
+                file must first be converted to a valid XML file
+                outside of Dynamator, and processed as an XML file.
+                As long as the XSL template contains the
+                &lt;xsl:output method="html"&gt; tag, the output of
+                the template will be valid HTML.
+              </p>
+              <p>
+                This may be done using a tool such as <a
+                href="http://tidy.sourceforge.net">tidy</a>, with
+                the following commands:
+              </p>
+<pre>
+    tidy -asxml --tidy-mark no --doctype omit <i>filename</i>.html &gt; <i>filename</i>.tidy
+    java dynamate -X <i>filename</i>.tidy
+ 
+</pre>
+              <p>
+              </p>
+            </dd>
+            <dt>
+              <b><a id="SeeAlso" name="SeeAlso">SEE ALSO</a></b>
+            </dt>
+            <dd>
+              <p>
+                <a href="dynamate.html">dynamate</a>, <a
+                href="DynamatorFile.html">Dynamator File</a><br />
+              </p>
+            </dd>
+            <dd>
+              <br />
+            </dd>
+            <dt>
+              <a id="Identification"
+              name="Identification"><b>IDENTIFICATION</b></a>
+            </dt>
+            <dd>
+              <table border="0">
+                <tr>
+                  <td>
+                    Author:
+                  </td>
+                  <td>
+                    Jay Dunning
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    Version:
+                  </td>
+                  <td>
+                    1.5
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    Copyright:
+                  </td>
+                  <td>
+                    2000-2004, Jay Dunning
+                  </td>
+                </tr>
+              </table>
+            </dd>
+          </dl>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
+

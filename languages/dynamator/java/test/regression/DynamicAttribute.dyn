@@ -1,0 +1,58 @@
+<dynamator language="java">
+<prolog>
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.http.*;
+
+public class DynamicAttribute
+extends HttpServlet
+{
+    private String getGreeting()
+    {
+        return "Hello World, says dynamator!";
+    }
+
+    public
+    String
+    getTextColor()
+    {
+        return "#cc00cc";
+    }
+
+    public
+    String
+    getParagraphAlignment()
+    {
+        return "center";
+    }
+
+    public 
+    void
+    doGet(
+        HttpServletRequest request,
+        HttpServletResponse response
+        )
+    throws IOException
+    {
+        PrintWriter out = response.getWriter();
+        response.setContentType("text/html");
+
+</prolog>
+<id name="DynamicText">
+  <attr name="align">
+      <content>getParagraphAlignment()</content>
+  </attr>
+</id>
+<id name="DynamicFont">
+  <content>getGreeting()</content>
+  <attr name="color">
+      <content>getTextColor()</content>
+  </attr>
+</id>
+<epilog>
+        out.flush();
+        out.close();
+    }
+}
+</epilog>
+</dynamator>

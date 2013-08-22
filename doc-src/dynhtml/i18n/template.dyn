@@ -1,0 +1,34 @@
+<dynamator language="none" suffix="html" template="../template.html">
+
+<tag tag="link" with-attr="href">
+  <attr name="href">
+    <content>../[[@]]</content>
+  </attr>
+</tag>
+
+<tag tag="img">
+  <attr name="src">
+    <content>../[[@]]</content>
+  </attr>
+</tag>
+
+<tag tag="a" href="i18n/i18n.html">
+  <rename to="b"/>
+  
+  <attr name="href">
+    <discard/>
+  </attr>
+
+  <after>
+  <a href="i18n.html" class="nav-indent-1">Basic</a><br/>
+  <a href="i18n_advanced.html" class="nav-indent-1">Advanced</a><br/>
+  </after>
+</tag>
+
+<tag tag="a" with-attr="href" without-attr="class">
+  <attr name="href">
+    <content>../[[@]]</content>
+  </attr>
+</tag>
+
+</dynamator>

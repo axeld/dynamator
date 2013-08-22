@@ -1,0 +1,38 @@
+<dynamator language="jsp">
+  <prolog>
+    <%@ page session="false" %>
+    <%!
+        public
+        String
+        getGreeting()
+        {
+            return "Hello World, says Dynamator!";
+        }
+    
+        public
+        String
+        getTextColor()
+        {
+            return "#cc00cc";
+        }
+    
+        public
+        String
+        getParagraphAlignment()
+        {
+            return "center";
+        }
+    %>
+  </prolog>
+  <id name="DynamicText">
+    <attr name="align">
+        <content>getParagraphAlignment()</content>
+    </attr>
+  </id>
+  <id name="DynamicFont">
+    <content>getGreeting()</content>
+    <attr name="color">
+        <content>getTextColor()</content>
+    </attr>
+  </id>
+</dynamator>

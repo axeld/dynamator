@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dynamator language="none" suffix="html">
+  <tag tag="head">
+    <before-content>
+      <meta http-equiv="content-type" content="text/html; charset=utf-8">
+      <meta http-equiv="content-language" content="ja">
+    </before-content>
+  </tag>
+  <tag tag="title">
+    <content>
+      ユーザーの挨拶
+    </content>
+  </tag>
+  <id name="HelloText">
+    <content>
+      こんにちは<span id="UserName">ユーザー</span>!
+    </content>
+  </id>
+</dynamator>

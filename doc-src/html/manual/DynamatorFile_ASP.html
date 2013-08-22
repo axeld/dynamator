@@ -1,0 +1,413 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta name="generator" content="HTML Tidy, see www.w3.org" />
+    <title>
+      Dynamator File for ASP
+    </title>
+    <link rel="StyleSheet" type="text/css" href="../style.css" />
+  </head>
+  <body>
+    <table width="600">
+      <tr>
+        <td>
+          <h1>
+            Dynamator File for ASP
+          </h1>
+          <hr />
+          <h2>
+            Contents
+          </h2>
+          <dl>
+            <dd>
+              <a href="#Description">Description</a>
+            </dd>
+            <dd>
+              <a href="#Identification">Identification</a>
+            </dd>
+          </dl>
+          <hr />
+          <dl>
+            <dt>
+              <a id="Description"
+              name="Description"><b>DESCRIPTION</b></a>
+            </dt>
+            <dd>
+              <p>
+                This document describes the language-specific
+                format and code generation behavior of a <a
+                href="DynamatorFile.html">Dynamator File</a> coded
+                to create a Microsoft Active Server Pages file.
+              </p>
+              <p>
+                ASP supports multiple scripting languages. The
+                following Dynamator File root elements indicate
+                that an ASP file should be generated:
+              </p>
+              <dl>
+                <dt>
+                  &lt;dynamator language="asp"&gt;
+                </dt>
+                <dd>
+                  Generate an ASP file for VBScript.
+                </dd>
+                <dt>
+                  &lt;dynamator language="asp.vb"&gt;
+                </dt>
+                <dd>
+                  Generate an ASP file for VBScript.
+                </dd>
+              </dl>
+              <p>
+                VBScript is the default language, and the only
+                language currently supported by Dynamator. Future
+                languages will be indicated by new extensions; for
+                example, if JScript were to be supported, the
+                Dynamator language might be "asp.js".
+              </p>
+              <p>
+                A Dynamator File specifying language "asp" or
+                "asp.vb" identifies a file containing
+                transformations to be applied to an HTML or XML
+                template in order to produce an ASP source file
+                (i.e. a file with filetype ".asp"). Dynamator
+                applies the Dynamator file to an HTML or XML file
+                (the "template") to create an ASP that outputs an
+                HTML or XML file with structure corresponding to
+                the template and behavior specified by the
+                Dynamator file.
+              </p>
+              <p>
+                Because the VBScript engine expects files
+                containing scripts to be in DOS format, Dynamator
+                ensures that lines are terminated with CRLF, even
+                if lines in Dynamator's input files are not. <a
+                id="ProgramLanguageElement"
+                name="ProgramLanguageElement"></a>
+              </p>
+              <h3>
+                ASP Elements
+              </h3>
+              <p>
+                Where a Dynamator File allows program lines, any
+                ASP scripting element may be used. (ASP scripting
+                elements are declarations (&lt;%@ ... %&gt;),
+                scriptlets (&lt;% ... %&gt;) and expressions
+                (&lt;%= ... %&gt;).)
+              </p>
+              <h3>
+                <a id="for" name="for">for</a>
+              </h3>
+              <p>
+                The 'for' element of a Dynamator file for ASP has
+                the following structure:
+              </p>
+              <dl>
+                <dd>
+                  <table border="1" width="500" bgcolor="#F0F0F0">
+                    <tr>
+                      <td>
+<pre>
+&lt;for&gt;
+    <i>for-statement-remainder</i>
+&lt;/for&gt;
+</pre>
+                      </td>
+                    </tr>
+                  </table>
+                  <p>
+                  </p>
+                </dd>
+              </dl>
+              <p>
+                The content of the 'for' element is the remainder
+                of the 'For' statement. The text is treated as
+                CDATA; that is, it may contain special characters
+                such as '&lt;'.
+              </p>
+              <p>
+                For example, the element:
+              </p>
+              <dl>
+                <dd>
+                  <table border="1" width="500">
+                    <tr>
+                      <td>
+<pre>
+&lt;for&gt;i = 0 To 100 Step 2&lt;/for&gt;
+</pre>
+                      </td>
+                    </tr>
+                  </table>
+                </dd>
+              </dl>
+              generates: 
+              <dl>
+                <dd>
+                  <table border="1" width="500">
+                    <tr>
+                      <td bgcolor="#eeeeee">
+<pre>
+For i = 0 To 100 Step 2
+    ...
+Next
+</pre>
+                      </td>
+                    </tr>
+                  </table>
+                </dd>
+              </dl>
+              <h3>
+                <a id="foreach-collections"
+                name="foreach-collections">foreach
+                (collections)</a>
+              </h3>
+              <p>
+                The collection form of a 'foreach' element in a
+                Dynamator ASP file has the following structure:
+              </p>
+              <dl>
+                <dd>
+                  <table border="1" width="500" bgcolor="#F0F0F0">
+                    <tr>
+                      <td>
+<pre>
+&lt;foreach 
+      element="<i><a class="a"
+href="#element-variable-name">element-variable-name</a></i>"
+    &gt;
+    <i>&lt;!-- Content: collection-or-array-name --&gt;</i>
+&lt;/foreach&gt;
+</pre>
+                      </td>
+                    </tr>
+                  </table>
+                  <p>
+                  </p>
+                </dd>
+              </dl>
+              <p>
+                The content of the foreach element must be the name
+                of a collection or array.
+              </p>
+              <p>
+                The 'foreach' element must have the following
+                attribute:
+              </p>
+              <p>
+              </p>
+              <dl>
+                <dd>
+                  <dl>
+                    <dt>
+                      <b>element="<i><a id="element-variable-name"
+                      name="element-variable-name">vb-variable-name</a></i>"</b>
+                    </dt>
+                    <dd>
+                      (Required)<br />
+                       Identifies the name of the variable that
+                      refers to the current element of the
+                      collection.
+                    </dd>
+                  </dl>
+                </dd>
+              </dl>
+              <p>
+                The collection form of the 'foreach' element maps
+                to the following VBScript statement pattern:
+              </p>
+              <dl>
+                <dd>
+                  <table border="1" width="500" bgcolor="#F0F0F0">
+                    <tr>
+                      <td>
+<pre>
+For Each <i>element</i> In <i>collection</i>
+...
+Next
+</pre>
+                      </td>
+                    </tr>
+                  </table>
+                </dd>
+              </dl>
+              <h3 class="deprecated">
+                <a id="foreach-sequences"
+                name="foreach-sequences">foreach (sequenced)</a>
+              </h3>
+              <p class="deprecated">
+                <b>The sequenced form of the 'foreach' element has
+                been deprecated. Use the <a
+                style="text-decoration:none;color:#666666"
+                href="#for">for</a> element instead.</b>
+              </p>
+              <p class="deprecated">
+                The sequenced form of a 'foreach' element in a
+                Dynamator ASP file has the following structure:
+              </p>
+              <dl>
+                <dd>
+                  <table border="1" width="500" bgcolor="#F0F0F0">
+                    <tr>
+                      <td>
+<pre class="deprecated">
+&lt;foreach 
+      i="<i><a style="text-decoration:none;color:#999999"
+href="#iteration-variable-name">iteration-variable-name</a></i>"
+      first="<i><a style="text-decoration:none;color:#999999"
+href="#initial-value-expression">initial-value-expression</a></i>"
+      last="<i><a style="text-decoration:none;color:#999999"
+href="#final-value-expression">final-value-expression</a></i>"
+      { step="<i><a style="text-decoration:none;color:#999999"
+href="#increment-value-expression">increment-value-expression</a></i>" }
+/&gt;
+</pre>
+                      </td>
+                    </tr>
+                  </table>
+                </dd>
+              </dl>
+              <p class="deprecated">
+                It maps to the following VBScript statement
+                pattern:
+              </p>
+              <dl>
+                <dd>
+                  <table border="1" width="500" bgcolor="#F0F0F0">
+                    <tr>
+                      <td>
+<pre class="deprecated">
+    For i = <i>first</i> To <i>last</i> { Step <i>step</i> }
+    ...
+    Next
+</pre>
+                      </td>
+                    </tr>
+                  </table>
+                </dd>
+              </dl>
+              <p class="deprecated">
+                The sequenced values form of the 'foreach' element
+                takes no element content. It takes the following
+                attributes:
+              </p>
+              <p>
+              </p>
+              <dl>
+                <dd>
+                  <dl>
+                    <dt>
+                      <span class="deprecated"><b>i="<i><a
+                      id="iteration-variable-name"
+                      style="text-decoration:none;color:#999999"
+                      name="iteration-variable-name">iteration-variable-name</a></i>"</b></span>
+                    </dt>
+                    <dd>
+                      <span class="deprecated">(Used only if
+                      supported by the target language's
+                      generator.)<br />
+                       The name of the iteration variable. The
+                      value of the iteration variable changes with
+                      each iteration. It is initialized to 'first'
+                      and incremented by the value of
+                      'step'.</span> 
+                      <p>
+                      </p>
+                    </dd>
+                    <dt>
+                      <span class="deprecated"><b>first="<i><a
+                      id="initial-value-expression"
+                      style="text-decoration:none;color:#999999"
+                      name="initial-value-expression">initialize</a></i>"</b></span>
+                    </dt>
+                    <dd>
+                      <span class="deprecated">(Required)<br />
+                       The value of <i>i</i> for the first
+                      iteration of the loop.</span> 
+                      <p>
+                      </p>
+                    </dd>
+                    <dt>
+                      <span class="deprecated"><b>last="<i><a
+                      id="final-value-expression"
+                      style="text-decoration:none;color:#999999"
+                      name="final-value-expression">compare</a></i>"</b></span>
+                    </dt>
+                    <dd>
+                      <span class="deprecated">(Required)<br />
+                       The value of <i>i</i> for the last iteration
+                      of the loop.</span> 
+                      <p>
+                      </p>
+                    </dd>
+                    <dt>
+                      <span class="deprecated"><b>step="<i><a
+                      id="increment-value-expression"
+                      style="text-decoration:none;color:#999999"
+                      name="increment-value-expression">increment</a></i>"</b></span>
+                    </dt>
+                    <dd>
+                      <span class="deprecated">(Required)<br />
+                       The amount <i>i</i> is changed between each
+                      iteration. If not supplied, the 'step' part
+                      of the statement is omitted.</span> 
+                      <p>
+                      </p>
+                    </dd>
+                  </dl>
+                </dd>
+              </dl>
+              <br />
+            </dd>
+            <dt>
+              <b><a id="SeeAlso" name="SeeAlso">SEE ALSO</a></b>
+            </dt>
+            <dd>
+              <p>
+                <a href="dynamate.html">dynamate</a>, <a
+                href="DynamatorFile.html">Dynamator File</a><br />
+              </p>
+            </dd>
+            <dd>
+              <br />
+            </dd>
+            <dt>
+              <a id="Identification"
+              name="Identification"><b>IDENTIFICATION</b></a>
+            </dt>
+            <dd>
+              <table border="0">
+                <tr>
+                  <td>
+                    Author:
+                  </td>
+                  <td>
+                    Jay Dunning
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    Version:
+                  </td>
+                  <td>
+                    1.5
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    Copyright:
+                  </td>
+                  <td>
+                    2000-2004, Jay Dunning
+                  </td>
+                </tr>
+              </table>
+            </dd>
+          </dl>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
+

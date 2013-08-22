@@ -1,0 +1,59 @@
+<dynamator language="jsp">
+
+<prolog>
+<%@ page import="java.util.Hashtable"%>
+<%@ page import="java.util.Dictionary"%>
+<%!
+    private static final Hashtable dictionary = new Hashtable();
+    
+    static
+    {
+        dictionary.put(
+            "marker",
+            "An invisible HTML element or attribute that identifies a "
+            + "location in an HTML file.  The HTML 4.0 markers are "
+            + "div, span, id, and class.");
+        dictionary.put(
+            "locator",
+            "An element in a Dynamator annotations file that identifies "
+            + "the set of elements to which a set of overrides will apply.");
+        dictionary.put(
+            "prolog",
+            "The beginning of the generated file, before the template.");
+        dictionary.put(
+            "epilog",
+            "The end of the generated file, after the template.");
+        dictionary.put(
+            "override",
+            "An element in a Dynamator annotations file that specifies "
+            + "a set of changes to be applied to the template.  "
+            + "(AKA \"modifier\")");
+        dictionary.put(
+            "template",
+            "The file containing the static text pattern to be output "
+            + " by the generated program. ");
+    }
+%>    
+</prolog>
+
+  <class name="entry">
+    <foreach 
+        type="Dictionary[String,String]"
+        element="entry">
+      dictionary
+    </foreach>
+  </class>
+
+  <class name="term">
+    <content>
+      entryKey
+    </content>
+  </class>
+
+  <class name="definition">
+    <content>
+      entry
+    </content>
+  </class>
+
+</dynamator>

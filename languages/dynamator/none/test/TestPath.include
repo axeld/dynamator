@@ -1,0 +1,14 @@
+<dynamator>
+  <prolog>
+    <!--RETAIN the included prolog RETAIN-->
+  </prolog>
+  <include file="SecondInclude.include"/>
+  <tag tag="body">
+    <before-content>
+      <p>The -I argument worked.
+    </before-content>
+  </tag>
+  <epilog>
+    <!--RETAIN the included epilog RETAIN-->
+  </epilog>
+</dynamator>

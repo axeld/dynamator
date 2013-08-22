@@ -1,0 +1,684 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="content-type"
+    content="text/html; charset=utf-8" />
+    <meta http-equiv="content-type"
+    content="text/html; charset=ISO-8859-1" />
+    <meta http-equiv="content-language" content="ja,es,en" /><!--
+            Note to the curious:
+            Although the Spanish examples discussed in this file were
+            encoded in ISO-8859-1, the example text within this file is
+            encoded in UTF-8.
+        -->
+    <title>
+      Advanced Internationalization with Dynamator
+    </title>
+    <link type="text/css" href="../style.css" rel="stylesheet" />
+  </head>
+  <body>
+    <h1>
+      Advanced Internationalization with Dynamator
+    </h1>
+    <p>Contents:</p>
+    <ul class="toc">
+      <li>
+        <a href="#spanish">ISO-8859-1 in Spanish</a>
+      </li>
+      <li>
+        <a href="#japanese">UTF-8 in Japanese</a>
+      </li>
+      <li>
+        <a href="#others">Other encodings</a>
+      </li>
+    </ul>
+    <p>
+      The <a href="i18n.html">Dynamator Internationalization
+      Guide</a> describes how to use Dynamator to internationalize
+      the static content of a web application. To simplify things,
+      examples were in Pig Latin. The nice thing about Pig Latin is
+      that it uses the ASCII character set. That allowed us to
+      focus on basic principles without having to consider the
+      complexities of character sets. But many languages don't use
+      ASCII. In this guide, you'll learn how to use Dynamator with
+      a character set other than ASCII.
+    </p>
+    <p>
+      We'll continue with the Hello World example, this time
+      translating it into several real languages, each represented
+      by a different character encoding.
+    </p>
+    <p>
+      We'll also continue with the assumption that what gets
+      localized is text strings, not entire HTML pages. With
+      Dynamator, the process for localizing entire pages is a
+      subset of the process for localizing text strings. So either
+      way, you'll know what to do.
+    </p>
+    <p>
+      While I will try to provide enough details for you to
+      duplicate the examples, a complete treatment of character
+      sets and character encodings is out of scope for this guide.
+    </p>
+    <p>
+      One disclaimer. I don't know any of the languages that are
+      presented on this page. I would welcome corrections from
+      anyone who knows better.
+    </p>
+    <p>
+      We'll start with an example that uses the ISO-8859-1
+      character encoding, demonstrated using a European language,
+      then move to the UTF-8 character encoding, demonstrated using
+      an Asian language. Together, these two encodings should
+      support 90% of internationalization needs. We'll then briefly
+      discuss use of other encodings.
+    </p>
+    <h2>
+      <a id="spanish" name="spanish">ISO-8859-1 in Spanish</a>
+    </h2>
+    <p>
+      The ISO-8859-1 character encoding supports all major Western
+      European languages. In addition to all the ASCII characters,
+      it also includes characters used by languages such as German,
+      French, and Spanish. This example uses Spanish. Other than
+      the character encoding issues, the internationalization
+      process will look a lot like the process we used for the Pig
+      Latin example.
+    </p>
+    <h3>
+      Internationalizing Static Text
+    </h3>
+    <p>
+      Here's how to use Dynamator to create a Spanish version of an
+      HTML page. The item sequence matches the sequence in the Pig
+      Latin example.
+    </p>
+    <ol>
+      <li>
+        Create the locale-specific directory tree. We're going to
+        create a generic Spanish page, so we'll name the directory
+        'es'. However, be aware that Spanish differs by region, so
+        you'll probably want to be more specific (e.g. 'es_mx' for
+        mexico). Under the locale directory, create <tt>html</tt>,
+        <tt>dyn</tt>, and <tt>htdocs</tt> directories.<br />
+      </li>
+      <li>
+        The original HTML files have already been updated with <b>
+        id</b> attributes for the Pig Latin example, so they don't
+        need to be changed.<br />
+      </li>
+      <li>
+        The reference translation (in this case English) Dynamator
+        files don't need to be changed.<br />
+      </li>
+      <li>
+        Copy the reference translation Dynamator files into the
+        locale-specific directory, translate the text, and add
+        locale identifiers. 
+        <p>
+          Two kinds of locale identifiers need to be added.
+        </p>
+        <p>
+          First, the Dynamator file needs to begin with an XML
+          processing instruction that specifies the character set.
+          The XML processing instruction informs Dynamator that the
+          file contains characters in the specified character set
+          so that it can process them correctly. If the text in the
+          HTML file around non-ASCII characters is garbled, the
+          chances are that the XML processing instruction was
+          omitted.
+        </p>
+        <p>
+          For Spanish (and most Western European languages), the
+          processing instruction looks like this:
+        </p>
+        <div class="column">
+          <div class="dyn">
+<pre>
+&lt;?xml version="1.0" encoding="iso-8859-1"?&gt;
+</pre>
+          </div>
+        </div>
+        <div class="clear">
+        </div>
+        <p>
+          Second, browsers need to be informed of the language and
+          character set of the HTML page. This is done by adding
+          two meta directives to the HTML <tt>head</tt> section: a
+          content-type directive that specifies the character set,
+          and a content-language directive that specifies the
+          language. The meta directives should be placed as close
+          to the beginning of the file as possible.
+        </p>
+        <p>
+          For Spanish, the meta-directives look like this:
+        </p>
+        <div class="column">
+          <div class="dyn">
+<pre>
+&lt;meta http-equiv="content-type" content="text/html; charset=iso-8859-1"&gt;
+&lt;meta http-equiv="content-language" content="es"&gt;
+</pre>
+          </div>
+        </div>
+        <div class="clear">
+        </div>
+        <p>
+          The Spanish Dynamator file looks like this:
+        </p>
+        <div class="column">
+          <div class="column-filename">
+            html/es/dyn/HelloWorld.dyn
+          </div>
+          <div class="dyn">
+<pre>
+&lt;?xml version="1.0" encoding="iso-8859-1"?&gt;
+&lt;dynamator language="none" suffix="html"&gt;
+  &lt;tag tag="head"&gt;
+    &lt;before-content&gt;
+      &lt;meta http-equiv="content-type" content="text/html; charset=iso-8859-1"&gt;
+      &lt;meta http-equiv="content-language" content="es"&gt;
+    &lt;/before-content&gt;
+  &lt;/tag&gt;
+  &lt;tag tag="title"&gt;
+    &lt;content&gt;
+      Una paginación simple
+    &lt;/content&gt;
+  &lt;/tag&gt;
+  &lt;id name="HelloText"&gt;
+    &lt;content&gt;
+      ¡Ola Mundo!
+    &lt;/content&gt;
+  &lt;/id&gt;
+&lt;/dynamator&gt;
+</pre>
+          </div>
+        </div>
+        <div class="clear">
+        </div>
+        <br />
+      </li>
+      <li>
+        Create localized HTML by running Dynamator. To correctly
+        output special characters, the character encoding must be
+        specified on the command line. 
+        <div class="shell">
+          prompt&gt; cd html/es/dyn<br />
+          prompt&gt; java dynamate -e iso-8859-1 -d ../html
+          ../../HelloWorld.html
+        </div>
+        <div class="clear">
+        </div>
+        <p>
+          You might think that specifying the encoding on the
+          command line is redundant, since it was already specified
+          in the Dynamator localization file. You might even be
+          right, but that's the way it works today. The command
+          line encoding determines the encoding Tidy uses when it
+          processes the input HTML file, as well as the encoding
+          used by Dynamator's output processor. The encoding in the
+          Dynamator file determines how Dynamator processes that
+          file.<br />
+        </p>
+      </li>
+      <li>
+        The output from the previous step will be a localized HTML
+        file in the language-specific HTML directory. 
+        <div class="column">
+          <div class="column-filename">
+            html/es/html/HelloWorld.html
+          </div>
+          <div class="out">
+<pre>
+<span
+class="dyn-text">&lt;!-- generated by Dynamator Mon Dec 31 00:13:13 CST 2001</span><!--
+--><span
+class="dyn-inline">--&gt;</span>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;
+&lt;html&gt;
+  &lt;head&gt;
+ <span
+class="dyn-text">     &lt;meta http-equiv="content-type" content="text/html; charset=iso-8859-1"&gt;
+      &lt;meta http-equiv="content-language" content="es"&gt;</span><!--
+-->    &lt;title&gt;
+      <span class="dyn-inline">Una paginación simple</span>
+    &lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p id="HelloText"&gt;
+      <span class="dyn-inline">¡Ola Mundo!</span>
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+          </div>
+        </div>
+        <div class="clear">
+        </div>
+      </li>
+    </ol>
+    <h3>
+      <a id="code" name="code">Consolidating Server Code</a>
+    </h3>
+    <p>
+      Let's move on to the Hello User example, so we can see how
+      server code is handled.
+    </p>
+    <p>
+      Applying the process described above to the HelloUser
+      example, we obtain the following HTML file, in Spanish:
+    </p>
+    <div class="column">
+      <div class="column-filename">
+        html/es/html/HelloUser.html
+      </div>
+      <div class="html">
+<pre>
+&lt;!-- generated by Dynamator Mon Dec 31 01:07:52 CST 2001
+--&gt;&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;
+&lt;html&gt;
+  &lt;head&gt;
+      &lt;meta http-equiv="content-type" content="text/html; charset=iso-8859-1"&gt;
+      &lt;meta http-equiv="content-language" content="es"&gt;
+    &lt;title&gt;
+      Saludo del utilizador
+    &lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p id="HelloText"&gt;
+      ¡Ola &lt;span id="UserName"&gt;Utilizador&lt;/span&gt;!
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+      </div>
+    </div>
+    <div class="clear">
+    </div>
+    <p>
+      We can apply the Dynamator server code file to this file with
+      the following command:
+    </p>
+    <div class="shell">
+      prompt&gt; cd html/es/html<br />
+      prompt&gt; java dynamate -e iso-8859-1 -d ../htdocs -f
+      ../../../dyn HelloUser.html
+    </div>
+    <div class="clear">
+    </div>
+    <p>
+      The result is:
+    </p>
+    <div class="column">
+      <div class="column-filename">
+        html/es/htdocs/HelloUser.jsp
+      </div>
+      <div class="out">
+<pre>
+<span
+class="dyn-text">&lt;%-- generated by Dynamator Mon Dec 31 09:39:51 CST 2001</span><!--
+--><span
+class="dyn-inline">--%&gt;</span>&lt;!--  generated by Dynamator Mon Dec 31 01:07:52 CST 2001
+ --&gt;&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;meta http-equiv="content-type" content="text/html; charset=iso-8859-1"&gt;
+    &lt;meta http-equiv="content-language" content="es"&gt;
+    &lt;title&gt;Saludo del utilizador&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+<span class="dyn-text"><span
+class="html-inline">   &lt;p id="HelloText"&gt;¡Ola &lt;span id="UserName"&gt;</span>&lt;%= 
+      session.getValue("username")</span><!--
+--> <span
+class="dyn-inline">    %&gt;</span>&lt;/span&gt;!&lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+      </div>
+    </div>
+    <div class="clear">
+    </div>
+    <p>
+      But this is not quite sufficient. For JSP, we need to add a
+      page directive to inform the JSP engine of the character set;
+      otherwise many JSP engines will choke on non-ASCII
+      characters. This directive is locale-specific, and may be the
+      only locale-specific code needed by any server page. We can
+      use the Dynamator &lt;include&gt; facility to include a
+      different page directive for each locale. The Dynamator
+      locale-specific file looks like this:
+    </p>
+    <div class="column">
+      <div class="column-filename">
+        html/es/locale.dyn
+      </div>
+      <div class="dyn">
+<pre>
+&lt;dynamator&gt;
+  &lt;prolog&gt;&lt;%@ page contentType="text/html; charset=iso-8859-1"%&gt;
+  &lt;/prolog&gt;
+&lt;/dynamator&gt;
+</pre>
+      </div>
+    </div>
+    <div class="clear">
+    </div>
+    <p>
+      As with other files, it has the same name and is placed in
+      the same relative location for each locale.
+    </p>
+    <p>
+      Note that there is no whitespace after the &lt;prolog&gt;
+      tag; this causes the following text to be inserted into the
+      output file without preceding whitespace.
+    </p>
+    <p>
+      Each Dynamator server code file needs to reference this file.
+      The server code file for this example now looks like this
+      (the change to the original file is in bold font):
+    </p>
+    <div class="column">
+      <div class="column-filename">
+        dyn/HelloUser.dyn
+      </div>
+      <div class="dyn">
+<pre>
+&lt;dynamator language="jsp"&gt;
+  <b>&lt;include file="locale.dyn"/&gt;</b>
+  &lt;id name="UserName"&gt;
+    &lt;content&gt;
+      session.getValue("username")
+    &lt;/content&gt;
+  &lt;/id&gt;
+&lt;/dynamator&gt;
+</pre>
+      </div>
+    </div>
+    <div class="clear">
+    </div>
+    <p>
+      The command line now contains an include path argument so
+      that Dynamator can locate the included file in a
+      locale-specific directory:
+    </p>
+    <div class="shell">
+      prompt&gt; cd html/es/html<br />
+      prompt&gt; java dynamate -e iso-8859-1 -d ../htdocs -f
+      ../../../dyn <b>-I ..</b> HelloUser.html
+    </div>
+    <div class="clear">
+    </div>
+    <p>
+      The resulting JSP file looks like this:
+    </p>
+    <div class="column">
+      <div class="column-filename">
+        html/es/htdocs/HelloUser.jsp
+      </div>
+      <div class="out">
+<pre>
+<span
+class="dyn-text">&lt;%-- generated by Dynamator Mon Dec 31 16:01:10 CST 2001
+--%&gt;&lt;%@ page contentType="text/html; charset=iso-8859-1" %&gt;</span><!--
+--> <span
+class="dyn-inline"></span> &lt;!--  generated by Dynamator Mon Dec 31 01:07:52 CST 2001
+ --&gt;&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;meta http-equiv="content-type" content="text/html; charset=iso-8859-1"&gt;
+    &lt;meta http-equiv="content-language" content="es"&gt;
+    &lt;title&gt;Saludo del utilizador&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+<span class="dyn-text"><span
+class="html-inline">   &lt;p id="HelloText"&gt;¡Ola &lt;span id="UserName"&gt;</span>&lt;%= 
+      session.getValue("username")</span><!--
+--> <span
+class="dyn-inline">    %&gt;</span>&lt;/span&gt;!&lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+      </div>
+    </div>
+    <div class="clear">
+    </div>
+    <h2>
+      <a id="japanese" name="japanese">UTF-8 in Japanese</a>
+    </h2>
+    <p>
+      UTF-8 is one of the most popular encodings for international
+      languages. It is growing in popularity because it is able to
+      represent all characters used by every written language, and
+      because it is compatible with ASCII and ISO-8859-1.
+    </p>
+    <p>
+      We will now repeat the above exercise using Japanese. Chances
+      are you were able to read the Spanish upside-down exclamation
+      point character (&#161;). If so, it's because your browser
+      supports ISO-8859-1 encoding and uses fonts that have the
+      upside-down exclamation point glyph. Unless you already read
+      Japanese web pages, chances are that you won't be able to
+      read the following examples. You'll probably see
+      weird-looking characters, or characters that look like boxes.
+      That's because your computer probably doesn't have Japanese
+      fonts. To read the examples in Japanese, you'll have to
+      install Japanese fonts and configure your browser to support
+      Japanese. (Instructions are out of scope for this guide, but
+      if you have a recent version of Internet Explorer it's
+      painless: just go to <a
+      href="http://www.microsoft.com/japan/">
+      http://www.microsoft.com/japan</a>.)
+    </p>
+    <p>
+      We'll make one other change with this example: we'll get rid
+      of the Dynamator generation notices.
+    </p>
+    <p>
+      The Japanese HelloUser Dynamator file looks like this:
+    </p>
+    <div class="column">
+      <div class="column-filename">
+        html/ja/dyn/HelloUser.dyn
+      </div>
+      <div class="dyn">
+<pre>
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;dynamator language="none" suffix="html"&gt;
+  &lt;tag tag="head"&gt;
+    &lt;before-content&gt;
+      &lt;meta http-equiv="content-type" content="text/html; charset=utf-8"&gt;
+      &lt;meta http-equiv="content-language" content="ja"&gt;
+    &lt;/before-content&gt;
+  &lt;/tag&gt;
+  &lt;tag tag="title"&gt;
+    &lt;content&gt;
+      ユーザーの挨拶
+    &lt;/content&gt;
+  &lt;/tag&gt;
+  &lt;id name="HelloText"&gt;
+    &lt;content&gt;
+      こんにちは&lt;span id="UserName"&gt;ユーザー&lt;/span&gt;!
+    &lt;/content&gt;
+  &lt;/id&gt;
+&lt;/dynamator&gt;
+</pre>
+      </div>
+    </div>
+    <div class="clear">
+    </div>
+    <p>
+      The Japanese HTML file is created using the following
+      command:
+    </p>
+    <div class="shell">
+      prompt&gt; cd html/ja/dyn<br />
+      prompt&gt; java dynamate -e utf-8 -d ../html -G
+      ../../HelloUser.html
+    </div>
+    <div class="clear">
+    </div>
+    <p>
+      The -G option removes the Dynamator generation notice.
+    </p>
+    <p>
+      The Japanese HTML demo file looks like this:
+    </p>
+    <div class="column">
+      <div class="column-filename">
+        html/ja/html/HelloWorld.html
+      </div>
+      <div class="html">
+<pre>
+&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;
+&lt;html&gt;
+  &lt;head&gt;
+      <span
+class="dyn-inline">&lt;meta http-equiv="content-type" content="text/html; charset=utf-8"&gt;
+      &lt;meta http-equiv="content-language" content="ja"&gt;</span>
+      &lt;title&gt;
+        <span class="dyn-inline">ユーザーの挨拶</span>
+      &lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p id="HelloText"&gt;
+      <span
+class="dyn-inline">こんにちは&lt;span id="UserName"&gt;ユーザー&lt;/span&gt;!</span>
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+      </div>
+    </div>
+    <div class="clear">
+    </div>
+    <p>
+      We'll create a Japanese-specific JSP page declaration:
+    </p>
+    <div class="column">
+      <div class="column-filename">
+        html/ja/locale.dyn
+      </div>
+      <div class="dyn">
+<pre>
+&lt;dynamator&gt;
+  &lt;prolog&gt;&lt;%@ page contentType="text/html; charset=utf-8" %&gt;
+  &lt;/prolog&gt;
+&lt;/dynamator&gt;
+</pre>
+      </div>
+    </div>
+    <div class="clear">
+    </div>
+    <p>
+      We can use the same Dynamator server code file we used with
+      all the other locales. The only thing that changes is the
+      character encoding specified on the command line:
+    </p>
+    <div class="shell">
+      prompt&gt; cd html/ja/html<br />
+      prompt&gt; java dynamate -e utf-8 -d ../htdocs -f
+      ../../../dyn -G -I .. HelloUser.html
+    </div>
+    <div class="clear">
+    </div>
+    <p>
+      The result is:
+    </p>
+    <div class="column">
+      <div class="column-filename">
+        html/ja/htdocs/HelloUser.jsp
+      </div>
+      <div class="out">
+<pre>
+<span
+class="dyn-text">&lt;%@ page contentType="text/html; charset=utf-8" %&gt;</span><!--
+--> <span
+class="dyn-inline"></span> &lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;meta http-equiv="content-type" content="text/html; charset=utf-8"&gt;
+    &lt;meta http-equiv="content-language" content="ja"&gt;
+    &lt;title&gt;ユーザーの挨拶&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+<span class="dyn-text"><span
+class="html-inline">   &lt;p id="HelloText"&gt;こんにちは&lt;span id="UserName"&gt;</span>&lt;%= 
+      session.getValue("username")</span><!--
+--> <span
+class="dyn-inline">    %&gt;</span>&lt;/span&gt;!&lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+      </div>
+    </div>
+    <div class="clear">
+    </div>
+    <h2>
+      <a id="others" name="others">Other encodings</a>
+    </h2>
+    <p>
+      Although ISO-8859-1 and UTF-8 together should satisfy many
+      projects' needs, they won't work in every situation. Some
+      browsers don't support UTF-8, and many international websites
+      use other encodings. Fortunately, Dynamator should support
+      any encoding that is supported both by Java and by Xerces.
+    </p>
+    <p>
+      The process used for these character encodings is no
+      different from the process already described. The only thing
+      that changes is the name of the encoding.
+    </p>
+    <p>
+      If you're curious, the Dynamator i18n example includes a
+      locale that uses the Big-5 character encoding.
+    </p>
+    <h2>
+      <a id="conclusion" name="conclusion">Conclusion</a>
+    </h2>
+    <p>
+      Working with different character sets is a fact of life for
+      many internationalization projects. Dynamator makes dealing
+      with static content in various character encodings relatively
+      painless.
+    </p>
+    <p>
+      We have presented the localization process sequentially, as
+      if a single individual were performing it. When you consider
+      each role separately, the advantages of the Dynamator
+      approach become clear.
+    </p>
+    <p>
+      With Dynamator, localizers can work directly with files in
+      their native encoding, rather than translating text to ASCII
+      escape sequences for Java property files. And they can ensure
+      that pages containing international characters display
+      correctly without delivering localized text to programmers.
+      This autonomy makes them much more productive.
+    </p>
+    <p>
+      With Dynamator, programmers don't have to touch files
+      containing encoded characters. All they have to do is to
+      create a single file for each locale specifying the character
+      encoding.
+    </p>
+    <p>
+      For programmers, the biggest benefit of using Dynamator for
+      internationalized applications remains the consolidation of
+      server code into a single file. This code works the same
+      regardless of encoding or locale. It exists in only one
+      place; not copied to every server page for every locale. The
+      inevitable code changes are easy to apply.
+    </p>
+    <p>
+      There are many facets to internationalization, and Dynamator
+      helps with just one of them. But because that facet involves
+      the coordination of so many different roles, getting it right
+      is an important key to project success. By improving the
+      workflow for static content, Dynamator targets the critical
+      path of most internationalization projects, resulting in a
+      faster, simpler, more effective process.
+    </p>
+  </body>
+</html>
+

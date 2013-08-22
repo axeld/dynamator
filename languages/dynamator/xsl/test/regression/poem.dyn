@@ -1,0 +1,54 @@
+<dynamator language="xsl">
+<prolog><?xml version="1.0"?>
+<xsl:stylesheet
+   xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+   version="1.0">
+
+<xsl:template match="poem">
+</prolog>
+
+<tag tag="title">
+  <content><xsl:value-of select="//title"/></content>
+</tag>
+
+<class name="title">
+  <content><xsl:value-of select="//title"/></content>
+  <attr name="class">
+    <discard/>
+  </attr>
+</class>
+
+<class name="author">
+  <content><xsl:value-of select="//author"/></content>
+  <discard-tag/>
+</class>
+
+<class name="date">
+  <content><xsl:value-of select="//date"/></content>
+  <attr name="class">
+    <discard/>
+  </attr>
+</class>
+
+<class name="stanza">
+  <foreach>stanza</foreach>
+  <attr name="class">
+    <discard/>
+  </attr>
+</class>
+
+<class name="lines">
+  <foreach>line</foreach>
+  <discard-tag/>
+</class>
+
+<class name="line">
+  <content><xsl:value-of select="."/></content>
+  <discard-tag/>
+</class>
+
+<epilog>
+</xsl:template>
+</xsl:stylesheet>
+</epilog>
+</dynamator>

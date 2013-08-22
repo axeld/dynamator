@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="generator" content="HTML Tidy, see www.w3.org" />
+<title>Dynamator Example 9: Iteration</title>
+<link rel="StyleSheet" type="text/css" href="../../style.css" />
+</head>
+<body>
+<p>This set of examples shows how to iterate over the contents of
+collections. In HTML, collections are usually output using a
+element specifically designed to support repetition (li, option,
+tr, or dt/dd). Dynamator allows any HTML element to be repeated for
+iteration. Dynamator can generate code to support any JDK 1.1 or
+1.2 collection: array, Vector, Enumeration, Dictionary, Properties,
+Iterator, and Map. This tutorial covers only JDK 1.1
+collections.</p>
+
+<p>Iteration is accomplished by adding a 'foreach' element to the
+Dynamator entry for an id or class value. In the 'foreach' element,
+you can specify attributes that identify the type of the collection
+and the name of each Java variable that needs to be generated to
+support iteration. Most of the time, such fine-grained control is
+not needed. In this tutorial, we will be demonstrating use of only
+the required attributes. For complete information about the syntax
+of the 'foreach' element in Dynamator for JSP, see the man page for
+<a href="../../manual/DynamatorFile_JSP.html#foreach">Dynamator Language
+Support for JSP</a>.</p>
+
+<p>The 'foreach' element has two required attributes:</p>
+
+<table class="tabular" summary="foreach element attributes">
+<tr>
+<td valign="top">type</td>
+<td>The type of the collection. This may be one of the following: 
+
+<table class="tabular" summary="type attribute values">
+<tr>
+<td><i>Type</i>[]</td>
+<td>The collection is an array of elements of type <i>Type</i>.
+Both objects and primitives are supported.</td>
+</tr>
+
+<tr>
+<td>Vector[<i>Type</i>]</td>
+<td>The collection is a Vector of elements of type <i>
+Type</i>.</td>
+</tr>
+
+<tr>
+<td>Enumeration[<i>Type</i>]</td>
+<td>The collection is an Enumeration of elements of type <i>
+Type</i>.</td>
+</tr>
+
+<tr>
+<td>Iterator[<i>Type</i>]</td>
+<td>The collection is an Iterator over elements of type <i>
+Type</i>.</td>
+</tr>
+
+<tr>
+<td>Dictionary[<i>KeyType</i>,<i>ValueType</i>]</td>
+<td>The collection is a Dictionary. Keys in the dictionary are of
+type <i>KeyType</i>, and values are of type <i>ValueType</i>.</td>
+</tr>
+
+<tr>
+<td>Map[<i>KeyType</i>,<i>ValueType</i>]</td>
+<td>The collection is a Map. Keys in the map are of type <i>
+KeyType</i>, and values are of type <i>ValueType</i>.</td>
+</tr>
+
+<tr>
+<td>Properties</td>
+<td>The collection is a Properties container.</td>
+</tr>
+</table>
+</td>
+</tr>
+
+<tr>
+<td valign="top">element</td>
+<td>The name of the variable that references the current
+element.</td>
+</tr>
+</table>
+
+<!--
+<p>
+HTML has four elements that naturally correspond to collections of items:
+li, option, tr, and dl.
+The last of those, <code><b>dl</b></code>, is
+different from the others.  All other elements are
+repeated for each element of the indexed property.  The
+<code><b>dl</b></code> element, however, is not repeated.  Instead,
+it contains two elements, <code><b>dt</b></code> and <code><b>dd</b></code>,
+that need to be repeated for each element of the
+indexed property.  
+<p>
+Dynamator calls the two kinds of elements "inclusive iteration
+elements" and "exclusive iteration elements".  For an inclusive element, the element
+itself is repeated for each element of the iteration.  For an exclusive
+element, the content of the element is repeated for each element of the
+iteration.
+<h3>Changing the set of elements</h3>
+<p>
+Dynamator can be told to treat any element as an implicit iteration through
+one of the following execution parameters:
+<dl>
+  <dt><b><code>exclusiveIterationTags</code></b>
+  <dd>A list of elements that always refer to indexed properties.  
+      When encountered in the source file with a mapped identifier, a
+      element in this list is output once.  The element's content is output
+      for each element of the indexed property.  Each element in the list
+      must start and end with '|'.  The default value is '|dl|'.
+  <dt><b><code>inclusiveIterationTags</code></b>
+  <dd>A list of elements that always refer to indexed properties.  
+      When encountered in the source file with a mapped identifier, a
+      element in this list is output once for each element of the indexed
+      property.  Each element in the list must start and end with '|'.  The
+      default value is '|tr|option|li|'. 
+</dl>      
+<p>
+Note that if you supply either of these parameters, you must also
+specify the default values unless you don't want them to be treated as
+indexed properties.
+<h2>Explicit iteration</h2>
+<p>
+Any element may be treated as an iteration, by marking it as such in the
+mapping file.
+-->
+<h2>Examples</h2>
+
+<dl>
+<dt><a href="../example09a-Iteration_li/index.html">Example 9a:
+Creating a Dynamically Populated List</a></dt>
+
+<dd>How to iterate over elements of arrays, Vectors, and
+Enumerations.</dd>
+
+<dt><a href="../example09b-Iteration_option/index.html">Example 9b:
+Creating a Dynamically Populated Choice List</a></dt>
+
+<dd>How to iterate over a list of element choices, and how to
+obtain the offset of the current element while iterating.</dd>
+
+<dt><a href="../example09c-Iteration_tr/index.html">Example 9c:
+Creating Dynamically Populated Table Rows</a></dt>
+
+<dd>How to iterate over a sequence of objects.</dd>
+
+<dt><a href="../example09d-Iteration_dl/index.html">Example 9d:
+Creating Dynamically Populated Dictionary Lists</a></dt>
+
+<dd>How to iterate over a dictionary or properties collection.</dd>
+</dl>
+</body>
+</html>
+

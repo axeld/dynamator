@@ -1,0 +1,31 @@
+<dynamator suffix="wm">
+
+<id name="CurrentTime">
+  <content>$now</content>
+</id>
+<id name="IfMorning">
+  <before indent="yes">
+    #if ( $hour < 12 ) {
+  </before>
+  <after>
+    }
+  </after>
+</id>
+<id name="IfAfternoon">
+  <before indent="yes">
+    #if ( 12 <= $hour && $hour < 18 ) {
+  </before>
+  <after>
+    }
+  </after>
+</id>
+<id name="IfEvening">
+  <before indent="yes">
+    #if ( 18 <= $hour ) {
+  </before>
+  <after>
+    }
+  </after>
+</id>
+
+</dynamator>

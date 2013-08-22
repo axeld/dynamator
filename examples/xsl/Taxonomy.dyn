@@ -1,0 +1,63 @@
+<dynamator language="xsl">
+
+<prolog>
+<xsl:stylesheet
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	version="1.1" >
+
+<xsl:output method="html"/>
+
+<xsl:template match="/">
+</prolog>
+
+  <id name="title">
+    <content>
+      An Informal Taxonomy of the Animal Kingdom
+    </content>
+  </id>
+
+  <id name="root">
+    <content><xsl:value-of select="/taxonomy/item/@name"/></content>
+  </id>
+
+  <class name="children-list">
+    <extract>
+      <xsl:apply-templates select="/taxonomy/item" />
+    </extract>
+    
+    <if>item</if>
+
+    <before>
+<xsl:template match="item">
+    </before>
+
+    <after>
+</xsl:template>
+    </after>
+  
+  </class>
+
+  <class name="child">
+    <foreach>./*</foreach>
+  </class>
+
+  <class name="child-name">
+    <content><xsl:value-of select="@name"/></content>
+  </class>
+
+  <class name="children">
+    <discard-tag/>
+    <content>
+      <xsl:apply-templates select="item" />
+    </content>
+  </class>
+
+<before-extracts>
+</xsl:template>
+</before-extracts>
+
+<epilog>
+</xsl:stylesheet>
+</epilog>
+
+</dynamator>

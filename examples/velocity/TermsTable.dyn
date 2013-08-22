@@ -1,0 +1,20 @@
+<dynamator suffix="vm">
+
+  <class name="entry">
+    <before indent="yes">
+        #foreach ( $name in $names )
+    </before>
+    <after-content>
+        #end
+    </after-content>
+  </class>
+
+  <class name="term">
+    <content>$name</content>
+  </class>
+
+  <class name="definition">
+    <content>$dictionary.get($name)</content>
+  </class>
+
+</dynamator>

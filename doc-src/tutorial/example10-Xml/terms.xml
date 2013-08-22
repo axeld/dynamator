@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<terms>
+  <term name="example term">
+    The definition of the term.
+  </term>
+  <!-- div class="Discard" -->
+  <term name="another example term">
+    The definition of the other term.
+  </term>
+  <term name="yet another">
+    The definition of yet another term.
+  </term>
+  <!-- /div -->
+</terms>
+

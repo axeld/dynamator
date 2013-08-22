@@ -1,0 +1,38 @@
+<dynamator language="xsl">
+<prolog><?xml version="1.0"?>
+<xsl:stylesheet
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	version="1.0" >
+
+<xsl:template match="/">
+</prolog>
+
+<epilog>
+</xsl:template>
+</xsl:stylesheet>
+</epilog>
+
+<id name="CurrentTime">
+  <content>
+    <xsl:value-of select="//time/@month"/> 
+    <xsl:text> </xsl:text>
+    <xsl:value-of select="//time/@day"/>,
+    <xsl:value-of select="//time/@year"/>
+    at
+    <xsl:value-of select="//time/@hour"/>
+    :
+    <xsl:value-of select="//time/@minute"/>
+  </content>
+</id>
+<id name="IfMorning">
+  <if>//time/@hour &lt; 12</if>
+</id>
+<id name="IfAfternoon">
+  <if>12 &lt;= //time/@hour and //time/@hour &lt; 18</if>
+</id>
+<id name="IfEvening">
+  <if>18 &lt;= //time/@hour</if>
+</id>
+
+</dynamator>
+

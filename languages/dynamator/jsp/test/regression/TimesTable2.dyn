@@ -1,0 +1,34 @@
+<dynamator language="jsp">
+  <prolog>
+    <%@ page session="false" %>
+    <%
+        int max = 10;
+        String sMax = request.getParameter("max");
+        if ( sMax != null && sMax.length() >= 0 )
+        {
+            // ignore possible NumberFormatException for this demo
+            max = Integer.valueOf(sMax).intValue();
+        }
+        Integer[] a = new Integer[max];
+        int i = 0;
+        while ( ++i <= max )
+        {
+            a[i-1] = new Integer(i);
+        }
+    %>
+  </prolog>
+  <class name="x">
+    <foreach type="Integer[]" element="x" collection="xAxis">a</foreach>
+    <content>x</content>
+  </class>  
+  <class name="yrow">
+    <foreach type="Integer[]" element="y" collection="yAxis">a</foreach>
+  </class>  
+  <class name="y">
+    <content>y</content>
+  </class>
+  <class name="result">
+    <foreach type="Integer[]" element="x" collection="xAxis">a</foreach>
+    <content>x.intValue() * y.intValue()</content>
+  </class>
+</dynamator>

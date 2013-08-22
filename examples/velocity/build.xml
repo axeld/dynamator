@@ -1,0 +1,48 @@
+<!-- 
+    This is an ant build file. 
+-->
+<project name="dynamator-java-examples" default="all">
+  
+  <path id="classpath.project">
+    <pathelement location="../../build/dynamator.jar"/>
+    <pathelement location="../../dynamator.jar"/>
+    <fileset dir="../..">
+      <include name="lib/**/*.jar"/>
+    </fileset>
+    <pathelement path="${java.class.path}"/>
+  </path>
+  
+  <taskdef name="dynamate" 
+      classname="dynamator.ant.DynamateTask"
+      classpathref="classpath.project"
+      />
+  
+  <property name="suffix" value="vm"/>
+  
+  <target name="all"
+      depends="clean, dynamate"
+      description="Clean and rebuild Dynamator examples."
+    />
+  
+  <target name="dynamate"
+      description="Dynamate examples."
+    >
+    <mkdir dir="generated"/>
+    <dynamate
+        srcdir=".."
+        matchdir="."
+        destdir="generated"
+        destsuffix="${suffix}"
+        includes="*.html"
+        />
+  </target>
+
+  <target name="clean"
+      description="Delete all program-generated files"
+    >
+    <delete quiet="true">
+      <fileset dir="generated" includes="*.${suffix}" />
+    </delete>
+  </target>
+  
+</project>

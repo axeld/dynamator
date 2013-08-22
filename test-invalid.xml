@@ -1,0 +1,34 @@
+<!-- 
+    This is an ant build file for Dynamator regression testing 
+    of invalid cases. 
+
+    It is invoked from test.xml.
+    
+    It is separate from test.xml so that test.xml can continue
+    even when this fails.
+-->
+
+<project name="dynamator" default="regression_invalid">
+  
+  <taskdef name="dynamate" classname="dynamator.ant.DynamateTask"/>
+  
+  <target name="regression_invalid"
+      description="Execute regression tests for error cases">
+
+    <property name="dir.src"
+        value="languages/dynamator/none/test/regression"/>
+    <property name="dir.out"
+        value="${dir.src}/invalid"/>
+    
+    <mkdir dir="${dir.out}"/>
+    
+    <dynamate
+        srcdir="${dir.src}"
+        destdir="${dir.out}"
+        destsuffix="html"
+        includes="Invalid*.html"
+        />
+
+  </target>
+  
+</project>

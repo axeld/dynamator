@@ -1,0 +1,202 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta name="generator" content="HTML Tidy, see www.w3.org" />
+    <title>
+      Dynamator File for PHP
+    </title>
+    <link rel="StyleSheet" type="text/css" href="../style.css" />
+  </head>
+  <body>
+    <table width="600">
+      <tr>
+        <td>
+          <h1>
+            Dynamator File for PHP
+          </h1>
+          <hr />
+          <h2>
+            Contents
+          </h2>
+          <dl>
+            <dd>
+              <a href="#Description">Description</a>
+            </dd>
+            <dd>
+              <a href="#Identification">Identification</a>
+            </dd>
+          </dl>
+          <hr />
+          <dl>
+            <dt>
+              <a id="Description"
+              name="Description"><b>DESCRIPTION</b></a>
+            </dt>
+            <dd>
+              <p>
+                This document describes the language-specific
+                format and code generation behavior of a <a
+                href="DynamatorFile.html">Dynamator File</a> with
+                language specified as "php".
+              </p>
+              <p>
+                A Dynamator File with a root element of
+                "<b>&lt;dynamator language="php"&gt;</b>"
+                identifies a file containing transformations to be
+                applied to an HTML or XML template in order to
+                produce a PHP source file (i.e. a file with
+                filetype ".php"). Dynamator applies the Dynamator
+                file to an HTML or XML file (the "template") to
+                create a PHP file that outputs an HTML or XML file
+                with structure corresponding to the template and
+                behavior specified by the Dynamator file.
+              </p>
+              <h3>
+                <a id="for" name="for">for</a>
+              </h3>
+              <p>
+                The 'for' element of a Dynamator file for PHP has
+                the following structure:
+              </p>
+              <dl>
+                <dd>
+                  <table border="1" width="500" bgcolor="#F0F0F0">
+                    <tr>
+                      <td>
+<pre>
+&lt;for&gt;
+    <i>for-statement-remainder</i>
+&lt;/for&gt;
+</pre>
+                      </td>
+                    </tr>
+                  </table>
+                  <p>
+                  </p>
+                </dd>
+              </dl>
+              <p>
+                The content of the 'for' element is the
+                parenthesized 'for' text. The text is treated as
+                CDATA; that is, it may contain special characters
+                such as '&lt;'. The parentheses may be omitted.
+              </p>
+              <p>
+                The collection form of the 'foreach' element in a
+                Dynamator file for PHP has the following structure:
+              </p>
+              <dl>
+                <dd>
+                  <table border="1" width="500" bgcolor="#F0F0F0">
+                    <tr>
+                      <td>
+<pre>
+&lt;for&gt;
+    <i>foreach-statement-remainder</i>
+&lt;/for&gt;
+</pre>
+                      </td>
+                    </tr>
+                  </table>
+                  <p>
+                  </p>
+                </dd>
+              </dl>
+              <h3>
+                <a id="foreach-collections"
+                name="foreach-collections">foreach</a>
+              </h3>
+              <p>
+                The content of the foreach element is the
+                parenthesized 'foreach' text. The text is treated
+                as CDATA; that is, it may contain special
+                characters such as '&lt;'. The parentheses may be
+                omitted.
+              </p>
+              <p>
+                For example, the element:
+              </p>
+              <dl>
+                <dd>
+                  <table border="1" width="500">
+                    <tr>
+                      <td>
+<pre>
+&lt;foreach&gt;$entries as $key =&gt; $value&lt;/foreach&gt;
+</pre>
+                      </td>
+                    </tr>
+                  </table>
+                </dd>
+              </dl>
+              generates: 
+              <dl>
+                <dd>
+                  <table border="1" width="500">
+                    <tr>
+                      <td bgcolor="#eeeeee">
+<pre>
+foreach ( $entries as $key =&gt; $value )
+{
+    ...
+}
+</pre>
+                      </td>
+                    </tr>
+                  </table>
+                </dd>
+              </dl>
+              <br />
+            </dd>
+            <dt>
+              <b><a id="SeeAlso" name="SeeAlso">SEE ALSO</a></b>
+            </dt>
+            <dd>
+              <p>
+                <a href="dynamate.html">dynamate</a>, <a
+                href="DynamatorFile.html">Dynamator File</a><br />
+              </p>
+            </dd>
+            <dd>
+              <br />
+            </dd>
+            <dt>
+              <a id="Identification"
+              name="Identification"><b>IDENTIFICATION</b></a>
+            </dt>
+            <dd>
+              <table border="0">
+                <tr>
+                  <td>
+                    Author:
+                  </td>
+                  <td>
+                    Jay Dunning
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    Version:
+                  </td>
+                  <td>
+                    1.5
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    Copyright:
+                  </td>
+                  <td>
+                    2002-2004, Jay Dunning
+                  </td>
+                </tr>
+              </table>
+            </dd>
+          </dl>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
+

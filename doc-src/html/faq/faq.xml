@@ -1,0 +1,869 @@
+<faq>
+  <section name="General">
+  <q name="What is Dynamator?">
+    <answer>
+    <p>
+    Dynamator is a language for transforming HTML into server pages,
+    implemented by a tool that performs the transformation.
+    Instead of copying file x.html (or x.xml) to x.jsp and
+    inserting program logic into x.jsp, developers who use Dynamator
+    leave x.html more-or-less alone and write a Dynamator file named
+    x.dyn. A Dynamator file is an XML file containing the same
+    program logic that would go into a server page, indexed by 
+    locations in the HTML page.
+    Dynamator merges the Dynamator file with the HTML file, inserting the
+    program logic at the referenced locations, to create a server pages
+    file. 
+    </p>
+    </answer>
+  </q>
+  <q name="What is the server pages maintenance problem?">
+    <answer>
+    <p>
+    The server pages maintenance problem originates from the composite
+    nature of a server page.  A server page contains static content,
+    often created and maintained by an HTML author, and program logic,
+    created and maintained by a software developer.  Since HTML authors
+    and software developers have drastically different skill sets and
+    job roles, conflicts occur when server pages need to be maintained.
+    Usually the software developer maintains the page, even if the
+    requested changes are just HTML tweaks.  There are many reasons for
+    this.  The software developer may have the page checked out; the
+    HTML author may not be able to view the page correctly without
+    deploying it; the HTML author may actually be in a different
+    organization that does not have access to program logic; etc.
+    </p>
+    <p>
+    If your development process uses different people for HTML
+    authorship and software development, you probably have the server
+    pages maintenance problem.  You know you have it if software
+    developers are spending time tweaking HTML, or if HTML authors can't
+    test their changes without deploying them to a server, or 
+    if you have the same program logic in multiple server pages.
+    </p>
+    </answer>
+  </q>
+  <q name="What is the current version of Dynamator?">
+    <answer>
+    <p>
+    Check the 
+    <a href="http://dynamator.sourceforge.net">project page</a>.
+    </p>
+    </answer>
+  </q>
+  <q name="What version of Dynamator do I have?">
+    <answer>
+    <p>
+    <code>java dynamate -v</code>
+    </p>
+    </answer>
+  </q>
+  <q name="Is it Dynamator or Dynamate?">
+    <answer>
+    <p>
+    Dynamator is the name of the language.
+    <code>dynamate</code> is the name of the tool.
+    </p>
+    </answer>
+  </q>
+  <q name="Where did the name come from?">
+    <answer>
+    <p>
+    It started out as "Dynatator" for "Dynamic Annotator", since the
+    tool applied a "Dynamic Annotations File" to a template file.
+    But that name generated images of tyrannosaurs chomping
+    on Tator Tots.  "Dynamator" is derived from "Dynamic Animator";
+    the tool brings static content to life by adding program logic.
+    </p>
+    </answer>
+  </q>
+  </section>
+  <section name="Is it for me?">
+  <q name="What is the Dynamator license?">
+    <answer>
+    <p>
+    Dynamator is released under a BSD-style open source license.
+    Anyone can use Dynamator without charge.  Users assume all
+    responsibility and liability for using Dynamator.
+    Anyone can redistribute Dynamator, as long as they retain the
+    copyright information and give credit if binaries are used.
+    Anyone can use source code from Dynamator in any other product
+    without charge.
+    </p>
+    </answer>
+  </q>
+  <q name="What server pages technologies does Dynamator support?">
+    <answer>
+    <p>
+    Dynamator provides two levels of support for server pages
+    technologies.  Dynamator provides basic support for all server
+    pages technologies.  Basic support provides all constructs except for
+    iteration and selection, which can be coded manually within the
+    Dynamator file within &lt;before&gt; and &lt;after&gt; elements.
+    </p>
+    <p>
+    Dynamator provides complete support for JSP, XSL, PHP, ASP, and
+    Java (using <code>out.println()</code>).  Complete support adds 
+    &lt;for&gt;, &lt;foreach&gt;, and &lt;if&gt; constructs, and makes
+    the &lt;content&gt; element language-aware.
+    </p>
+    <p>
+    Complete support for other technologies
+    is awaiting developers who would like to contribute.  If you'd
+    like to create a language plugin, visit the 
+    <a href="http://dynamator.sourceforge.net">Dynamator project site</a>.
+    </p>
+    </answer>
+  </q>
+  <q name="I use JSP Model II with beans and taglibs, so my server
+          pages don't contain any program logic.  
+          Why don't you think that's good enough?">
+    <answer>
+    <p>
+    Because the resulting server page file is not pure HTML.
+    It can't be directly displayed in a browser, it can't be validated,
+    and it is subject to dual maintenance because it mixes elements
+    provided by people in different development roles.
+    </p>
+    <p>
+    Also see the next FAQ.
+    </p>
+    </answer>
+  </q>
+  <q name="I maintain my own HTML.  Why should I use Dynamator?">
+    <answer>
+    <p>
+    It's certainly not as big an issue as if you were on a large
+    project.  But you still might benefit from total separation of
+    program logic from HTML.  The ability to view server pages in a
+    browser and to maintain a static demonstration site may still be
+    valuable to you in your HTML-authoring role.  The ability to
+    create multiple versions of static content (for
+    internationalization, client configuration, or multi-channel
+    presentation) may still be valuable to you in your developer role.
+    </p>
+    </answer>
+  </q>
+  <q name="Once I migrate everything to Dynamator,
+          how hard is it to migrate back to server pages?">
+    <answer>
+    <p>
+    Simply delete the .dyn files and start maintaining the generated
+    server pages.
+    </p>
+    </answer>
+  </q>
+  <q name="Can I use Dynamator with XML?">
+    <answer>
+    <p>
+    Certainly.  Just remember to remove the HTML 4.0 locator attributes
+    and elements from the generated code using the appropriate
+    Dynamator directives.
+    </p>
+    </answer>
+  </q>
+  <q name="Can I use Dynamator to dynamically build HTML or XML
+          structures?"> 
+    <answer>
+    <p>
+    Yes, as long as you treat them as text, just like you would in a
+    server page.  If you want a DOM interface to HTML or XML, you
+    should consider <a href="http://xmlc.objectweb.org">XMLC</a>.
+    </p>
+    </answer>
+  </q>
+  <q name="Can I use Dynamator with non-XML template formats?">
+    <answer>
+    <p>
+    No.  Dynamator supports HTML only because it is possible to convert
+    HTML into XML.
+    </p>
+    </answer>
+  </q>
+  <q name="Can I use Dynamator with Server-Side Includes?">
+    <answer>
+    <p>
+    Yes.  Server-side include directives may be placed in the original
+    HTML or in the Dynamator file.  Dynamator retains Server-Side
+    Include directives for processing by the server.
+    </p>
+    </answer>
+  </q>
+  <q name="How does Dynamator compare with XMLC?">
+    <answer>
+    <p>
+    Both products solve the server pages maintenance problem.
+    </p>
+    <p>
+    Both products have the same effects on HTML and on the interface
+    between HTML authors and software developers.  An HTML author
+    wouldn't be able to tell which technology is being used. 
+    </p>
+    <p>
+    But the products are fundamentally different, and there are major
+    differences in the products' effects on architecture and development:
+    </p>
+    <ul>
+      <li>XMLC transforms HTML and XML into Java classes.
+      Programmers use a Java DOM runtime API to manipulate static
+      content and add dynamic content.
+      Dynamator transforms HTML and XML into server pages or programs.
+      Programmers use Dynamator editing directives to manipulate static
+      content and to add source code that can produce dynamic content.
+      </li>
+
+<!--
+      <li>XMLC is an HTML compiler and a run-time API.
+      Dynamator is a specialized file editor program designed to combine
+      program source code with HTML or XML to create a program or server page.
+      </li>
+-->
+      <li>XMLC supports a single run-time architecture: a Java XML API. 
+      Dynamator is technology-neutral, capable of generating to any
+      language. 
+      </li>
+      
+      <li>XMLC requires a run-time library that must be distributed to
+      each execution environment.  
+      Dynamator has no execution-environment footprint.  
+      </li>
+      
+      <li>XMLC page generation is much less efficient than code
+      generated by Dynamator.  
+      XMLC creates an in-memory tree of objects representing DOM nodes
+      in the template document. Each change to the template requires
+      runtime manipulation of the associated document nodes.  Dynamator
+      performs many of these manipulations at compile time, minimizing
+      runtime overhead.  In addition, most Dynamator target languages
+      are inherently more efficient, simply treating template text as
+      data to be output.  
+      </li>
+      
+      <li>XMLC uses a more familiar programming model than Dynamator. 
+      XML provides a straightforward object-oriented program API
+      in a familiar language. Dynamator uses a declarative programming
+      model and requires that developers learn Dynamator's XML
+      annotation file syntax.
+      </li>
+      
+      <li>Dynamator is a smaller language than XMLC.
+      Dynamator has less than 25 language elements.  
+      XMLC requires knowledge of the DOM API, which is quite large.
+      </li>
+      
+      <li>XMLC and Dynamator have different behaviors when referencing
+      markers in the HTML. With XMLC, a reference to a marker not found
+      in the HTML generates a compile-time error, ensuring that every
+      intended adaptation is performed. Dynamator silently ignores
+      references in the Dynamator file to markers that aren't found
+      in the HTML, allowing the same Dynamator file to be applied to
+      multiple HTML files requiring similar behavior. 
+      </li>
+      
+      <li>
+      With XMLC, Java syntax errors are detected in the development
+      environment during compilation. With Dynamator, coding error
+      detection depends on the target language. With most server pages
+      languages, syntax errors are detected in the execution
+      environment.  
+      </li>
+    </ul>
+    </answer>
+  </q>
+  <q name="Does Dynamator support ASP.NET?">
+    <answer>
+    <p>
+    Dynamator can be used with ASP.NET now that Dynamator allows tags
+    to be renamed.  Currently Dynamator provides only the default level
+    of language support for ASP.NET, meaning that programmatic value
+    substitutions and iteration and selection constructs must be coded
+    manually.
+    </p>
+    </answer>
+  </q>
+  <q name="What is Dynamator's impact on server page performance?">
+    <answer>
+    <p>
+    In general, the performance of a server page generated using
+    Dynamator is identical to the performance of an equivalent
+    hand-coded server page.  The only case where this is not true is
+    in selection logic: Dynamator doesn't support 'else', so a test
+    may have to be performed twice.  If the test is expensive then it
+    should be performed once and the result stored in a temporary
+    variable. 
+    </p>
+    </answer>
+  </q>
+  <q name="Why doesn't Dynamator support 'else'?">
+    <answer>
+    <p>
+    Dynamator's 'if' directive is used to cause a template element to
+    be output only if a condition is found to be true at runtime.
+    The only possible use of an 'else' directive would be to cause the
+    following template element to be output only if the condition is
+    found to be false.  This would be the only case where Dynamator
+    would act on a different element than the one located.  It would
+    be the only case where Dynamator would require a sequence
+    relationship between two peer template elements.  It would
+    complicate reuse of Dynamator files, and impose unnecessary
+    constraints on templates.
+    </p>
+    </answer>
+  </q>
+  <q name="Does Dynamator support round-trip server page development?">
+    <answer>
+    <p>
+    No.  Dynamator supports forward generation only.  Existing server
+    pages have to be converted to Dynamator by hand.  Once converted,
+    all maintenance can be performed in the source files (HTML/XML
+    template and Dynamator file); there is never a need to maintain
+    server pages generated by Dynamator.
+    </p>
+    </answer>
+  </q>
+  </section>
+  <section name="Design Decisions">
+  <q name="Why isn't the Dynamator file valid XML?">
+    <answer>
+    <p>
+    Because XML is not friendly to program logic.  
+    To make the Dynamator file valid XML, each element that contains 
+    an ampersand (&amp;) or a less-than (&lt;) would have to be
+    manually enclosed in a CDATA section, like this:
+    </p>
+
+<div class="column">
+<div class="html">
+<pre>
+&lt;table&gt;
+&lt;if&gt;
+  &lt;![CDATA[x &lt; y &amp;&amp; y &lt; z]]&gt;
+&lt;/if&gt;
+</pre>
+</div>
+</div>
+<div class="clear"></div>
+
+    <p>
+    Standard XML does not provide the ability to declare an element as
+    containing CDATA.  Dynamator automatically treats elements that may
+    contain program logic as CDATA.  This simplifies coding, at the
+    expense of XML validity.
+    </p>
+    <p>
+    This is the same decision that most server pages and template
+    technologies have made, for the same reason.  
+    Unlike other technologies, Dynamator does not invalidate the HTML
+    or XML template.
+    </p>
+    </answer>
+  </q>
+  <q name="Why not specify transformations using XSLT?">
+    <answer>
+    <p>
+    Because XSL can't produce most varieties of server pages, since
+    they are not compatible with standard XML or HTML.
+    And because an XSL stylesheet used to specify server pages
+    transformations quickly becomes unmaintainable.  
+    Don't take my word for it: try writing an XSL stylesheet for any of
+    the Dynamator examples.
+    </p>
+    </answer>
+  </q>
+  <q name="Why not implement Dynamator using XSLT instead of Java?">
+    <answer>
+    <p>
+    Actually, the first prototype of Dynamator was written in XSLT.
+    But a large number of problems were encountered.  For one thing,
+    most server pages languages are invalid HTML or XML, so a
+    post-processor was needed.  For another, this application
+    seemed to exceed XSL's complexity ceiling.  The result was going to
+    be a tool that was unmaintainable, non-extensible, difficult to
+    use, and inefficient.
+    </p>
+    </answer>
+  </q>
+  </section>
+  <section name="Learning">
+  <q name="How much syntax does an HTML author need to learn in order
+          to create HTML that can be used by Dynamator?"> 
+    <answer>
+    <p>
+    An HTML author who already knows HTML 4.0 doesn't need to learn any
+    new syntax.  An HTML author who doesn't know HTML 4.0 needs to
+    learn two attributes and two elements.  However, the recommended
+    approach is for software developers to add the HTML 4.0 markers;
+    HTML authors just need to know enough not to remove them or copy
+    them to inappropriate locations.
+    </p>
+    </answer>
+  </q>
+  <q name="How hard is it for HTML authors to learn Dynamator?">
+    <answer>
+    <p>
+    HTML authors don't have to learn Dynamator.  But they do have to
+    learn about HTML 4.0 markers, and they have to be able to
+    understand their new importance when used with Dynamator.  This
+    will require some training and acclimation.  In general, any HTML
+    author who understands cascading style sheets can handle using HTML
+    4.0 markers with Dynamator. 
+    </p>
+    <p>
+    Most of the problems HTML authors may appear to have with Dynamator
+    are really problems with understanding the behavior of web
+    applications, which are much more complex than static web sites.
+    </p>
+    </answer>
+  </q>
+  <q name="How hard is it for software developers to learn Dynamator?">
+    <answer>
+    <p>
+    A typical software developer should be able to be productive with
+    Dynamator within a day or two.  A practical minimum would be 4
+    hours to read the syntax documentation and run some experiments.
+    The concepts are straightforward, and the Dynamator file syntax
+    isn't that hard for developers who have been exposed to XML.
+    </p>
+    <p>
+    Developers who are used to breaking up page content into smaller
+    modules, each outputting a portion of the page, may have to rethink
+    their approach to server page design.  With Dynamator, the
+    granularity is the complete HTML page.
+    </p>
+    </answer>
+  </q>
+  <q name="Do I need to learn server pages to learn Dynamator?">
+    <answer>
+    <p>
+    Yes.  Dynamator allows you to put server pages code in a different
+    file, but it's still server pages code.
+    </p>
+    </answer>
+  </q>
+  <q name="I'm just learning server pages.  Should I wait to learn Dynamator?">
+    <answer>
+    <p>
+    Probably.  Dynamator can make it harder to understand the structure
+    of the server page, because the program logic is separate from the
+    static content.  After you feel comfortable with server pages
+    syntax and the interplay between program logic and static content
+    (including selection and iteration), give Dynamator a try.
+    </p>
+    <p>
+    Having said that, you should use Dynamator on your first real
+    server pages project, unless the code won't be maintained.
+    </p>
+    </answer>
+  </q>
+  </section>
+<!--
+  <section name="Dynamator Files">
+  <q name="What is a Dynamator File?">
+    <answer>
+    <p>
+    A Dynamator file is a file that specifies the changes
+    required to transform an HTML page or XML template into a server
+    page.  Mostly, it contains program logic.
+    </p>
+    </answer>
+  </q>
+  <q name="What is the syntax of a Dynamator File?">
+    <answer>
+    <p>
+    A Dynamator file is an XML file that allows element content to
+    contain program logic.
+    A complete syntax specification is in the Dynamator documentation
+    distribution in the file named "DynamatorFile.html".
+    In addition, each language plugin specifies the syntax of
+    language-specific features in files named
+    "DynamatorFile_<i>XXX</i>.html", where <i>XXX</i> is
+    the name of the language.
+    </p>
+    </answer>
+  </q>
+  </section>
+-->
+<!--
+  <section name="Support">
+  <q name="Are there any communities of people interested in Dynamator?">
+    <answer>
+    <p>
+    
+    </p>
+    </answer>
+  </q>
+  <q name="How do I submit a bug report or enhancement request?">
+    <answer>
+    <p>
+    
+    </p>
+    </answer>
+  </q>
+  <q name="How do I ask a question?">
+    <answer>
+    <p>
+    
+    </p>
+    </answer>
+  </q>
+  </section>
+-->
+  <section name="Getting Started">
+  <q name="What do I need to run Dynamator?">
+    <answer>
+    <p>
+    You need a Java runtime compatible with 
+    <a href="http://java.sun.com/j2se/">Sun's Java Runtime Environment</a>
+    version 1.1.6 or higher.
+    If you are using a JDK earlier than 1.4, you need 
+    <a href="http://xml.apache.org/xerces-j/index.html">Xerces 1.1.3</a> or higher.
+    If you will be using Dynamator with HTML, you need
+    <a href="http://jtidy.sourceforge.net">JTidy</a>.  
+    (If you're using JDK 1.1, make sure you have a version of JTidy
+    dated 2000/11/1 or later.) 
+    And you'll need the Dynamator runtime.
+    </p>
+    </answer>
+  </q>
+  <q name="What's the best way to get started with Dynamator?">
+    <answer>
+    <p>
+    It depends on your learning style.  If you like to jump in, 
+    see the <a href="guide.html">20 Minute Guide</a> and the 
+    <a href="quickstart.html">Quick Start</a>.
+    If you prefer a more gentle and comprehensive introduction, 
+    download the Dynamator documentation and read the Dynamator tutorial.
+    </p>
+    </answer>
+  </q>
+  <q name="What IDEs support Dynamator?">
+    <answer>
+    <p>
+    Use the text editor of your choice :-).
+    </p>
+    </answer>
+  </q>
+<!--
+  <q name="Are there things to watch out for with Dynamator?">
+    <answer>
+    <p>
+    Probably.
+    <a href="mailto:jay.dunning@users.sourceforge.net">Let me know</a>
+    if you find anything.
+    </p>
+    </answer>
+  </q>
+-->
+  </section>
+<!--
+  <section name="General Dynamator Programming">
+  </section>  
+-->
+  <section name="How To's">
+  <q name="When converting a demo site to server pages, how can I avoid
+          hard-coding page names?">
+    <answer>
+    <p>
+    The links in the demo site refer to HTML pages, but the links in
+    the production site need to refer to server pages.  You don't want to
+    add a locator to every link and hard-code the server page name.
+    </p>
+    <p>
+    You can refer to an attribute value within the content element that
+    refers to it by using the magic string
+    <code>[[@]]</code>.  You can perform a simple edit on the attribute
+    value using the syntax <code>[[@/a/b]]</code>, which
+    replaces all occurrences of the string 'a' with 'b'.
+    (For multiple edits, use syntax <code>[[@/a/b/+/c/d/...]]</code>. 
+    Regular expressions are not supported.) 
+    </p>
+    <p>
+    So if you are using Dynamator with JSP, you could use the
+    following to change all hrefs on the page from '.html' to '.jsp'
+    and encode the user's session (which you also probably need to do):
+    </p>
+<div class="column">
+<div class="dyn">
+<pre>
+&lt;tag tag="a" with-attr="href"&gt;
+  &lt;attr name="href"&gt;
+    &lt;content&gt;
+      response.encodeURL("[[@/.html/.jsp]]")
+    &lt;/content&gt;
+  &lt;/attr&gt;
+&lt;/tag&gt;
+</pre>
+</div>
+</div>
+<div class="clear"></div>
+
+    </answer>
+  </q>
+  <q name="How do I repeat more than one table row within an iteration?">
+    <answer>
+    <p>
+    It's easy to repeat a single &lt;tr&gt;: just use &lt;foreach&gt;.
+    But if you want to output more than one row for any single element,
+    you need a way to group the &lt;tr&gt;'s in the template.
+    If you attempt to put the &lt;tr&gt;'s inside a
+    <code>&lt;div&gt;</code> element,  Tidy will generate the error message
+    "<b><code>&lt;div&gt; isn't allowed in &lt;table&gt; elements</code></b>".
+    </p>
+    <p>
+    Starting with Dynamator 1.3, you can identify arbitrary blocks of
+    text within the template file using a comment div.  Dynamator
+    treats a comment div as if it were a div tag.  And it's still pure
+    HTML, because it's a comment.
+    Here's an example:
+    </p>
+
+<div class="column">
+<div class="html">
+<pre>
+&lt;table&gt;
+  &lt;!-- div id="multi-row" --&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Row one&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Row two&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;!-- /div --&gt;
+&lt;/table&gt;
+</pre>
+</div>
+</div>
+<div class="clear"></div>
+
+    </answer>
+  </q>
+  <q name="How do I remove all HTML 4.0 markers from the server page?">
+    <answer>
+
+<div class="column">
+<div class="dyn">
+<pre>
+&lt;tag tag="*" with-attr="id"&gt;
+  &lt;attr name="id"&gt;&lt;discard/&gt;&lt;/attr&gt;
+&lt;/tag&gt;
+&lt;tag tag="*" with-attr="class"&gt;
+  &lt;attr name="class"&gt;&lt;discard/&gt;&lt;/attr&gt;
+&lt;/tag&gt;
+&lt;tag tag="div"&gt;
+  &lt;discard-tag/&gt;
+&lt;/tag&gt;
+&lt;tag tag="span"&gt;
+  &lt;discard-tag/&gt;
+&lt;/tag&gt;
+</pre>
+</div>
+</div>
+<div class="clear"></div>
+
+    </answer>
+  </q>
+  <q name="How do I use Dynamator to generate HTML instead of a server page?">
+    <answer>
+    <p>
+    Dynamator can be used as a simple HTML or XML manipulation
+    language.  It's not as powerful as XSL, but it's easier to use in
+    simple cases.
+    </p>
+    <!-- for some reason <ol> really dorks up here in NS and IE -->
+    <table width="100%">
+      <tr><td valign="top" width="20">1.</td>
+        <td>Create an HTML template file, complete with markers for
+            locations you may wish to override.
+
+<div class="column">
+<div class="exampleFilename">template.html</div>
+<div class="html">
+<pre>
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;table width="600" align="left"&gt;&lt;tr&gt;&lt;td&gt;
+  (standard header)
+  &lt;hr&gt;
+  &lt;div id="body"&gt;
+  &lt;/div&gt;
+  &lt;hr&gt;
+  (standard footer)
+  &lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+</div>
+</div>
+<div class="clear"></div>
+
+        </td>
+      </tr>
+      <tr><td valign="top" width="20">2.</td>
+        <td>Create a .dyn file specifying that HTML file as the
+            template file.  Either do not specify a language or
+            specify language="none".
+
+<div class="column">
+<div class="exampleFilename">mypage.dyn</div>
+<div class="dyn">
+<pre>
+&lt;dynamator template="template.html"&gt;
+  &lt;tag tag="title"&gt;
+    &lt;content&gt;
+      My Title
+    &lt;/content&gt;
+  &lt;/id&gt;
+  &lt;id name="body"&gt;
+    &lt;content&gt;
+      (content of my page goes here)
+    &lt;/content&gt;
+  &lt;/id&gt;
+&lt;/dynamator&gt;
+</pre>
+</div>
+</div>
+<div class="clear"></div>
+
+        </td>
+      </tr>
+      <tr><td valign="top" width="20">3.</td>
+        <td>Create the file by running dynamate on the .dyn file:
+            <pre>dynamate mypage.dyn</pre>
+            This will generate mypage.html.
+        </td></tr>
+      </table>
+    </answer>
+  </q>
+  <q name="How do I process an XHTML template?">
+    <answer>
+    <p>
+    If you want the generated program to output XHTML:
+    </p>
+
+<div class="shell">
+<pre>
+java dynamate -X my.xhtml
+</pre>
+</div>
+<div class="clear"></div>
+
+    <p>If you want the generated program to output HTML (i.e. not XML-compliant):</p>
+
+<div class="shell">
+<pre>
+java dynamate -H my.xhtml
+</pre>
+</div>
+<div class="clear"></div>
+
+    </answer>
+  </q>
+  <q name="How do I make something invisible on a static HTML page?">
+    <answer>
+    <p>
+    Add the following to the &lt;head&gt; of the HTML file:
+    </p>
+    
+<div class="column">
+<div class="html">
+<pre>
+ &lt;style type="text/css" class="Discard"&gt;
+   &lt;!--
+    .Invisible {display: none}
+   --&gt;
+ &lt;/style&gt;
+</pre>
+</div>
+</div>
+<div class="clear"></div>
+
+    <p>Then use <code>class="Invisible"</code> for every element that should not
+    be displayed on the page.
+    </p>
+    </answer>
+  </q>
+  <q name="How do I handle a field that is editable by some users but
+          read-only by others?">
+    <answer>
+    <p>
+    There are three ways:
+    </p>
+    <ul>
+      <li>Have the HTML author create both the input field and the
+          read-only field within the HTML.  The HTML author will need
+          to use CSS to make the read-only fields invisible.
+          The program selects which field to use at runtime.
+      </li>
+      <li>Have the HTML author create only input fields.  
+          Use JavaScript to prevent a user from changing the field
+          value.  The appropriate JavaScript routine (either a field
+          edit or a field input inhibitor) can be specified within the
+          Dynamator file.
+          (Note that this won't work if the end-user turns off JavaScript.)
+      </li>
+      <li>Have the HTML author create only input fields.  
+          In the Dynamator file, add &lt;if&gt; logic to determine if the
+          input field should be displayed.  Use a &lt;before&gt; or
+          &lt;after&gt; element to specify the text to be rendered,
+          including any HTML.
+      </li>
+    </ul>
+    </answer>
+  </q>
+  <q name="How do I associate an HTML element with multiple classes?">
+    <answer>
+    <p>
+    The class attribute can specify multiple classes.  Separate each
+    with a space:
+    </p>
+    
+<div class="column">
+<div class="html">
+<pre>
+&lt;element-name class="class-1 class-2 class-3"&gt;
+</pre>
+</div>
+</div>
+<div class="clear"></div>
+
+    <p>
+    Some older browsers (notably Netscape 4.x) expect exactly one
+    class.  To remove a class that was added only for Dynamator:
+    </p>
+
+<div class="column">
+<div class="dyn">
+<pre>
+&lt;attr name="class"&gt;
+  &lt;content&gt;[[@/ <i>class-name</i>//]]&lt;/content&gt;
+&lt;/attr&gt;
+</pre>
+</div>
+</div>
+<div class="clear"></div>
+    
+    <p>
+    where <i>class-name</i> is the name of the class to be removed.
+    Note that this is just textual substitution.  This code assumes
+    that the class name to be removed is preceded by a space in the
+    HTML class attribute value.
+    </p>
+    <p>
+    (Thanks to Chris Felaco for suggesting this FAQ)
+    </p>
+    </answer>
+  </q>
+<!--
+  <q name="How do I create a dynamic menu using Dynamator?">
+    <answer>
+    <p>
+    This will be covered in a guide.
+    </p>
+    </answer>
+  </q>
+-->
+  </section>
+</faq>

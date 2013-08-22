@@ -1,0 +1,341 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="generator" content="HTML Tidy, see www.w3.org" />
+<title>Dynamator Example 1: Hello World</title>
+<link rel="StyleSheet" type="text/css" href="../../style.css" />
+</head>
+<body>
+<h1>Hello World</h1>
+
+<p>This example shows how to use Dynamator to create the simplest
+possible dynamic page.</p>
+
+<h2>The Page</h2>
+
+<iframe width="600" height="170" src="HelloWorld.html"></iframe>
+
+<h2>Step 1: Create an HTML file</h2>
+
+<p>In the development process Dynamator was designed to support, HTML
+authors create and maintain a static demo site. A static demo site is
+a browser-based UI prototype of the application to be built, complete
+with sample data. Most web application development processes
+recommend the creation of such a prototype. Projects that do create
+such a prototype usually throw it away. With Dynamator, the prototype
+becomes a maintainable portion of the application.</p>
+
+<p>In Dynamator terminology, the HTML file is called a "template"
+file.</p>
+
+<div class="column">
+<div class="column-filename">HelloWorld.html</div>
+
+<div class="html">
+<div class='insert'>HelloWorld_original.html</div>
+</div>
+</div>
+
+<div class="clear"></div>
+
+<h2>Step 2: Update the HTML file to identify elements requiring 
+server-side behavior</h2>
+
+<p>For each element within the HTML file that requires server-side
+behavior, add an 'id' attribute. (Subsequent lessons will present other
+ways to identify elements.) The 'id' attribute is a standard
+attribute in HTML 4.0 that can be added to any element for which 
+dynamic behavior makes sense. The format of the 'id' attribute is:</p>
+
+<div class="column">
+<div class="html">&lt;<i>tag</i>&nbsp;...&nbsp;<b>
+id="single-exclusive-name"</b>&nbsp;...&gt;</div>
+</div>
+
+<div class="clear"></div>
+
+<p>The ID attribute value must contain exactly one name. That name
+must be used as an ID only once in the entire HTML document.
+(Later, we will discuss use of the 'class' attribute, which may
+contain multiple names that can be used in multiple places in the
+HTML document.)</p>
+
+<p>In the example below, the change made for this step is in <b>
+bold</b>.</p>
+
+<div class="column">
+<div class="column-filename">HelloWorld.html (updated)</div>
+
+<div class="html">
+<pre>
+&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Hello World&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;p <b>id="DynamicText"</b>&gt;Hello world
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+</div>
+</div>
+
+<div class="clear"></div>
+
+<p>This change could be performed by an HTML developer or a Java
+developer. Even if performed by a Java developer, the resulting file
+could be returned to the HTML development organization for
+maintenance, because the file contains only standard HTML.</p>
+
+<h2>Step 3: Create a Dynamator File</h2>
+
+<p>The Dynamator file provides the dynamic behavior for the HTML
+page. It contains two kinds of information. First, it contains the
+page prolog. This is the jsp code that is placed before any text
+from the HTML file. Second, it contains the dynamic behavior for
+elements marked with an 'id' attribute.</p>
+
+<p>Dynamator assumes that the name of the mapping file matches the
+name of the html file, with a suffix of '.dyn'.</p>
+
+<p>You may find this file a bit overwhelming at first glance. It's
+really simpler than it looks. The XML syntax makes it look more
+complicated than it really is, just because XML is so verbose.</p>
+
+<p>One of the nice things about this file is that the data it
+carries is ideally suited for tool support. It wouldn't be too hard
+to simplify the syntax using a preprocessor. With more effort,
+imagine a drag-and-drop tool that links class attributes to html
+fields and stores the linkage in this file.</p>
+
+<p>After you get a look at the whole thing we'll take one part at a
+time.</p>
+
+<div class="column">
+<div class="column-filename">HelloWorld.dyn</div>
+
+<div class="dyn">
+<div class='insert'>HelloWorld.dyn</div>
+</div>
+</div>
+
+<div class="clear"></div>
+
+<h3>The Root Node</h3>
+
+<p>The root node of the Dynamator file is the <span class="dyn">
+dynamator</span> element. The file must start and end as
+follows:</p>
+
+<div class="column">
+<div class="dyn">
+<pre>
+&lt;dynamator language="jsp"&gt;
+  ...
+&lt;/dynamator&gt;
+</pre>
+</div>
+</div>
+
+<div class="clear"></div>
+
+<h3>The Prolog</h3>
+
+<p>If the Dynamator file contains a prolog section (most will), the
+prolog is placed at the beginning of the generated JSP file. The
+prolog usually contains a bunch of JSP elements.</p>
+
+<div class="column">
+<div class="dyn">
+<pre>
+  &lt;prolog&gt;
+    &lt;%@ page session="false" %&gt;
+    &lt;%!
+        private String getGreeting()
+        {
+            return "Hello World, says Dynamator!";
+        }
+    %&gt;
+  &lt;/prolog&gt;
+</pre>
+</div>
+</div>
+
+<div class="clear"></div>
+
+<p>Everything within the prolog is normal JSP. The first directive
+tells the JSP engine not to access a session for this page. The
+declaration block defines a method for use from within the page. In
+<a href="../example01b-HelloWorld_Bean/index.html">another version
+of this example</a> we'll show use of the &lt;jsp:useBean&gt;
+element.</p>
+
+<h3>ID mappings</h3>
+
+<p>The remainder of the Dynamator file maps id attribute value
+names in the html file to dynamic behavior.</p>
+
+<div class="twocolumn">
+<div class="column-filename">HTML</div>
+
+<div class="html">
+<pre>
+&lt;p id="<b>DynamicText</b>"&gt;
+<b>Hello world</b>
+</pre>
+</div>
+</div>
+
+<div class="twocolumn">
+<div class="column-filename">Dynamator file</div>
+
+<div class="dyn">
+<pre>
+  &lt;id name="<b>DynamicText</b>"&gt;
+    &lt;content&gt;<b>getGreeting()</b>&lt;/content&gt;
+  &lt;/id&gt;
+</pre>
+</div>
+</div>
+
+<div class="clear"></div>
+
+<p>For each 'id' attribute in the HTML for which server-side
+behavior is desired, there must be an 'id' element in the
+Dynamator file. The element must have a name attribute with a value
+matching the value of the id attribute in the HTML file (in this
+case, "DynamicText"). (The HTML file may contain elements with 'id'
+attributes for which no mapping exists, and the Dynamator file may
+contain 'id' elements for which there is no counterpart in the HTML
+file.)</p>
+
+<p>The Dynamator file specifies how to transform the HTML template into
+a server page.  Transformations are associated with HTML elements
+through "locators".  The Dynamator file's 'id' element is a locator; it
+matches any template element with an 'id' attribute having the same
+value.</p>
+
+<p>For any locator, there can be multiple "modifiers".  A modifier
+specifies the changes to be made to located elements.  In this case
+there is just one: the content of the element is replaced with a Java
+expression. The "content" modifier directs Dynamator to replace the
+content of the located element with a program expression. In
+this case, the content will be replaced with the Java expression
+"getGreeting()".</p>
+
+<p>The content of an element &lt;<b>x</b>&gt; is everything between
+the &lt;x&gt; and the matching &lt;/x&gt;. In HTML, not all tags
+require a matching close-tag. In our example, the &lt;p&gt; tag
+does not have a matching close-tag. In such a case, the content
+ends in the place where the matching close-tag is implied. To
+determine where that would be, you can examine the Tidy output.</p>
+
+<div class="column">
+<div class="column-filename">Tidy output</div>
+
+<div class="html">
+<pre>
+&lt;p id="DynamicText"&gt;
+Hello world
+&lt;/p&gt;
+</pre>
+</div>
+</div>
+
+<div class="clear"></div>
+
+<h2>Step 4: Run dynamate</h2>
+
+<p>Now that we have an HTML template and a Dynamator file, 
+the <b>dynamate</b> command can be executed to create the JSP file.</p>
+
+<p>The <b>dynamate</b> command is run on the template file.
+Dynamator locates the Dynamator file for a given template by finding a
+file with the same base name, with the suffix ".dyn".</p>
+
+<div class="shell">
+<pre>
+.../doc/tutorial/example01a_HelloWorld&gt; <b>java dynamate HelloWorld.html</b>
+
+Tidy (vers 4th August 2000) Parsing "HelloWorld.html"
+
+HelloWorld.html: Doctype given is "-//W3C//DTD HTML 4.01 Transitional//EN"
+HelloWorld.html: Document content looks like HTML 4.01 Transitional
+no warnings or errors were found
+</pre>
+</div>
+
+<div class="clear"></div>
+
+<p>Because the input file is HTML, Dynamator uses <a
+href="http://jtidy.sourceforge.net">JTidy</a> to normalize the HTML file
+to valid XML, producing a file called "HelloWorld.asxml".  Dynamator
+then applies the Dynamator file to the XML file to produce
+"HelloWorld.jsp".</p>
+
+<p>Dynamator is essentially a specialized XML file editor. 
+It's sort of a cross between sed and xslt, with a minimal set of
+target-language-specific bindings.
+Dynamator does <b>not</b> have any understanding of the target language,
+so it can't catch programming errors.</p>
+
+<p>Dynamator's role in the development lifecycle is to automate the
+transformation of templates into server pages or programs. In 
+conventional web application development, software developers manually
+transform HTML pages into some server-side technology. With Dynamator,
+software developers specify the transformation, then let Dynamator do
+the work as the HTML evolves.</p>
+
+<h2>Generated JSP file</h2>
+
+<p>The above command produces the following file. Changes to the
+original HTML are <span class="dyn-inline">highlighted</span>.</p>
+
+<div class="column">
+<div class="column-filename">HelloWorld.jsp (generated by
+Dynamator)</div>
+
+<iframe src="HelloWorld_jsp.html" width="600" height="250" frameborder="1" scrolling="auto"></iframe>
+</div>
+
+<div class="clear"></div>
+
+<p>This file contains the prolog, followed by the HTML page. The
+content of the 'p' element that contains the 'id' attribute has
+been replaced by a JSP expression to access the 'greeting' property
+of the Java object referred to by variable 'subject'.</p>
+
+<p>The HTML file has been changed somewhat by the translation;
+these changes do not affect the appearance of the page. In addition
+to the highlighted changes, the output has been reformatted so that
+indentation matches the level of element nesting. Most importantly
+for this example, Tidy added a close-paragraph tag at the
+appropriate location.</p>
+
+<div class="in-action">
+<h2>In Action</h2>
+
+<p>If you are viewing this page in a servlet engine, you can see <a
+href="HelloWorld.jsp">the generated page in action</a>.</p>
+</div>
+
+<h2>Observations</h2>
+
+<p>This example has shown the two essential kinds of files used to
+create a server page or program using Dynamator (the HTML file and the
+Dynamator file), what simple files would look like, and how to use
+Dynamator to create a JSP page.</p>
+
+<p>Whether the Model I or Model II JSP programming model is used,
+Dynamator adds one file, the Dynamator file. Although this adds a
+level of indirection for maintainers, the value it provides is that
+it separates all programming logic from the HTML.</p>
+
+<p>This complete separation simplifies development and provides
+additional value, such as the ability to maintain a static demo site
+that can be automatically transformed into a production app.</p>
+</body>
+</html>
+

@@ -1,0 +1,40 @@
+<dynamator language="none" suffix="html" template="../template.html">
+
+<tag tag="link" with-attr="href">
+  <attr name="href">
+    <content>../[[@]]</content>
+  </attr>
+</tag>
+
+<tag tag="img">
+  <attr name="src">
+    <content>../[[@]]</content>
+  </attr>
+</tag>
+
+<tag tag="a" href="manual/index.html">
+  <attr name="href">
+    <content>index.html</content>
+  </attr>
+
+  <after>
+  <a href="DynamatorFile.html" class="nav-indent-1">Syntax</a><br/>
+  <a href="DynamatorFile_JSP.html" class="nav-indent-2">- JSP</a><br/>
+  <a href="DynamatorFile_XSL.html" class="nav-indent-2">- XSL</a><br/>
+  <a href="DynamatorFile_PHP.html" class="nav-indent-2">- PHP</a><br/>
+  <a href="DynamatorFile_Java.html" class="nav-indent-2">- Java</a><br/>
+  <a href="DynamatorFile_ASP.html" class="nav-indent-2">- ASP</a><br/>
+  <a href="DynamatorFile_Default.html" class="nav-indent-2">- Default</a><br/>
+  <a href="DynamatorQuickReference.pdf" class="nav-indent-1">Quick Ref</a><br/>
+  <a href="dynamate.html" class="nav-indent-1">dynamate</a><br/>
+  <a href="DynamateTask.html" class="nav-indent-1">Ant task</a><br/>
+  </after>
+</tag>
+
+<tag tag="a" with-attr="href" without-attr="class">
+  <attr name="href">
+    <content>../[[@]]</content>
+  </attr>
+</tag>
+
+</dynamator>

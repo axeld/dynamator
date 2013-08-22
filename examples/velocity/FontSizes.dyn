@@ -1,0 +1,27 @@
+<dynamator suffix="vm">
+
+  <class name="size">
+    <before-content>
+#foreach( $i in [1..7] )
+    </before-content>
+    <after-content>
+#end
+    </after-content>
+    <discard-tag/>
+  </class>
+
+  <class name="font">
+    <attr name="size">
+      <raw-content>$i</raw-content>
+    </attr>
+    <attr name="class">
+      <discard/>
+    </attr>
+  </class>
+
+  <class name="fontsize">
+    <raw-content>$i</raw-content>
+    <discard-tag/>
+  </class>
+
+</dynamator>

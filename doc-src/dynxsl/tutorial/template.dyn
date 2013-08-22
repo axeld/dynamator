@@ -1,0 +1,33 @@
+<dynamator language="xsl">
+
+<include file="../template.dyn"/>
+
+<class name="tutorial-nav">
+  <if>
+    $nav-dir-name != 'tutorial/'
+  </if>
+</class>
+
+<class name="tutorial-prev">
+  <if>
+    $nav-prev != ''
+  </if>
+  <attr name="href">
+    <content>
+      ../../{$nav-prev}/index.html
+    </content>
+  </attr>
+</class>
+
+<class name="tutorial-next">
+  <if>
+    $nav-next != ''
+  </if>
+  <attr name="href">
+    <content>
+      ../../{$nav-next}/index.html
+    </content>
+  </attr>
+</class>
+
+</dynamator>

@@ -1,0 +1,30 @@
+<dynamator language="none">
+  <tag tag="title">
+    <content>Success!</content>
+  </tag>
+
+  <tag tag="meta" name="Description">
+    <attr name="content">
+      <content>Success!</content>
+    </attr>
+  </tag>
+  
+  <id name="h1">
+    <content>Specified by id</content>
+  </id>
+
+  <tag tag="h1">
+    <content>Success!</content>
+  </tag>
+
+  <tag tag="body">
+    <attr name="bgcolor">
+      <discard/>
+    </attr>
+  </tag>
+
+  <tag tag="p" with-attr="align">
+    <discard/>
+  </tag>
+  
+</dynamator>

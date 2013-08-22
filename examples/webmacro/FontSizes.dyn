@@ -1,0 +1,31 @@
+<dynamator suffix="wm">
+
+  <prolog>
+#set $fontsizes = [ 1, 2, 3, 4, 5, 6, 7 ]
+  </prolog>
+  
+  <class name="size">
+    <before-content>
+#foreach $fontsize in $fontsizes {
+    </before-content>
+    <after-content>
+}
+    </after-content>
+    <discard-tag/>
+  </class>
+
+  <class name="font">
+    <attr name="size">
+      <raw-content>$fontsize</raw-content>
+    </attr>
+    <attr name="class">
+      <discard/>
+    </attr>
+  </class>
+
+  <class name="fontsize">
+    <raw-content>$fontsize</raw-content>
+    <discard-tag/>
+  </class>
+
+</dynamator>

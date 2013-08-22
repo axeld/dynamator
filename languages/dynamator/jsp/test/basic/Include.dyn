@@ -1,0 +1,11 @@
+<dynamator language="jsp">
+  <include file="Prolog.dyn"/>
+  <tag tag="title">
+    <raw-content>
+      New title
+    </raw-content>
+  </tag>
+  <include file="Epilog.dyn"/>
+</dynamator>
+
+

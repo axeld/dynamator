@@ -1,0 +1,18 @@
+<dynamator x="abc" language="none" suffix="+">
+  <prolog attr="x"/>
+  <x/>
+  <id>
+    abc
+    <a/>
+    <foreach element=""/>
+    <attr name="!!!">
+      abc
+      <y/>
+      <if attr="x"/>
+      <if attr="y"/>
+    </attr>
+  </id>
+  <class name=""/>
+  <tag z="z" with-attr="+w!"/>
+  <tag without-attr=""/>
+</dynamator>

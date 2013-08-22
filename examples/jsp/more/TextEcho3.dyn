@@ -1,0 +1,41 @@
+<dynamator language="jsp">
+<prolog>
+<%@ page import="java.util.Vector"%>
+<%@ page session="true" %>
+<%
+    Vector history = (Vector) session.getValue("history");
+    if ( history == null )
+    {
+        history = new Vector();
+        session.putValue("history", history);
+    }
+    String textInput = request.getParameter("TextInput");
+    if ( textInput == null )
+    {
+        textInput = "";
+    }
+    history.addElement(textInput);
+%>
+</prolog>
+<tag tag="form">
+  <attr name="action">
+    <content>response.encodeURL(request.getServletPath())</content>
+  </attr>
+</tag>
+<id name="TextInputField">
+  <attr name="value">
+    <content>textInput</content>
+  </attr>
+</id>
+<class name="HistoryRow">
+  <foreach type="Vector[String]" i="iItem" element="item">
+    history
+  </foreach>
+</class>
+<id name="HistoryItem">
+  <content>item</content>
+  <attr name="id">
+    <if>iItem == history.size()-1</if>
+  </attr>
+</id>
+</dynamator>

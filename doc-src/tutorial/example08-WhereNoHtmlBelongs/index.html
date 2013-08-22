@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="generator" content="HTML Tidy, see www.w3.org" />
+<title>Dynamator Example 8: Where No HTML Belongs</title>
+<link rel="StyleSheet" type="text/css" href="../../style.css" />
+</head>
+<body>
+<h1>Applying behavior where HTML elements don't belong</h1>
+
+<p>In every example so far we've used HTML elements as hooks to add
+dynamic behavior. But there are several cases where HTML elements
+are not usually available. Two examples are Scripts and
+preformatted text blocks.</p>
+
+<p>This example shows how to add dynamic behavior where there is no
+HTML element. There's no magic; you'll need to add an HTML element
+to do it. The trick is in retaining the ability of the HTML source
+file to be displayed correctly in a browser.</p>
+
+<p>This example revisits the Text Echo Example, enhancing it by
+adding a JavaScript edit and displaying the previously entered
+value within a "pre" element.</p>
+
+<p>There are three kinds of modifications you're likely to want to
+be able to make to scripts:</p>
+
+<ul>
+<li>Set a variable value within a script. There is a trick to this
+that this example demonstrates.</li>
+
+<li>Remove the script completely. To remove script code with
+Dynamator, the script code to be removed must be in its own script
+element. Then you can use normal Dynamator behavior to locate the
+element and remove it. Often you can just give the script element a
+class attribute with value "Discard". (Note that this is not valid
+HTML, but neither Tidy nor browsers will complain.)</li>
+
+<li>Replace script code with different script code. To replace
+script code with Dynamator, the script code to be replaced must be
+in its own script element. Then you can use normal Dynamator
+behavior to locate the element and replace it. Replacing script
+code programmatically might be bad form; it might be better to use
+a design that relies on either variable setting or script
+removal.</li>
+</ul>
+
+<h2>The Page</h2>
+
+<iframe width="600" height="170" src="TextEcho2.html"></iframe>
+
+<h2>HTML</h2>
+
+<div class="column">
+<div class="column-filename">TextEcho2.html (updated)</div>
+
+<div class="html">
+<div class='insert'>TextEcho2.html</div>
+</div>
+</div>
+
+<div class="clear"></div>
+
+<p>The code for this example actually simulates the behavior of the
+JSP form using JavaScript. Both the simulation and the "real" form
+require a JavaScript variable to hold the value the user just
+entered.</p>
+
+<p>The source for the variable value is different depending on
+whether the page is being used as a static demo or as the final
+JSP. To do this, place each variable definition within its own
+script element. The script for the demo variable initialization is
+placed after the script to be used in production so that the demo
+initialization is used when the page is used as a demo, and given
+class="Discard" so that it is omitted when Dynamator generates the
+JSP.</p>
+
+<p>Within the variable initialization script to be included in the
+JSP, place a span element where the variable's initial value will
+be supplied. Add a class attribute with the value 'DiscardTag' to
+cause Dynamator to omit the span tag from the generated JSP, but
+include the content of the element. The Dynamator file will specify
+an override for the content of this element.</p>
+
+<p>The syntax of the span tag is different than we have seen
+before. A close tag is not used; instead the tag ends with "/&gt;".
+Within a &lt;script&gt; element with language="javascript", if the
+close tag is used, JTidy emits it as "&lt;\/span&gt;", which breaks
+the xml parser.</p>
+
+<p>This example also includes a script to output the value of the
+variable. Since we want this value hard-coded in the JSP output
+page, the script is given the class "DiscardTag" so that only the
+contents of the script element will be included in the generated
+JSP. Because the script element has the same 'id' attribute value
+as the variable initialization, its contents will be replaced with
+the same value as the variable.</p>
+
+<p>We used the same 'id' attribute value twice in this example.
+Browsers aren't complaining yet, but it might be better to use the
+class attribute instead.</p>
+
+<h2>Dynamator File</h2>
+
+<p>The Dynamator file is the same as in the previous TextEcho
+example.</p>
+
+<div class="column">
+<div class="column-filename">TextEcho2.dyn</div>
+
+<div class="dyn">
+<div class='insert'>TextEcho2.dyn</div>
+</div>
+</div>
+
+<div class="clear"></div>
+
+<p>For line-oriented languages like JavaScript, if the raw-content
+element is used to supply the value, the entire element should be
+all on the same line so that the resulting code doesn't add line
+breaks.</p>
+
+<p>It's important to replace or remove all span elements that occur
+within scripts. A span element that is not removed will be output
+as "&lt;span ...&gt;&lt;/span&gt;"; which is invalid (because of
+the '&lt;/' sequence) and probably not what you want anyway.</p>
+
+<p>Although this example doesn't demonstrate this, it's good
+practice to remove any 'id' or 'class' attributes added to script
+tags, since they are not valid HTML.</p>
+
+<h2>JSP</h2>
+
+<p>After processing with Dynamator, the resulting JSP file looks
+like this:</p>
+
+<div class="column">
+<div class="column-filename">TextEcho2.jsp (generated by
+Dynamator)</div>
+
+<iframe src="TextEcho2_jsp.html" class="out" width="600" height="250" frameborder="1" scrolling="auto"></iframe>
+</div>
+
+<div class="clear"></div>
+
+<p>Note that the 'span' element and the last script element do not
+appear in the generated JSP file, because they were given the class
+'DiscardTag'.</p>
+
+<p>Although the indentation appears broken within the 'pre'
+element; it's necessary to omit indentation in order to ensure that
+the content of the 'pre' element is formatted correctly.</p>
+
+<div class="in-action">
+<h2>In Action</h2>
+
+<p>If you are viewing this page in a servlet engine, you can see <a
+href="TextEcho2.jsp">the generated page in action</a>.</p>
+</div>
+</body>
+</html>
+

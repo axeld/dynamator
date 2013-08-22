@@ -1,0 +1,123 @@
+<dynamator language="php">
+
+<prolog>
+<?php
+    class Taxonomy
+    {
+        var $name;
+        var $children;
+        
+        function Taxonomy($name, $children)
+        {
+            $this->name = $name;
+            $this->children = $children;
+        }
+    }
+
+    $taxonomy = new Taxonomy(
+        "Animals",
+        array(
+            new Taxonomy(
+                "Vertebrates",
+                array(
+                    new Taxonomy(
+                        "Warm-blooded",
+                        array(
+                            new Taxonomy(
+                                "Mammals",
+                                null
+                                ),
+                            new Taxonomy(
+                                "Birds",
+                                null
+                                )
+                            )
+                        ),
+                    new Taxonomy(
+                        "Cold-blooded",
+                        array(
+                            new Taxonomy(
+                                "Fish",
+                                null
+                                ),
+                            new Taxonomy(
+                                "Reptiles",
+                                null
+                                )
+                            )
+                        )
+                    )
+                ),
+            new Taxonomy(
+                "Invertebrates",
+                array(
+                    new Taxonomy(
+                        "Arthropods",
+                        array(
+                            new Taxonomy(
+                                "Crustaceans",
+                                null
+                                ),
+                            new Taxonomy(
+                                "Insects",
+                                null
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        );
+?>
+</prolog>
+
+  <id name="title">
+    <content>
+      'An Informal Taxonomy of the Animal Kingdom'
+    </content>
+  </id>
+
+  <id name="root">
+    <content>$taxonomy->name</content>
+  </id>
+
+  <class name="children-list">
+    <extract>
+      <?php
+        output_children($taxonomy->children)
+      ?>
+    </extract>
+    
+    <if>$children != null</if>
+
+    <before>
+<?php
+function output_children($children)
+{
+?>
+    </before>
+
+    <after>
+<?php
+}
+?>
+    </after>
+  
+  </class>
+
+  <class name="child">
+    <foreach>$children as $child</foreach>
+  </class>
+
+  <class name="child-name">
+    <content>$child->name</content>
+  </class>
+
+  <class name="children">
+    <discard-tag/>
+    <content>
+      output_children($child->children)
+    </content>
+  </class>
+
+</dynamator>

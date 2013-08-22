@@ -1,0 +1,502 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta name="generator" content="HTML Tidy, see www.w3.org" />
+    <title>
+      Dynamator File for XSL.Text
+    </title>
+    <link rel="StyleSheet" type="text/css" href="../style.css" />
+  </head>
+  <body>
+    <table width="600">
+      <tr>
+        <td>
+          <h1>
+            Dynamator File for XSL.Text
+          </h1>
+          <hr />
+          <h2>
+            Contents
+          </h2>
+          <dl>
+            <dd>
+              <a href="#Description">Description</a>
+            </dd>
+            <dd>
+              <a href="#PATTERNS">Patterns</a>
+            </dd>
+            <dd>
+              <a href="#TIPS">Tips</a>
+            </dd>
+            <dd>
+              <a href="#Identification">Identification</a>
+            </dd>
+          </dl>
+          <hr />
+          <dl>
+            <dt>
+              <a id="Description"
+              name="Description"><b>DESCRIPTION</b></a>
+            </dt>
+            <dd>
+              <p>
+                This document describes the language-specific
+                format and code generation behavior of a <a
+                href="DynamatorFile.html">Dynamator File</a> with
+                language specified as "xsl.text". This language
+                plugin may be used to create XSL scripts for code
+                generation.
+              </p>
+              <p>
+                A Dynamator File with a root element of
+                "<b>&lt;dynamator language="xsl.text"&gt;</b>"
+                identifies a file containing transformations to be
+                applied to an XML template in order to produce an
+                XSL source file (i.e. a file with filetype ".xsl").
+                Dynamator applies the Dynamator file to an HTML or
+                XML file (the "template") to create an XSL script
+                that outputs a text file with structure
+                corresponding to the template and behavior
+                specified by the Dynamator file.
+              </p>
+              <p>
+                The only difference between language "xsl.text" and
+                language "xsl" is in whitespace handling. Language
+                "xsl.text" treats all whitespace as significant,
+                and inserts &lt;xsl:text&gt; elements around
+                textual content to force XSL to preserve all
+                whitespace. Otherwise, there would be no way to
+                prevent XSL from discarding whitespace between
+                script elements.
+              </p>
+              <p>
+                For example, the XSL script fragment
+              </p>
+              <table border="1" cellspacing="0" width="500">
+                <tr>
+                  <td bgcolor="#F0F0F0">
+<pre>
+&lt;xsl:value-of select="'a'"&gt;  &lt;xsl:value-of select="'b'"&gt;
+</pre>
+                  </td>
+                </tr>
+              </table>
+              <p>
+                generates
+              </p>
+              <table border="1" cellspacing="0" width="500">
+                <tr>
+                  <td bgcolor="#F0F0F0">
+<pre>
+ab
+</pre>
+                  </td>
+                </tr>
+              </table>
+              <p>
+                But the Dynamator template fragment
+              </p>
+              <table border="1" cellspacing="0" width="500">
+                <tr>
+                  <td bgcolor="#F0F0F0">
+<pre>
+&lt;a/&gt;  &lt;b/&gt;
+</pre>
+                  </td>
+                </tr>
+              </table>
+              <p>
+                generates (assuming the appropriate Dynamator tag
+                elements)
+              </p>
+              <table border="1" cellspacing="0" width="500">
+                <tr>
+                  <td bgcolor="#F0F0F0">
+<pre>
+a  b
+</pre>
+                  </td>
+                </tr>
+              </table>
+              <h3>
+                XSL Elements
+              </h3>
+              <p>
+                See the documentation for <a
+                href="DynamatorFile_XSL.html">language="xsl"</a>.
+              </p>
+              <a id="PATTERNS" name="PATTERNS" /> 
+              <h3>
+                Patterns
+              </h3>
+              <h4>
+                Prolog and epilog
+              </h4>
+              <p>
+                As with language="xsl", the prolog and epilog must
+                specify the start and end of the XSL file to be
+                generated, specifically the &lt;xsl:stylesheet&gt;
+                element and an &lt;xsl:output method="text"&gt;
+                element.
+              </p>
+              <h4>
+                File-level element
+              </h4>
+              <p>
+                Although optional, it is often useful to begin and
+                end an xsl.text template file with an XML element.
+                For example, it can provide a way to specify which
+                template files apply to a set of elements:
+              </p>
+              <table border="1" cellspacing="0" width="500">
+                <tr>
+                  <td bgcolor="#cccccc" align="right">
+                    x.template
+                  </td>
+                </tr>
+                <tr>
+                  <td bgcolor="#F0F0F0">
+<pre>
+&lt;module match="<i>element-name</i>"&gt;
+template file 
+...
+&lt;/module&gt;
+</pre>
+                  </td>
+                </tr>
+                <tr>
+                  <td bgcolor="#cccccc" align="right">
+                    x.dyn
+                  </td>
+                </tr>
+                <tr>
+                  <td bgcolor="#F0F0F0">
+<pre>
+...
+&lt;tag tag="module"&gt;
+  &lt;rename to="xsl:template"/&lt;
+&lt;/tag&gt;
+...
+</pre>
+                  </td>
+                </tr>
+              </table>
+              <h4>
+                Selection
+              </h4>
+              <p>
+                Selection is accomplished by specifying a tag
+                element with a pseudocode-like name, replacing it
+                with an XSL conditional:
+              </p>
+              <table border="1" cellspacing="0" width="500">
+                <tr>
+                  <td bgcolor="#cccccc" align="right">
+                    x.template
+                  </td>
+                </tr>
+                <tr>
+                  <td bgcolor="#F0F0F0">
+<pre>
+...
+&lt;if-meaningful-condition-name&gt;
+conditional-text&lt;/if-meaningful-condition-name&gt;
+...
+</pre>
+                  </td>
+                </tr>
+                <tr>
+                  <td bgcolor="#cccccc" align="right">
+                    x.dyn
+                  </td>
+                </tr>
+                <tr>
+                  <td bgcolor="#F0F0F0">
+<pre>
+...
+&lt;tag tag="if-meaningful-condition-name"&gt;
+  &lt;discard-tag/&gt;
+  &lt;if&gt;xpath-conditional-expression&lt;/if&gt;
+&lt;/tag&gt;
+...
+</pre>
+                  </td>
+                </tr>
+              </table>
+              <h4>
+                Choice
+              </h4>
+              <p>
+                Selection of one of a set of alternatives may be
+                supported by providing the boilerplate code in the
+                example below for &lt;xsl:choose&gt; and
+                &lt;xsl:otherwise&gt;, and by creating a tag
+                element for each specific condition.
+              </p>
+              <p>
+                Because all whitespace in a template file is
+                significant, care must be taken not to introduce
+                whitespace between tags.
+              </p>
+              <table border="1" cellspacing="0" width="500">
+                <tr>
+                  <td bgcolor="#cccccc" align="right">
+                    x.template
+                  </td>
+                </tr>
+                <tr>
+                  <td bgcolor="#F0F0F0">
+<pre>
+...
+&lt;choose
+&gt;&lt;when-meaningful-condition-name&gt;
+conditional template text&lt;/when-meaningful-condition-name-1
+&gt;&lt;otherwise&gt;
+default template text&lt;/otherwise
+&gt;&lt;/choose&gt;
+...
+</pre>
+                  </td>
+                </tr>
+                <tr>
+                  <td bgcolor="#cccccc" align="right">
+                    x.dyn
+                  </td>
+                </tr>
+                <tr>
+                  <td bgcolor="#F0F0F0">
+<pre>
+...
+&lt;tag tag="choose"&gt;
+  &lt;rename to="xsl:choose"/&gt;
+&lt;/tag&gt;
+
+&lt;tag tag="otherwise"&gt;
+  &lt;rename to="xsl:otherwise"/&gt;
+&lt;/tag&gt;
+
+&lt;tag tag="when-meaningful-condition-name"&gt;
+  &lt;rename to="xsl:when"/&gt;
+  &lt;attr name="test"&gt;
+    &lt;content&gt;xpath-conditional-expression&lt;/content&gt;
+  &lt;/attr&gt;
+&lt;/tag&gt;
+...
+</pre>
+                  </td>
+                </tr>
+              </table>
+              <h4>
+                HTML and XML elements
+              </h4>
+              <p>
+                If a template contains HTML or XML elements to be
+                propagated to the generated file, they must be
+                explicitly retained using the pattern below.
+              </p>
+              <p>
+                HTML elements must be valid XML: end tags may not
+                be omitted.
+              </p>
+              <table border="1" cellspacing="0" width="500">
+                <tr>
+                  <td bgcolor="#cccccc" align="right">
+                    x.template
+                  </td>
+                </tr>
+                <tr>
+                  <td bgcolor="#F0F0F0">
+<pre>
+...
+&lt;p&gt;
+...
+&lt;p&gt;
+...
+</pre>
+                  </td>
+                </tr>
+                <tr>
+                  <td bgcolor="#cccccc" align="right">
+                    x.dyn
+                  </td>
+                </tr>
+                <tr>
+                  <td bgcolor="#F0F0F0">
+<pre>
+...
+&lt;tag tag="p"&gt;
+  &lt;discard-tag/&gt;
+  &lt;before&gt;&amp;lt;p&amp;gt;&lt;/before&gt;
+  &lt;after&gt;&amp;lt;/p&amp;gt;&lt;/after&gt;
+&lt;/tag&gt;
+...
+</pre>
+                  </td>
+                </tr>
+              </table>
+              <h4>
+                HTML and XML entities
+              </h4>
+              <p>
+                If the template contains ampersands, they must be
+                explicitly replaced with elements.
+              </p>
+              <table border="1" cellspacing="0" width="500">
+                <tr>
+                  <td bgcolor="#cccccc" align="right">
+                    x.template
+                  </td>
+                </tr>
+                <tr>
+                  <td bgcolor="#F0F0F0">
+<pre>
+...
+if ( x &lt;and&gt; y )
+...
+</pre>
+                  </td>
+                </tr>
+                <tr>
+                  <td bgcolor="#cccccc" align="right">
+                    x.dyn
+                  </td>
+                </tr>
+                <tr>
+                  <td bgcolor="#F0F0F0">
+<pre>
+...
+&lt;tag tag="and"&gt;
+  &lt;discard-tag/&gt;
+  &lt;content&gt;&amp;amp;&amp;amp;&lt;/content&gt;
+&lt;/tag&gt;
+...
+</pre>
+                  </td>
+                </tr>
+              </table>
+              <a id="TIPS" name="TIPS" /> 
+              <h3>
+                Tips
+              </h3>
+              <h4>
+                Unmatched elements
+              </h4>
+              <p>
+                To find template elements without a corresponding
+                Dynamator file transformation:
+              </p>
+              <table border="1" cellspacing="0" width="500">
+                <tr>
+                  <td bgcolor="#555555">
+<pre style="color:#dddddd;font-weight:bold">
+===&gt; grep "&lt;[^x/!]" generated-xsl-file ...
+</pre>
+                  </td>
+                </tr>
+              </table>
+              <h4>
+                Extra line breaks
+              </h4>
+              <p>
+                To remove unwanted line breaks or whitespace,
+                insert a comment that begins immediately before the
+                whitespace and ends at the end of the whitespace.
+              </p>
+              <table border="1" cellspacing="0" width="500">
+                <tr>
+                  <td bgcolor="#cccccc" align="right">
+                    x.template
+                  </td>
+                </tr>
+                <tr>
+                  <td bgcolor="#F0F0F0">
+<pre>
+...
+    The natural ordering of objects of this type is determined by&lt;!--
+ --&gt;&lt;choose
+    &gt;&lt;when-has-one-sort-attr&gt;
+...
+</pre>
+                  </td>
+                </tr>
+              </table>
+              <h4>
+                Common error messages
+              </h4>
+              <table border="1" cellspacing="0">
+                <tr>
+                  <th>
+                    A message like
+                  </th>
+                  <th>
+                    Probably means
+                  </th>
+                </tr>
+                <tr>
+                  <td>
+                    Only xsl:when and xsl:otherwise are allowed
+                    here
+                  </td>
+                  <td>
+                    There's whitespace between the choose, whens,
+                    or otherwise in an xsl:choose element.
+                  </td>
+                </tr>
+              </table>
+              <br />
+              <br />
+            </dd>
+            <dt>
+              <b><a id="SeeAlso" name="SeeAlso">SEE ALSO</a></b>
+            </dt>
+            <dd>
+              <p>
+                <a href="dynamate.html">dynamate</a>, <a
+                href="DynamatorFile.html">Dynamator File</a>, <a
+                href="DynamatorFile_XSL.html">Dynamator File for
+                XSL</a><br />
+              </p>
+            </dd>
+            <dd>
+              <br />
+            </dd>
+            <dt>
+              <a id="Identification"
+              name="Identification"><b>IDENTIFICATION</b></a>
+            </dt>
+            <dd>
+              <table border="0">
+                <tr>
+                  <td>
+                    Author:
+                  </td>
+                  <td>
+                    Jay Dunning
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    Version:
+                  </td>
+                  <td>
+                    1.5
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    Copyright:
+                  </td>
+                  <td>
+                    2000-2004, Jay Dunning
+                  </td>
+                </tr>
+              </table>
+            </dd>
+          </dl>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
+

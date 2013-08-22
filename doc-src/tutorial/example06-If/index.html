@@ -1,0 +1,183 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="generator" content="HTML Tidy, see www.w3.org" />
+<title>Dynamator Example 6: If</title>
+<link rel="StyleSheet" type="text/css" href="../../style.css" />
+</head>
+<body>
+<h1>If</h1>
+
+<p>This example shows how to conditionally output HTML elements at
+run-time.</p>
+
+<p>The goal of Dynamator is to separate program logic from HTML.
+The separation is two-way: no program logic in the HTML, and no
+HTML in the program logic. By completely decoupling program logic
+from HTML, both can change independently.</p>
+
+<p>When the presence of an HTML element depends on a dynamic value,
+or the actual element changes depending on a dynamic value, it is
+very tempting to put the HTML element in a dynamic component such
+as a Java class or a Dynamator file. Resist that temptation; it
+would make the dynamic component less reusable and increase the
+maintenance burden on the Java developer if the HTML needs to
+change.</p>
+
+<p>Conditional processing allows the presence or absence of an
+element to be determined at run-time. To enable conditional
+processing, add an 'if' element subordinate to the corresponding
+'id' or 'class' element in the Dynamator file. The content of the
+'if' element is a boolean program expression. At run-time, if the
+property or expression evaluates to 'true', the HTML element and
+its children are output. If the property or expression evaluates to
+'false', the HTML element and its children are not output.</p>
+
+<p>For example:</p>
+
+<table class="tabular" summary="conditional example">
+<tr>
+<td class="dyn">&lt;id name="conditional"&gt;<br />
+ &nbsp;&nbsp;&lt;if&gt;<i>booleanExpression</i>&lt;if&gt;<br />
+ &lt;/id&gt;</td>
+<td>Outputs the element with the id 'conditional', and its children,
+only if the java expression evaluates to true.</td>
+</tr>
+</table>
+
+<p>The example below is similar to the TextEcho example.
+Instead of entering text, the user selects an option from a choice
+list. When the page is redisplayed, the choice list is set to the
+choice the user made, and an appropriate sentence is displayed. This
+example is trivial, and in real life it would be implemented
+differently, but it allows us to consider conditional logic
+independently of everything else.</p>
+
+<p>Unlike the TextEcho example, this example does not use Javascript.
+This allows us to demonstrate another useful technique for static demo
+site construction, CSS element hiding.</p>
+
+<h2>Page</h2>
+
+<iframe width="600" height="170" src="TrueFalse.html"></iframe>
+
+<h2>HTML</h2>
+
+<div class="column">
+<div class="column-filename">TrueFalse.html (updated for
+Dynamator)</div>
+
+<div class="html">
+<div class='insert'>TrueFalse_original.html</div>
+</div>
+</div>
+
+<div class="clear"></div>
+
+<p>A few notes:</p>
+
+<ul>
+<li>Each select option is given its own id as a hook so that the
+'selected' option can be programmatically determined.</li>
+
+<li>A &lt;div&gt; element has been added around the response text
+to provide a hook for program logic. Conditional logic will be
+added to the &lt;div&gt; element in the Dynamator file so that the
+response text will only be output in response to a submit.</li>
+
+<li>Each response value is in the HTML. The response value that is
+displayed is chosen at run-time.</li>
+</ul>
+
+<p>Placing each response value in the HTML has a benefit and a
+disadvantage. The benefit is that the HTML author can control the
+HTML for each response value. The disadvantage is that when the
+HTML page is displayed as-is (i.e. for a demo or by the HTML
+author), each response value is displayed, unless some extra HTML
+coding is done.</p>
+
+<p>Unwanted elements can be rendered invisible for a demo using CSS.
+The following example shows how:</p>
+
+<div class="column">
+<div class="column-filename">TrueFalse.html (updated for
+demo)</div>
+
+<div class="html">
+<div class='insert'>TrueFalse.html</div>
+</div>
+</div>
+
+<div class="clear"></div>
+
+<p>Two things have been added. The first is a CSS style preventing the
+display of any element with the class "HideForDemo".
+The second is the association of one of the alternative output elements
+with that class.</p>
+
+<p>Typically, a style such as "HideForDemo" is placed in the
+application's main stylesheet, but not used in the production application.
+</p>
+
+<h2>Dynamator File</h2>
+
+<p>The following Dynamator file corresponds to the demo example
+above.</p>
+
+<div class="column">
+<div class="column-filename">TrueFalse.dyn</div>
+
+<div class="dyn">
+<div class='insert'>TrueFalse.dyn</div>
+</div>
+</div>
+
+<div class="clear"></div>
+
+<p>The Dynamator &lt;if&gt; element can be used with any locator or
+attribute. It causes the located element or attribute to be output only
+if the program expression specified in the content of the element
+evaluates to true at run-time.</p>
+
+<p>The Dynamator file above causes the 'response' element to be output
+only if the query string contains a value.  Note that this applies to
+the entire element, not just the start and end tags.  
+The Dynamator file also adds the 'selected' attribute to whichever
+options element matches the current selection, and causes only the text
+matching the current selection to be output.</p>
+
+<h2>JSP File</h2>
+
+<p>After processing with Dynamator, the resulting JSP file looks
+like this:</p>
+
+<div class="column">
+<div class="column-filename">TrueFalse.jsp (generated by
+Dynamator)</div>
+
+<iframe src="TrueFalse_jsp.html" width="600" height="250" frameborder="1" scrolling="auto"></iframe>
+</div>
+
+<div class="clear"></div>
+
+<p>Note the spacing in the two options tags. The reason there is no
+space between the value attribute and the '&lt;%' is that in HTML
+it is not valid to have a space before the '&gt;' of the end of the
+tag.</p>
+
+<div class="in-action">
+<h2>In Action</h2>
+
+<p>If you are viewing this page in a servlet engine, you can see <a
+href="TrueFalse.jsp">the generated page in action</a>.</p>
+</div>
+
+<h2>Observations</h2>
+
+<p>Obviously, using an 'if' for each option in an option list is
+not a maintainable approach. In most cases, an option list merits a
+'foreach', discussed later.</p>
+</body>
+</html>
+

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="big5"?>
+<dynamator language="none" suffix="html">
+  <tag tag="head">
+    <before-content>
+      <meta http-equiv="content-type" content="text/html; charset=big5">
+      <meta http-equiv="content-language" content="zh">
+    </before-content>
+  </tag>
+  <tag tag="title">
+    <content>
+      用 招呼
+    </content>
+  </tag>
+  <id name="HelloText">
+    <content>
+      你好 <span id="UserName">用</span>!
+    </content>
+  </id>
+</dynamator>

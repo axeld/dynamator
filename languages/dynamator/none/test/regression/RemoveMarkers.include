@@ -1,0 +1,14 @@
+<dynamator>
+<tag tag="*" with-attr="id">
+  <attr name="id"><discard/></attr>
+</tag>
+<tag tag="*" with-attr="class">
+  <attr name="class"><discard/></attr>
+</tag>
+<tag tag="div">
+  <discard-tag/>
+</tag>
+<tag tag="span">
+  <discard-tag/>
+</tag>
+</dynamator>

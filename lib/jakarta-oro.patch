@@ -1,0 +1,388 @@
+Only in jakarta-oro-2.0.8\src/java/org/apache/oro/io: RegexFilenameFilter.java
+Only in jakarta-oro-2.0.8-jdk1.1/src/java/org/apache/oro/io: RegexFilenameFilter.java.orig
+diff -rp jakarta-oro-2.0.8\src/java/org/apache/oro/text/MatchActionInfo.java jakarta-oro-2.0.8-jdk1.1/src/java/org/apache/oro/text/MatchActionInfo.java
+*** jakarta-oro-2.0.8\src/java/org/apache/oro/text/MatchActionInfo.java	Sun Dec 28 23:00:30 2003
+--- jakarta-oro-2.0.8-jdk1.1/src/java/org/apache/oro/text/MatchActionInfo.java	Fri Mar 26 09:33:43 2004
+*************** public final class MatchActionInfo {
+*** 100,106 ****
+     * separated out by the fieldSeparator.  If no field separator was
+     * specified, this variable will be set to null.
+     */
+!   public List fields;
+  
+    /** The PatternMatcher used to find the match. */
+    public PatternMatcher matcher;
+--- 100,106 ----
+     * separated out by the fieldSeparator.  If no field separator was
+     * specified, this variable will be set to null.
+     */
+!   public Vector fields;
+  
+    /** The PatternMatcher used to find the match. */
+    public PatternMatcher matcher;
+diff -rp jakarta-oro-2.0.8\src/java/org/apache/oro/text/MatchActionProcessor.java jakarta-oro-2.0.8-jdk1.1/src/java/org/apache/oro/text/MatchActionProcessor.java
+*** jakarta-oro-2.0.8\src/java/org/apache/oro/text/MatchActionProcessor.java	Sun Dec 28 23:00:30 2003
+--- jakarta-oro-2.0.8-jdk1.1/src/java/org/apache/oro/text/MatchActionProcessor.java	Fri Mar 26 09:48:59 2004
+*************** public final class MatchActionProcessor 
+*** 376,382 ****
+      Object obj;
+      Pattern pattern;
+      MatchAction action;
+!     List fields = new ArrayList();
+  
+      // Set those things that will not change.
+      info.matcher        = __matcher;
+--- 376,382 ----
+      Object obj;
+      Pattern pattern;
+      MatchAction action;
+!     Vector fields = new Vector();
+  
+      // Set those things that will not change.
+      info.matcher        = __matcher;
+*************** public final class MatchActionProcessor 
+*** 400,406 ****
+  	    info.lineNumber = reader.getLineNumber();
+  	    info.pattern    = pattern;
+  	    if(__fieldSeparator != null) {
+! 	      fields.clear();
+  	      Util.split(fields, __matcher, __fieldSeparator, info.line);
+  	      info.fields = fields;
+  	    } else
+--- 400,406 ----
+  	    info.lineNumber = reader.getLineNumber();
+  	    info.pattern    = pattern;
+  	    if(__fieldSeparator != null) {
+! 	      fields.removeAllElements();
+  	      Util.split(fields, __matcher, __fieldSeparator, info.line);
+  	      info.fields = fields;
+  	    } else
+*************** public final class MatchActionProcessor 
+*** 412,418 ****
+  	  info.match      = null;
+  	  info.lineNumber = reader.getLineNumber();
+  	  if(__fieldSeparator != null) {
+! 	    fields.clear();
+  	    Util.split(fields, __matcher, __fieldSeparator, info.line);
+  	    info.fields = fields;
+  	  } else
+--- 412,418 ----
+  	  info.match      = null;
+  	  info.lineNumber = reader.getLineNumber();
+  	  if(__fieldSeparator != null) {
+! 	    fields.removeAllElements();
+  	    Util.split(fields, __matcher, __fieldSeparator, info.line);
+  	    info.fields = fields;
+  	  } else
+diff -rp jakarta-oro-2.0.8\src/java/org/apache/oro/text/perl/Perl5Util.java jakarta-oro-2.0.8-jdk1.1/src/java/org/apache/oro/text/perl/Perl5Util.java
+*** jakarta-oro-2.0.8\src/java/org/apache/oro/text/perl/Perl5Util.java	Sun Dec 28 23:00:30 2003
+--- jakarta-oro-2.0.8-jdk1.1/src/java/org/apache/oro/text/perl/Perl5Util.java	Fri Mar 26 09:52:48 2004
+*************** public final class Perl5Util implements 
+*** 185,191 ****
+     * A container for temporarily holding the results of a split before
+     * deleting trailing empty fields.
+     */
+!   private ArrayList __splitList;
+  
+    /**
+     * Keeps track of the original input (for postMatch() and preMatch())
+--- 185,191 ----
+     * A container for temporarily holding the results of a split before
+     * deleting trailing empty fields.
+     */
+!   private Vector __splitList;
+  
+    /**
+     * Keeps track of the original input (for postMatch() and preMatch())
+*************** public final class Perl5Util implements 
+*** 229,235 ****
+     * </pre>
+     */
+    public Perl5Util(PatternCache cache) {
+!     __splitList    = new ArrayList();
+      __matcher      = new Perl5Matcher();
+      __patternCache = cache;
+      __expressionCache = new CacheLRU(cache.capacity());
+--- 229,235 ----
+     * </pre>
+     */
+    public Perl5Util(PatternCache cache) {
+!     __splitList    = new Vector();
+      __matcher      = new Perl5Matcher();
+      __patternCache = cache;
+      __expressionCache = new CacheLRU(cache.capacity());
+*************** public final class Perl5Util implements 
+*** 811,817 ****
+     *            the expression.  You are not forced to catch this exception
+     *            because it is derived from RuntimeException.
+     */
+!   public synchronized void split(Collection results, String pattern,
+  				 String input, int limit)
+         throws MalformedPerl5PatternException 
+    {
+--- 811,817 ----
+     *            the expression.  You are not forced to catch this exception
+     *            because it is derived from RuntimeException.
+     */
+!   public synchronized void split(Vector results, String pattern,
+  				 String input, int limit)
+         throws MalformedPerl5PatternException 
+    {
+*************** public final class Perl5Util implements 
+*** 829,863 ****
+      while(--limit != 0 && __matcher.contains(pinput, compiledPattern)) {
+        currentResult = __matcher.getMatch();
+  
+!       __splitList.add(input.substring(beginOffset,
+  				      currentResult.beginOffset(0)));
+  
+        if((groups = currentResult.groups()) > 1) {
+  	for(index = 1; index < groups; ++index) {
+  	  group = currentResult.group(index);
+  	  if(group != null && group.length() > 0)
+! 	    __splitList.add(group);
+  	}
+        }
+  
+        beginOffset = currentResult.endOffset(0);
+      }
+  
+!     __splitList.add(input.substring(beginOffset, input.length()));
+  
+      // Remove all trailing empty fields.
+      for(int i = __splitList.size() - 1; i >= 0; --i) {
+        String str;
+  
+!       str = (String)__splitList.get(i);
+        if(str.length() == 0)
+! 	__splitList.remove(i);
+        else
+  	break;
+      }
+  
+!     results.addAll(__splitList);
+!     __splitList.clear();
+  
+      // Just for the sake of completeness
+      __lastMatch = currentResult;
+--- 829,867 ----
+      while(--limit != 0 && __matcher.contains(pinput, compiledPattern)) {
+        currentResult = __matcher.getMatch();
+  
+!       __splitList.addElement(input.substring(beginOffset,
+  				      currentResult.beginOffset(0)));
+  
+        if((groups = currentResult.groups()) > 1) {
+  	for(index = 1; index < groups; ++index) {
+  	  group = currentResult.group(index);
+  	  if(group != null && group.length() > 0)
+! 	    __splitList.addElement(group);
+  	}
+        }
+  
+        beginOffset = currentResult.endOffset(0);
+      }
+  
+!     __splitList.addElement(input.substring(beginOffset, input.length()));
+  
+      // Remove all trailing empty fields.
+      for(int i = __splitList.size() - 1; i >= 0; --i) {
+        String str;
+  
+!       str = (String)__splitList.elementAt(i);
+        if(str.length() == 0)
+! 	__splitList.removeElementAt(i);
+        else
+  	break;
+      }
+  
+!     Enumeration e= __splitList.elements();
+!     while ( e.hasMoreElements() )
+!     {
+!         results.addElement(e.nextElement());
+!     }
+!     __splitList.removeAllElements();
+  
+      // Just for the sake of completeness
+      __lastMatch = currentResult;
+*************** public final class Perl5Util implements 
+*** 869,875 ****
+     * split(results, pattern, input, SPLIT_ALL);
+     * </pre></blockquote>
+     */
+!   public synchronized void split(Collection results, String pattern,
+  				 String input)
+         throws MalformedPerl5PatternException 
+    {
+--- 873,879 ----
+     * split(results, pattern, input, SPLIT_ALL);
+     * </pre></blockquote>
+     */
+!   public synchronized void split(Vector results, String pattern,
+  				 String input)
+         throws MalformedPerl5PatternException 
+    {
+*************** public final class Perl5Util implements 
+*** 883,889 ****
+     * split(results, "/\\s+/", input);
+     * </pre></blockquote>
+     */
+!   public synchronized void split(Collection results, String input)
+         throws MalformedPerl5PatternException
+    {
+      split(results, "/\\s+/", input);
+--- 887,893 ----
+     * split(results, "/\\s+/", input);
+     * </pre></blockquote>
+     */
+!   public synchronized void split(Vector results, String input)
+         throws MalformedPerl5PatternException
+    {
+      split(results, "/\\s+/", input);
+diff -rp jakarta-oro-2.0.8\src/java/org/apache/oro/text/regex/Perl5Compiler.java jakarta-oro-2.0.8-jdk1.1/src/java/org/apache/oro/text/regex/Perl5Compiler.java
+*** jakarta-oro-2.0.8\src/java/org/apache/oro/text/regex/Perl5Compiler.java	Sun Dec 28 23:00:30 2003
+--- jakarta-oro-2.0.8-jdk1.1/src/java/org/apache/oro/text/regex/Perl5Compiler.java	Fri Mar 26 09:32:23 2004
+*************** public final class Perl5Compiler impleme
+*** 115,124 ****
+    private char[] __program;
+  
+    /** Lookup table for POSIX character class names */
+!   private static final HashMap __hashPOSIX;
+    
+    static {
+!     __hashPOSIX = new HashMap();
+      __hashPOSIX.put("alnum",     new Character(OpCode._ALNUMC));
+      __hashPOSIX.put("word",      new Character(OpCode._ALNUM));
+      __hashPOSIX.put("alpha",     new Character(OpCode._ALPHA));
+--- 115,124 ----
+    private char[] __program;
+  
+    /** Lookup table for POSIX character class names */
+!   private static final Hashtable __hashPOSIX;
+    
+    static {
+!     __hashPOSIX = new Hashtable();
+      __hashPOSIX.put("alnum",     new Character(OpCode._ALNUMC));
+      __hashPOSIX.put("word",      new Character(OpCode._ALNUM));
+      __hashPOSIX.put("alpha",     new Character(OpCode._ALPHA));
+diff -rp jakarta-oro-2.0.8\src/java/org/apache/oro/text/regex/Util.java jakarta-oro-2.0.8-jdk1.1/src/java/org/apache/oro/text/regex/Util.java
+*** jakarta-oro-2.0.8\src/java/org/apache/oro/text/regex/Util.java	Sun Dec 28 23:00:30 2003
+--- jakarta-oro-2.0.8-jdk1.1/src/java/org/apache/oro/text/regex/Util.java	Fri Mar 26 09:51:28 2004
+*************** public final class Util {
+*** 158,164 ****
+     *               behavior associated with non-positive limit values.
+     * @since 2.0
+     */
+!   public static void split(Collection results, PatternMatcher matcher,
+  			   Pattern pattern, String input, int limit)
+    {
+      int beginOffset;
+--- 158,164 ----
+     *               behavior associated with non-positive limit values.
+     * @since 2.0
+     */
+!   public static void split(Vector results, PatternMatcher matcher,
+  			   Pattern pattern, String input, int limit)
+    {
+      int beginOffset;
+*************** public final class Util {
+*** 170,181 ****
+  
+      while(--limit != 0 && matcher.contains(pinput, pattern)) {
+        currentResult = matcher.getMatch();
+!       results.add(input.substring(beginOffset,
+  				  currentResult.beginOffset(0)));
+        beginOffset = currentResult.endOffset(0);
+      }
+  
+!     results.add(input.substring(beginOffset, input.length()));
+    }
+  
+  
+--- 170,181 ----
+  
+      while(--limit != 0 && matcher.contains(pinput, pattern)) {
+        currentResult = matcher.getMatch();
+!       results.addElement(input.substring(beginOffset,
+  				  currentResult.beginOffset(0)));
+        beginOffset = currentResult.endOffset(0);
+      }
+  
+!     results.addElement(input.substring(beginOffset, input.length()));
+    }
+  
+  
+*************** public final class Util {
+*** 214,220 ****
+     * @param input   The <code>String</code> to split.
+     * @since 2.0
+     */
+!   public static void split(Collection results,  PatternMatcher matcher,
+  			   Pattern pattern, String input)
+    {
+      split(results, matcher, pattern, input, SPLIT_ALL);
+--- 214,220 ----
+     * @param input   The <code>String</code> to split.
+     * @since 2.0
+     */
+!   public static void split(Vector results,  PatternMatcher matcher,
+  			   Pattern pattern, String input)
+    {
+      split(results, matcher, pattern, input, SPLIT_ALL);
+diff -rp jakarta-oro-2.0.8\src/java/org/apache/oro/util/GenericCache.java jakarta-oro-2.0.8-jdk1.1/src/java/org/apache/oro/util/GenericCache.java
+*** jakarta-oro-2.0.8\src/java/org/apache/oro/util/GenericCache.java	Sun Dec 28 23:00:30 2003
+--- jakarta-oro-2.0.8-jdk1.1/src/java/org/apache/oro/util/GenericCache.java	Fri Mar 26 09:50:09 2004
+*************** public abstract class GenericCache imple
+*** 87,93 ****
+  
+    int _numEntries;
+    GenericCacheEntry[] _cache;
+!   HashMap _table;
+  
+    /**
+     * The primary constructor for GenericCache.  It has default
+--- 87,93 ----
+  
+    int _numEntries;
+    GenericCacheEntry[] _cache;
+!   Hashtable _table;
+  
+    /**
+     * The primary constructor for GenericCache.  It has default
+*************** public abstract class GenericCache imple
+*** 100,106 ****
+     */
+    GenericCache(int capacity) {
+      _numEntries = 0;
+!     _table    = new HashMap(capacity);
+      _cache    = new GenericCacheEntry[capacity];
+  
+      while(--capacity >= 0)
+--- 100,106 ----
+     */
+    GenericCache(int capacity) {
+      _numEntries = 0;
+!     _table    = new Hashtable(capacity);
+      _cache    = new GenericCacheEntry[capacity];
+  
+      while(--capacity >= 0)
+*************** public abstract class GenericCache imple
+*** 120,127 ****
+      return null;
+    }
+  
+!   public final Iterator keys() {
+!     return _table.keySet().iterator();
+    }
+  
+    /**
+--- 120,127 ----
+      return null;
+    }
+  
+!   public final Enumeration keys() {
+!     return _table.keys();
+    }
+  
+    /**
+

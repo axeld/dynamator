@@ -1,0 +1,165 @@
+<dynamator language="java">
+<prolog>
+import java.io.PrintWriter;
+
+public
+class Taxonomy_Extract
+{
+    private static
+    class Element
+    {
+        private String name_;
+        private Element[] children_ = {};
+        
+        public
+        Element(
+            String name
+            )
+        {
+            name_ = name;
+        }
+
+        public
+        Element(
+            String name,
+            Element[] children
+            )
+        {
+            name_ = name;
+            children_ = children;
+        }
+
+        public
+        String
+        name()
+        {
+            return name_;
+        }
+        
+        public
+        Element[] 
+        children()
+        {
+            return children_;
+        }
+    }
+
+    private static Element root = 
+        new Element("Animals",
+            new Element[]
+            {
+                new Element("Vertebrates",
+                    new Element[]
+                    {
+                        new Element("Warm-blooded",
+                            new Element[]
+                            {
+                                new Element("Mammals"),
+                                new Element("Birds")
+                            }
+                        ),
+                        new Element("Cold-blooded",
+                            new Element[]
+                            {
+                                new Element("Fish"),
+                                new Element("Reptiles")
+                            }
+                        )
+                    }
+                ),
+                new Element("Invertebrates",
+                    new Element[]
+                    {
+                        new Element("Arthropods",
+                            new Element[]
+                            {
+                                new Element("Crustaceans"),
+                                new Element("Insects")
+                            }
+                        )
+                    }
+                )
+            }
+        );
+    
+    public static void main(String[] args)
+    {
+        PrintWriter out = new PrintWriter(System.out);
+        print(out, root);
+        out.flush();
+    }
+
+    private static
+    void
+    print(
+        PrintWriter out,
+        Element element
+        )
+    {
+        
+</prolog>
+
+<before-extracts>
+    }
+</before-extracts>
+
+<epilog>
+}
+</epilog>
+
+  <id name="title">
+    <content>
+      "An informal Taxonomy of the Animal Kingdom"
+    </content>
+  </id>
+
+  <id name="root">
+    <content>
+      element.name()
+    </content>
+  </id>
+
+  <class name="children-list">
+    <extract>
+      printChildren(out, element);
+    </extract>
+
+    <before>
+    private static
+    void
+    printChildren(
+        PrintWriter out,
+        Element element
+        )
+    {
+    </before>
+
+    <after>
+    }
+    </after>
+  
+  </class>
+
+  <class name="child">
+    <foreach type="Element[]" element="child">
+      element.children()
+    </foreach>
+  </class>
+
+  <class name="child-name">
+    <content>
+      child.name()
+    </content>
+  </class>
+
+  <class name="children">
+    <discard/>
+    <before>
+      if ( child.children().length > 0 )
+      {
+          printChildren(out, child);
+      }
+    </before>
+  </class>
+
+</dynamator>

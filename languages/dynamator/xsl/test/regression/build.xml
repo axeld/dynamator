@@ -1,0 +1,42 @@
+<!-- 
+    This is an ant build file. 
+-->
+<project name="dynamator-xsl-examples" default="all">
+  
+  <taskdef name="dynamate" classname="dynamator.ant.DynamateTask"/>
+  
+  <property name="suffix" value="xsl"/>
+  
+  <target name="all"
+      depends="clean, dynamate"
+      description="Clean and rebuild Dynamator examples."
+    />
+  
+  <target name="dynamate"
+      description="Dynamate examples."
+    >
+    <dynamate
+        srcdir=".."
+        matchdir="."
+        destdir="."
+        destsuffix="${suffix}"
+        includes="*.html"
+        />
+    <dynamate
+        srcdir="."
+        matchdir="."
+        destdir="."
+        destsuffix="${suffix}"
+        includes="*.html"
+        />
+  </target>
+
+  <target name="clean"
+      description="Delete all program-generated files"
+    >
+    <delete>
+      <fileset dir="." includes="*.${suffix}" />
+    </delete>
+  </target>
+  
+</project>

@@ -1,0 +1,35 @@
+<dynamator language="jsp">
+  <prolog>
+    <%@ page session="false" %>
+    <%!
+        private static final String[] colors_ = 
+            new String[]
+            {
+                "red",
+                "orange",
+                "green",
+                "brown",
+                "slate",
+            };
+    %> 
+    <%
+        String likeInput = request.getParameter("like");
+        int like = 
+            ( likeInput == null || likeInput.length() == 0 )
+            ? -1
+            : Integer.valueOf(likeInput).intValue();
+    %>
+  </prolog>
+  <id name="color">
+    <foreach type="String[]" element="color" i="iColor">
+        colors_
+    </foreach>
+    <attr name="value">
+      <content>iColor</content>
+    </attr>
+    <attr name="selected">
+      <if>iColor == like</if>
+    </attr>
+    <content>color</content>
+  </id>
+</dynamator>

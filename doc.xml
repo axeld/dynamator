@@ -1,0 +1,988 @@
+<!-- 
+    This is an ant build file for building Dynamator documentation.
+    
+    To build Dynamator documentation
+        ant -f doc.xml
+
+    Requirements:
+    - Ant 1.5
+
+    Classpath Requirements:
+    - dynamator.jar
+
+    $ANT_HOME/lib must contain:
+    - jakarta-oro-2.0.8.jar
+      (http://jakarta.apache.org/oro)
+    - antcontrib-0.5.jar
+      (http://ant-contrib.sourceforge.net)
+-->
+
+<project name="dynamator" default="all">
+  
+  <!-- user-defined configuration -->
+  <property name="configuration.file" value="build.properties"/> 
+  <property file="${user.home}/dynamator.build.properties" /> 
+  <property file="${user.home}/build.properties" />
+  <property file="${basedir}/${configuration.file}" />
+
+  <!-- destination directories -->
+  <property name="dir.build"    location="${basedir}/build"/>
+  <property name="dir.classes"  location="${dir.build}/classes"/>
+  <property name="dir.doc-gen"  location="${dir.build}/doc"/>
+  <property name="dir.site"     location="${dir.build}/site"/>
+  <property name="dir.doc-work" location="${dir.build}/doc-work"/>
+  <!-- note: news file is not in CVS -->
+  <property name="file.news"    location="${basedir}/news.txt"/>
+
+  <!-- source directories -->
+  <property name="dir.doc-src"  location="${basedir}/doc-src"/>
+  <property name="dir.tutorial" location="${dir.doc-src}/tutorial"/>
+  <property name="dir.examples" location="${basedir}/examples"/>
+
+  <path id="classpath.project">
+    <pathelement location="${dir.classes}"/>
+    <pathelement location="${basedir}/dynamator.jar"/>
+    <fileset dir="${basedir}">
+      <include name="lib/**/*.jar"/>
+    </fileset>
+    <pathelement path="${java.class.path}"/>
+  </path>
+  
+  <taskdef name="dynamate" 
+      classname="dynamator.ant.DynamateTask"
+      classpathref="classpath.project"
+      />
+  <taskdef name="if"  
+      classname="net.sf.antcontrib.logic.IfTask"/>
+  <taskdef name="foreach"  
+      classname="net.sf.antcontrib.logic.ForEach"/>
+  <taskdef name="propertyregexp"  
+      classname="net.sf.antcontrib.property.RegexTask"/>
+
+  <path id="path.doc-src">
+    <pathelement path="${dir.doc-src}"/>
+  </path>
+  
+  <target name="all" 
+      depends="
+        validate,
+        sitedocs
+        "
+      description="Build all documentation."
+    />
+
+  <target name="init">
+  
+    <tstamp>
+      <format property="last-update"
+          timezone="GMT" 
+          pattern="dd MMMMMMMMM yyyy"/>
+      <format property="last-update-year"
+          timezone="GMT" 
+          pattern="yyyy"/>
+    </tstamp>
+
+    <mkdir dir="${dir.doc-gen}"/>
+    <copy todir="${dir.doc-gen}">
+      <fileset dir="${dir.doc-src}/html"
+          includes="images/**, *.css"/>
+      <fileset dir="${dir.doc-src}/html" 
+          includes="manual/*.pdf"/>
+    </copy>
+
+    <mkdir dir="${dir.doc-work}"/>
+    
+    <!-- 
+        Create main xsl template.
+
+          doc-src/html/template.html 
+        * doc-src/dynxsl/template.dyn
+        ==> doc-src/work/template.xsl
+    -->
+    <dynamate
+        srcdir="${dir.doc-src}/html"
+        matchdir="${dir.doc-src}/dynxsl"
+        destdir="${dir.doc-work}"
+        destsuffix="xsl"
+        includes="template.html"
+        xml="true"
+        indent="false"
+      />
+    
+    <!--
+        Copy any xsl files from dynxsl to work directory.
+    -->
+    <copy todir="${dir.doc-work}">
+      <fileset dir="${dir.doc-src}/dynxsl">
+        <include name="*.xsl"/>
+      </fileset>
+    </copy>
+        
+    <!-- 
+        Each HTML subdirectory (except FAQ) has its own submenu.
+        For each subdirectory, modify the main template to include
+        the submenu.
+
+          doc-src/dynhtml/{manual|i18n}/template.dyn 
+        * doc-src/html/template.html
+        ==> doc-src/work/{manual|i18n}/template.html
+        
+    -->
+    <antcall target="sub-template">
+      <param name="sub-template.dir" value="manual"/>
+    </antcall>
+    <antcall target="sub-template">
+      <param name="sub-template.dir" value="i18n"/>
+    </antcall>
+
+    <mkdir dir="${dir.doc-src}/html/tutorial"/>
+    <antcall target="sub-template">
+      <param name="sub-template.dir" value="tutorial"/>
+    </antcall>
+  </target>
+  
+  <target name="check-sub-template-uptodate">
+    <uptodate property="sub-template.uptodate"
+        targetfile="${dir.doc-work}/${sub-template.dir}/template.xsl">
+      <srcfiles dir="${dir.doc-src}">
+        <include name="work/${sub-template.dir}/template.html"/>
+        <include name="dynxsl/${sub-template.dir}/template.dyn"/>
+        <include name="dynxsl/${sub-template.dir}/*.dyncopy*"/>
+        <include name="dyn/template.dyn"/>
+      </srcfiles>
+    </uptodate>
+  </target>
+  
+  <target name="sub-template"
+      depends="check-sub-template-uptodate"
+      unless="sub-template.uptodate">
+      
+    <mkdir dir="${dir.doc-work}/${sub-template.dir}"/>
+
+    <!-- 
+        Create subordinate html templates.
+        
+          doc-src/dynhtml/manual/template.dyn
+        * doc-src/html/template.html (.dyn references ../template)
+        ==> doc-src/work/manual/template.html
+    -->
+    <dynamate
+        srcdir="${dir.doc-src}/dynhtml/${sub-template.dir}"
+        matchdir="${dir.doc-src}/html/${sub-template.dir}"
+        destdir="${dir.doc-work}/${sub-template.dir}"
+        destsuffix="html"
+        includes="**/template.dyn"
+        xml="true"
+        indent="false"
+      />
+
+    <if>
+      <available file="${dir.doc-src}/dynxsl/${sub-template.dir}"/>
+      <then>
+        <!-- 
+            Create subordinate xsl templates.
+            
+              doc-src/work/tutorial/template.html
+            * doc-src/dynxsl/tutorial/template.dyn
+            ==> doc-src/work/tutorial/template.xsl
+        -->
+        <dynamate
+            srcdir="${dir.doc-work}/${sub-template.dir}"
+            matchdir="${dir.doc-src}/dynxsl/${sub-template.dir}"
+            destdir="${dir.doc-work}/${sub-template.dir}"
+            destsuffix="xsl"
+            includes="template.html"
+            includeds="**/extra*.dyncopy"
+            xml="true"
+            indent="false"
+          />
+
+        <!--
+            Copy any xsl files from dynxsl to work directory.
+        -->
+        <copy todir="${dir.doc-work}/${sub-template.dir}">
+          <fileset dir="${dir.doc-src}/dynxsl/${sub-template.dir}">
+            <include name="*.xsl"/>
+          </fileset>
+        </copy>
+        
+      </then>
+      <else>
+        <!-- 
+            Create subordinate xsl templates.
+            
+              doc-src/work/manual/template.html
+            * doc-src/dynxsl/template.dyn
+            ==> doc-src/work/manual/template.xsl
+        -->
+        <dynamate
+            srcdir="${dir.doc-work}/${sub-template.dir}"
+            matchdir="${dir.doc-src}/dynxsl"
+            destdir="${dir.doc-work}/${sub-template.dir}"
+            destsuffix="xsl"
+            includes="template.html"
+            includeds="**/extra*.dyncopy"
+            xml="true"
+            indent="false"
+          />
+
+        <!--
+            Copy any xsl files from dynxsl to work directory.
+        -->
+        <copy todir="${dir.doc-work}/${sub-template.dir}">
+          <fileset dir="${dir.doc-src}/dynxsl">
+            <include name="*.xsl"/>
+          </fileset>
+        </copy>
+        
+      </else>
+    </if>
+  </target>
+  
+  <target name="faq"
+      depends="init">
+
+    <mkdir dir="${dir.doc-work}/faq"/>
+    <dynamate
+        srcdir="${dir.doc-src}/html/faq"
+        matchdir="${dir.doc-src}/dynxsl/faq"
+        destdir="${dir.doc-work}/faq"
+        destsuffix="xsl"
+        includes="faq_template.html"
+        xml="true"
+        indent="false"
+      />
+    
+    <xslt
+        in="${dir.doc-src}/html/faq/faq.xml"
+        out="${dir.doc-src}/html/faq.html"
+        style="${dir.doc-work}/faq/faq_template.xsl"
+        />
+  
+    <!-- I can't get xsl to remove the xmlns from the output file.
+         Instead, use brute force. -->
+    <replace file="${dir.doc-src}/html/faq.html"
+        token=' xmlns="http://www.w3.org/1999/xhtml"'
+        value=""
+        />
+    
+  </target>
+    
+  <target name="sitedocs"
+      depends="init, faq, taskdef-doc, tutorial, examples"
+      >
+    
+    <!-- 
+        XSL doesn't have a way to determine the document filename,
+        which is needed to adapt the menu.
+        The XSLT task could provide this as a value-add, but doesn't.
+
+        To work-around this limitation, the XSLT task is called 
+        once for each file, and the filename is passed as a param.
+        This is a performance drag because the XSLT task doesn't cache 
+        stylesheets across task invocations, even thought it easily
+        could. Fortunately the site is small.
+
+        I used to use Dynamator for this, which was very fast, but 
+        this way I don't need a second file for each HTML file.
+    -->
+        
+    <foreach target="sitedoc" param="sitedoc.filename">
+      <path>
+        <fileset dir="${dir.doc-src}/html"
+            includes="**/*.html"
+            excludes="**/*template.html"
+            />
+      </path>
+      <param name="last-update"      value="${last-update}"/>
+      <param name="last-update-year" value="${last-update-year}"/>
+    </foreach>            
+
+    <!--
+        Clean up anything generated by XSL that isn't right.
+        I add these as I find them based on validation results.
+        Ideally, I'd like to figure out how to prevent these problems
+        in the first place.
+
+        - Remove all the default attributes that XSL inserts.
+          
+        - Collapse empty elements that are rendered incorrectly in 
+          one browser or another.
+
+        - Remove xmlns attributes.
+        
+        All of these could be done with replace if it supported
+        a nested fileset. Since it doesn't, they use replaceregexp.
+    -->
+    <replaceregexp flags="g"
+        match='&lt;br( clear="none")?&gt;&lt;/br&gt;' 
+        replace='&lt;br /&gt;'
+        >
+      <fileset dir="${dir.doc-gen}"
+          includes="**/*.html"
+          />
+    </replaceregexp>
+    <replaceregexp flags="g"
+        match=' (row|col)span="1"' 
+        replace=''
+        >
+      <fileset dir="${dir.doc-gen}"
+          includes="**/*.html"
+          />
+    </replaceregexp>
+    <replaceregexp flags="g"
+        match=' shape="rect"' 
+        replace=''
+        >
+      <fileset dir="${dir.doc-gen}"
+          includes="**/*.html"
+          />
+    </replaceregexp>
+    <replaceregexp flags="g"
+        match=' xmlns:xsl="http://www.w3.org/1999/XSL/Transform"'
+        replace=''
+        >
+      <fileset dir="${dir.doc-gen}"
+          includes="**/*.html"
+          />
+    </replaceregexp>
+    <replaceregexp flags="g"
+        match=' xmlns:xhtml="http://www.w3.org/1999/xhtml"'
+        replace=""
+        >
+      <fileset dir="${dir.doc-gen}"
+          includes="**/*.html"
+          />
+    </replaceregexp>
+
+    <!--
+        Adjust any files that aren't right.
+        Specifically, the tutorial index, which was built using
+        a template designed for one directory lower.
+    -->
+    <replaceregexp
+        match='id="thispage"'
+        replace=''
+        file="${dir.doc-gen}/tutorial/index.html"
+        />
+    <replaceregexp flags="g"
+        match='../../'
+        replace='../'
+        file="${dir.doc-gen}/tutorial/index.html"
+        />
+    <replaceregexp flags="g"
+        match='../example([0-9])'
+        replace='example\1'
+        file="${dir.doc-gen}/tutorial/index.html"
+        />
+    <replaceregexp flags="gs"
+        match='&lt;div class="tutorial-nav"&gt;.*?&lt;/div&gt;'
+        replace=''  
+        file="${dir.doc-gen}/tutorial/index.html"
+        />
+
+    <!-- validate generated docs -->
+    <antcall target="validate-gen"/>
+
+  </target>
+
+  <target name="sitedoc">
+    
+    <!-- normalize the base directory name -->
+    <pathconvert property="dir.doc-src.normalized"
+        refid="path.doc-src"
+        dirsep="/"
+        />
+    
+    <!-- normalize the file name -->
+    <propertyregexp property="sitedoc.filename"
+        input="${sitedoc.filename}"
+        defaultValue="${sitedoc.filename}"
+        override="true"
+        regexp="\\"
+        replace="/"
+        />
+
+    <!-- derive the relative path to the file -->
+    <propertyregexp property="sitedoc.relativefilename"
+        input="${sitedoc.filename}"
+        defaultValue="${sitedoc.filename}"
+        override="true"
+        regexp="${dir.doc-src.normalized}/html/"
+        replace=""
+        />
+
+    <!-- derive the relative path to the template -->
+    <propertyregexp property="sitedoc.relativefilepath"
+        input="${sitedoc.relativefilename}"
+        defaultValue=""
+        override="true"
+        regexp="/[^/]*.html$"
+        replace=""
+        />
+
+    <property name="sitedoc.xsltemplatepath"
+        value="${sitedoc.relativefilepath}"/>
+
+    <!-- derive the href value for the template -->
+    <propertyregexp property="sitedoc.selfhref"
+        input="${sitedoc.relativefilename}"
+        defaultValue=""
+        override="true"
+        regexp="${sitedoc.relativefilepath}/(.*)$"
+        select="\1"
+        />
+
+    <if>
+      <available file="${dir.doc-work}/${sitedoc.xsltemplatepath}/template.xsl"/>
+      <else>
+        <!-- derive the relative path to the template -->
+        <propertyregexp property="sitedoc.xsltemplatepath"
+            input="${sitedoc.xsltemplatepath}"
+            defaultValue="${sitedoc.xsltemplatepath}"
+            override="true"
+            regexp="/[^/]+$"
+            replace=""
+            />
+
+        <!-- derive the href value for the template -->
+        <propertyregexp property="sitedoc.selfhref"
+            input="${sitedoc.relativefilename}"
+            defaultValue=""
+            override="true"
+            regexp="${sitedoc.xsltemplatepath}/(.*)$"
+            select="../\1"
+            />
+      </else>
+    </if>
+
+    <!-- there's probably a more elegant way to do this -->
+    <if>
+      <equals 
+          arg1="${sitedoc.relativefilename}"
+          arg2="tutorial/index.html"/>
+      <then>
+        <!-- derive the href value for the template -->
+        <propertyregexp property="sitedoc.selfhref"
+            input="${sitedoc.relativefilename}"
+            defaultValue=""
+            override="true"
+            regexp="index.html"
+            select="../index.html"
+            />
+      </then>
+    </if>
+
+    <xslt
+        in="${sitedoc.filename}"
+        out="${dir.doc-gen}/${sitedoc.relativefilename}"
+        style="${dir.doc-work}/${sitedoc.xsltemplatepath}/template.xsl"
+        >
+      <param name="last-update"      expression="${last-update}"/>
+      <param name="last-update-year" expression="${last-update-year}"/>
+      <param name="nav-file-name"    expression="${sitedoc.selfhref}"/>
+      <!-- following are only used by tutorial -->
+      <param name="nav-dir-name"    
+          expression="${sitedoc.relativefilepath}"/>
+      <param name="insert-from-dir" 
+          expression="${dir.doc-work}/${sitedoc.relativefilepath}"/>
+      <param name="nav-index-document" 
+          expression="${dir.doc-work}/tutorial/dirs.xml"/>
+      <xmlcatalog>
+        <dtd publicId="-//W3C//DTD XHTML 1.0 Transitional//EN"
+            location="${dir.doc-src}/xmlcatalog/xhtml/xhtml1-transitional.dtd"/>
+        <entity publicId="-//W3C//ENTITIES Latin 1 for XHTML//EN"
+            location="${dir.doc-src}/xmlcatalog/xhtml/xhtml-lat1.ent"/>
+        <entity publicId="-//W3C//ENTITIES Symbols for XHTML//EN"
+            location="${dir.doc-src}/xmlcatalog/xhtml/xhtml-symbol.ent"/>
+        <entity publicId="-//W3C//ENTITIES Special for XHTML//EN"
+            location="${dir.doc-src}/xmlcatalog/xhtml/xhtml-special.ent"/>
+      </xmlcatalog>
+    </xslt>
+  </target>
+
+  <!--
+        ============================================================
+        Ant Task Documentation
+        ============================================================
+  -->
+  
+  <target name="check-taskdef-doc">
+    <uptodate property="taskdef-doc.uptodate"
+        srcfile="${basedir}/tools/dynamator/ant/DynamateTask.java"
+        targetfile="${dir.doc-src}/html/manual/DynamateTask.html"
+      >
+    </uptodate>
+  </target>
+
+  <target name="taskdef-doc"
+      depends="check-taskdef-doc"
+      unless="taskdef-doc.uptodate"
+      >
+
+    <!-- 
+        Extract the first block of javadoc comments from the
+        ant task source file.
+    -->
+    <loadfile property="taskdoc"
+        srcFile="${basedir}/tools/dynamator/ant/DynamateTask.java"/>
+
+    <propertyregexp property="taskdoc"
+        input="${taskdoc}"
+        defaultValue="${taskdoc}"
+        global="true"
+        override="true"
+        regexp="(\r\n|\n\r)"
+        replace="&#9999;"
+        />
+
+    <propertyregexp property="taskdoc"
+        input="${taskdoc}"
+        defaultValue="${taskdoc}"
+        global="true"
+        override="true"
+        regexp="(\r|\n)"
+        replace="&#9999;"
+        />
+      
+    <!-- extract the first javadoc comment -->
+    <propertyregexp property="taskdoc"
+        input="${taskdoc}"
+        defaultValue="${taskdoc}"
+        override="true"
+        regexp="^.*/\*\*"
+        replace=""
+        />
+
+    <propertyregexp property="taskdoc"
+        input="${taskdoc}"
+        defaultValue="${taskdoc}"
+        override="true"
+        regexp="\*\*/.*$"
+        replace=""
+        />
+
+    <!-- document heading -->
+    <property name="taskdoc.heading" 
+        value="&lt;h1&gt;dynamator.ant.DynamateTask&lt;/h1&gt;"/>
+    
+    <!-- 
+        Use dynamate.html as a template...
+    -->
+    <loadfile property="template"
+        srcFile="${dir.doc-src}/html/manual/dynamate.html"/>
+
+    <propertyregexp property="template"
+        input="${template}"
+        defaultValue="${template}"
+        global="true"
+        override="true"
+        regexp="(\r\n|\n\r)"
+        replace="&#9999;"
+        />
+      
+    <propertyregexp property="template"
+        input="${template}"
+        defaultValue="${template}"
+        global="true"
+        override="true"
+        regexp="(\r|\n)"
+        replace="&#9999;"
+        />
+      
+    <!-- replace the title -->
+    <propertyregexp property="template"
+        input="${template}"
+        defaultValue="${template}"
+        override="true"
+        regexp="&lt;title&gt;.*?&lt;/title&gt;"
+        replace="&lt;title&gt;dynamate task&lt;/title&gt;"
+        />
+      
+    <!-- replace the body -->
+    <propertyregexp property="template"
+        input="${template}"
+        defaultValue="${template}"
+        override="true"
+        regexp="&lt;body&gt;.*?&lt;/body&gt;"
+        replace="&lt;body&gt;&#10;${taskdoc.heading}&#10;${taskdoc}&lt;/body&gt;"
+        />
+      
+    <propertyregexp property="template"
+        input="${template}"
+        defaultValue="${template}"
+        global="true"
+        override="true"
+        regexp="&#9999;"
+        replace="&#10;"
+        />
+
+    <!-- output to the manual directory -->
+    <echo file="${dir.doc-src}/html/manual/DynamateTask.html"
+        message="${template}"
+        />
+  </target>
+  
+  <!--
+        ============================================================
+        Examples
+        ============================================================
+  -->
+  
+  <target name="examples">
+
+    <!-- Build the examples -->
+    <ant antfile="${dir.examples}/build.xml" inheritAll="false"/>
+    
+    <!-- 
+        For documentation, examples will be copied 
+        into their own subdirectory
+    -->
+    <property name="examples.dir" 
+        location="${dir.doc-gen}/examples"/>
+
+    <mkdir dir="${examples.dir}"/>
+
+    <!-- 
+        Copy example HTML and PHP
+        (SourceForge site uses PHP)
+    -->
+    <copy todir="${examples.dir}">
+      <fileset dir="${dir.examples}">
+        <include name="*.html"/>
+      </fileset>
+    </copy>
+    <copy todir="${examples.dir}/php">
+      <fileset dir="${dir.examples}/php/generated">
+        <include name="*.php"/>
+      </fileset>
+    </copy>
+
+    <!-- 
+        Copy HTML, .dyn, and output, appending .txt to name
+        so files can be viewed as-is in browser
+    -->
+    <copy todir="${examples.dir}">
+      <fileset dir="${dir.examples}">
+        <include name="*.html"/>
+        <include name="**/*.dyn"/>
+        <exclude name="jsp/more/**"/>
+        <exclude name="i18n/**"/>
+        <exclude name="perl/**"/>
+        <exclude name="velocity/**"/>
+        <exclude name="webmacro/**"/>
+        <exclude name="**/*.bak"/>
+        <exclude name="**/*.%"/>
+      </fileset>
+      <mapper type="glob"
+          from="*" to="*.txt"/>
+    </copy>
+    <copy todir="${examples.dir}">
+      <fileset dir="${dir.examples}">
+        <include name="**/generated/*.*"/>
+        <exclude name="jsp/more/**"/>
+        <exclude name="i18n/**"/>
+        <exclude name="perl/**"/>
+        <exclude name="velocity/**"/>
+        <exclude name="webmacro/**"/>
+      </fileset>
+      <mapper type="regexp"
+          from="^(.*)[/\\]generated[/\\](.*)$$" to="\1/\2.txt"/>
+    </copy>
+
+  </target>
+  
+  <!--
+        ============================================================
+        Tutorial
+        ============================================================
+  -->
+  
+  <target name="dynamate-tutorial"
+      description="Dynamate tutorial examples."
+    >
+    <dynamate
+        srcdir="${dir.tutorial}"
+        matchdir="${dir.tutorial}"
+        destdir="${dir.tutorial}"
+        destsuffix="jsp"
+        includes="**/*.html"
+        />
+    <dynamate
+        srcdir="${dir.tutorial}"
+        matchdir="${dir.tutorial}"
+        destdir="${dir.tutorial}"
+        destsuffix="jsp"
+        includes="**/*.xml"
+        />
+  </target>
+  
+  <target name="tutorial"
+      depends="init, dynamate-tutorial"
+      >
+  
+    <!-- normalize tutorial directory property -->
+    <propertyregexp property="dir.tutorial"
+        input="${dir.tutorial}"
+        global="true"
+        override="true"
+        regexp="\\"
+        replace="/"
+        />
+
+    <!-- 
+        Create XML tutorial directory index.
+        <tutorial>
+          <dir name="tutorial-directory-name">
+          ...
+        </tutorial>
+    -->
+    <pathconvert property="xml.tutorial.dirs" 
+        pathsep="'/&gt;&#10;&lt;dir name='"
+        dirsep="/"
+        >
+      <path id="path.tutorial.dirs">
+        <dirset dir="${dir.tutorial}">
+          <include name="example*-*"/>
+        </dirset>
+      </path>
+    </pathconvert>
+
+    <mkdir dir="${dir.doc-work}/tutorial"/>
+    <echo file="${dir.doc-work}/tutorial/dirs.xml" 
+        message="&lt;tutorial&gt;&#10;&lt;dir name='${xml.tutorial.dirs}'/&gt;&#10;&lt;/tutorial&gt;"/>
+
+    <replace file="${dir.doc-work}/tutorial/dirs.xml"
+        token="${dir.tutorial}/"
+        value="tutorial/"
+        />
+    
+    <!--
+        Copy all index.html files to the source directory tree
+        for selection.
+    -->
+    <copy todir="${dir.doc-src}/html/tutorial">
+      <fileset dir="${dir.tutorial}">
+        <include name="**/index.html"/>
+      </fileset>
+    </copy>
+
+    <!--
+        Copy all files other than index.html to the destination
+        directory tree.
+    -->
+    <mkdir dir="${dir.doc-gen}/tutorial"/>
+    <copy todir="${dir.doc-gen}/tutorial">
+      <fileset dir="${dir.tutorial}">
+        <exclude name="**/index.html"/>
+        <exclude name="**/*.asxml"/>
+        <exclude name="**/*.bak"/>
+        <exclude name="**/*.%"/>
+      </fileset>
+    </copy>
+
+    <!--
+        Copy all inserted files to the work directory tree,
+        preparing them for insertion.
+    -->
+    <copy todir="${dir.doc-work}/tutorial"
+        overwrite="true">
+      <fileset dir="${dir.tutorial}">
+        <exclude name="*"/>
+        <exclude name="**/index.html"/>
+        <exclude name="**/*.bak"/>
+        <exclude name="**/*.%"/>
+      </fileset>
+     <mapper type="glob" from="*" to="*.insert"/>
+    </copy>
+
+    <!--
+        Replace HTML special characters in copied files,
+        and add formatting.
+    -->
+    <replace dir="${dir.doc-work}/tutorial" 
+        token="&amp;" 
+        value="&amp;amp;">
+      <include name="example*/*.insert"/>
+    </replace>
+
+    <replace dir="${dir.doc-work}/tutorial"
+        token="&lt;" value="&amp;lt;">
+      <include name="example*/*.insert"/>
+    </replace>
+
+    <replace dir="${dir.doc-work}/tutorial"
+        token="&gt;" value="&amp;gt;">
+      <include name="example*/*.insert"/>
+    </replace>
+
+    <replace dir="${dir.doc-work}/tutorial"
+        token="&amp;lt;%" 
+        value="&lt;span class='dyn-inline'&gt;&amp;lt;%">
+      <include name="example*/*.jsp.insert"/>
+    </replace>
+
+    <replace dir="${dir.doc-work}/tutorial"
+        token="%&amp;gt;" value="%&amp;gt;&lt;/span&gt;">
+      <include name="example*/*.jsp.insert"/>
+    </replace>
+
+    <replace dir="${dir.doc-work}/tutorial"
+        token="&amp;lt;jsp:useBean" 
+        value="&lt;span class='dyn-inline'&gt;&amp;lt;jsp:useBean">
+      <include name="example*/*.jsp.insert"/>
+    </replace>
+
+    <replace file="${dir.doc-work}/tutorial/example01b-HelloWorld_Bean/HelloWorld2.jsp.insert"
+        token="/jsp:useBean&amp;gt;" 
+        value="/jsp:useBean&amp;gt;&lt;/span&gt;">
+      <include name="example*/*.jsp.insert"/>
+    </replace>
+
+    <replaceregexp file="${dir.doc-work}/tutorial/example01b-HelloWorld_Bean/HelloWorld2.jsp.insert"
+        match="(&amp;lt;jsp:getProperty[^/]*/&amp;gt;)" 
+        replace="&lt;span class='dyn-inline'&gt;\1&lt;/span&gt;">
+    </replaceregexp>
+
+    <!--
+        Wrap contents of each copied file in a <pre> element.
+        This makes them XML documents.
+    -->
+    <replaceregexp flags="s"
+        match="^(.*)$"
+        replace='&lt;pre&gt;\1&lt;/pre&gt;'
+        >
+      <fileset dir="${dir.doc-work}/tutorial">
+        <include name="example*/*.insert"/>
+      </fileset>
+    </replaceregexp>
+
+    <!--
+        Copy all JSP files to the output directory tree.
+        These are not directly inserted because some are too 
+        wide for the current page design.  Instead they are 
+        inserted using an iframe.
+    -->
+    <copy todir="${dir.doc-gen}/tutorial"
+        overwrite="true">
+      <fileset dir="${dir.doc-work}/tutorial">
+        <include name="**/*.jsp.insert"/>
+      </fileset>
+     <mapper type="glob" from="*.jsp.insert" to="*_jsp.html"/>
+    </copy>
+
+    <!--
+        Wrap contents of each JSP file in HTML.
+    -->
+    <replaceregexp flags="s"
+        match="^(.*)$"
+        replace='&lt;html&gt;&lt;head&gt;&lt;link rel="stylesheet" type="text/css" href="../../style.css"&gt;&lt;/head&gt;&lt;body class="out"&gt;\1&lt;/body&gt;&lt;/html&gt;'
+        >
+      <fileset dir="${dir.doc-gen}/tutorial">
+        <include name="example*/*_jsp.html"/>
+      </fileset>
+    </replaceregexp>
+
+  </target>
+
+  <target name="site"
+      depends="all">
+    <mkdir dir="${dir.site}"/>
+    <copy todir="${dir.site}">
+      <fileset dir="${dir.doc-gen}">
+        <include name="**/*.*"/>
+      </fileset>
+    </copy>
+
+    <replaceregexp
+        match='"[\./]*images/sflogo.png"'
+        replace='"http://sourceforge.net/sflogo.php?group_id=28448"'
+        >
+      <fileset dir="${dir.site}"
+          includes="**/*.html"
+          />
+    </replaceregexp>
+
+    <available property="news.available"
+        file="${file.news}"
+        />
+    <antcall target="show-news"/>
+
+  </target>
+
+  <target name="show-news"
+      if="news.available"
+      >
+    <loadfile property="news"
+        failonerror="false"
+        srcFile="${file.news}"/>
+    <replace file="${dir.site}/index.html"
+        token='&lt;div id="right-column"&gt;&lt;/div&gt;'
+        value='&lt;div id="news"&gt;${news}&lt;/div&gt;'/>
+  </target>
+  
+  <target name="validate">
+    <antcall target="validate_">
+      <param name="validate.dir" location="${dir.doc-src}/html"/>
+      <param name="validate.pattern" value="**/*.html"/>
+    </antcall>
+    <antcall target="validate_">
+      <param name="validate.dir" location="${dir.doc-src}/html"/>
+      <param name="validate.pattern" value="**/index.html"/>
+    </antcall>
+  </target>
+  
+  <target name="validate-gen">
+    <antcall target="validate_">
+      <param name="validate.dir" location="${dir.doc-gen}"/>
+      <param name="validate.pattern" value="*.html"/>
+    </antcall>
+    <antcall target="validate_">
+      <param name="validate.dir" location="${dir.doc-gen}/manual"/>
+      <param name="validate.pattern" value="*.html"/>
+    </antcall>
+  </target>
+
+  <target name="validate_">
+    <xmlvalidate warn="true" failonerror="true">
+      <fileset dir="${validate.dir}">
+        <include name="${validate.pattern}"/>
+      </fileset>
+      <xmlcatalog>
+        <dtd publicId="-//W3C//DTD XHTML 1.0 Transitional//EN"
+            location="${dir.doc-src}/xmlcatalog/xhtml/xhtml1-transitional.dtd"/>
+        <entity publicId="-//W3C//ENTITIES Latin 1 for XHTML//EN"
+            location="${dir.doc-src}/xmlcatalog/xhtml/xhtml-lat1.ent"/>
+        <entity publicId="-//W3C//ENTITIES Symbols for XHTML//EN"
+            location="${dir.doc-src}/xmlcatalog/xhtml/xhtml-symbol.ent"/>
+        <entity publicId="-//W3C//ENTITIES Special for XHTML//EN"
+            location="${dir.doc-src}/xmlcatalog/xhtml/xhtml-special.ent"/>
+      </xmlcatalog>
+    </xmlvalidate>
+  </target>
+
+  <target name="clean"
+      description="Delete all program-generated files."
+      depends="clean-doc, clean-site"
+      />
+
+  <target name="clean-doc">
+    <delete dir="${dir.doc-gen}"/>
+    <delete dir="${dir.doc-work}"/>
+    <delete file="${dir.doc-src}/html/faq.html"/>
+    <delete dir="${dir.doc-src}/html/tutorial"/>
+    <delete>
+      <fileset dir="${dir.doc-src}/tutorial">
+        <include name="**/*.jsp"/>
+      </fileset>
+      <fileset dir="${dir.doc-src}">
+        <include name="**/*.asxml"/>
+      </fileset>
+    </delete>
+  </target>
+
+  <target name="clean-site">
+    <delete dir="${dir.site}"/>
+  </target>
+
+</project>

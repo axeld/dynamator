@@ -1,0 +1,39 @@
+<dynamator language="java">
+<prolog>
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.*;
+import javax.servlet.http.*;
+
+public class SystemProperties
+extends HttpServlet
+{
+    public 
+    void
+    doGet(
+        HttpServletRequest request,
+        HttpServletResponse response
+        )
+    throws IOException
+    {
+        PrintWriter out = response.getWriter();
+        response.setContentType("text/html");
+</prolog>
+<id name="Properties">
+  <foreach type="Properties" element="property">
+      System.getProperties()
+  </foreach>
+</id>
+<id name="PropertyName">
+  <content>propertyName</content>
+</id>
+<id name="PropertyValue">
+  <content>property</content>
+</id>
+<epilog>
+        out.flush();
+        out.close();
+    }
+}
+</epilog>
+</dynamator>

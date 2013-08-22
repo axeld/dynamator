@@ -1,0 +1,14 @@
+<dynamator language="none">
+  <!-- Test rename for tag and attribute -->
+  <tag tag="tag">
+    <rename to="my:tag"/>
+    <attr name="attr">
+      <rename to="my:attr"/>
+    </attr>
+  </tag>
+  <id name="id">
+    <attr name="attr">
+      <rename to="another:attr"/>
+    </attr>
+  </id>
+</dynamator>

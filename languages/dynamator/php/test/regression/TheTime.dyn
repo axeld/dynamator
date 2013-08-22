@@ -1,0 +1,29 @@
+<dynamator language="php">
+
+<prolog>
+<?php 
+    $hour = date("H"); 
+    $now  = date("l d M Y H:i:s");
+?>
+</prolog>
+  
+<id name="CurrentTime">
+  <content><?php echo $now ?></content>
+</id>
+<id name="IfMorning">
+  <if>
+    $hour < 12
+  </if>
+</id>
+<id name="IfAfternoon">
+  <if>
+    12 <= $hour && $hour < 18
+  </if>
+</id>
+<id name="IfEvening">
+  <if>
+    18 <= $hour
+  </if>
+</id>
+
+</dynamator>

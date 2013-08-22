@@ -1,0 +1,104 @@
+<dynamator language="xsl">
+
+<prolog>
+<xsl:stylesheet 
+    version="1.1"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:xhtml="http://www.w3.org/1999/xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    >
+
+<xsl:output method="html" indent="no"/>
+
+<!-- identity transform -->
+<xsl:template match="@*|node()">
+  <xsl:copy>
+    <xsl:apply-templates select="@*|node()"/>
+  </xsl:copy>
+</xsl:template>
+
+<xsl:template match="@*|text()" mode="html">
+  <xsl:copy/>
+</xsl:template>
+
+<xsl:template match="*" mode="html">
+  <xsl:element name="{name()}">
+    <xsl:apply-templates select="@*|node()" mode="html"/>
+  </xsl:element>
+</xsl:template>
+
+<xsl:template match="/faq">
+</prolog>
+
+<class name="dyn-section">
+  <discard-tag/>
+  <foreach>section</foreach>
+</class>
+
+<class name="section-name">
+  <content>
+    <xsl:value-of select="@name"/>
+  </content>
+</class>
+
+<class name="dyn-entry">
+  <attr name="dyn-entry">
+    <discard/>
+  </attr>
+  <foreach>q</foreach>
+</class>
+
+<class name="dyn-entry-number">
+  <attr name="class">
+    <discard/>
+  </attr>
+  <content><xsl:number count="/faq//*" level="multiple" format="1.1"/></content>
+</class>
+
+<tag tag="a" class="question" with-attr="href">
+  <before>
+    <xsl:variable name="href">
+      <xsl:text>#</xsl:text>
+      <xsl:number count="/faq//*" level="multiple" format="1_1"/>
+    </xsl:variable>
+  </before>
+  <attr name="href">
+    <content>
+      {$href}
+    </content>
+  </attr>
+  <content>
+    <xsl:value-of select="@name"/>
+  </content>
+</tag>
+
+<tag tag="a" class="question" with-attr="name">
+  <before>
+    <xsl:variable name="name">
+      <xsl:number count="/faq//*" level="multiple" format="1_1"/>
+    </xsl:variable>
+  </before>
+  <attr name="name">
+    <content>
+      {$name}
+    </content>
+  </attr>
+  <content>
+    <xsl:value-of select="@name"/>
+  </content>
+</tag>
+
+<class name="dyn-answer">
+  <discard-tag/>
+  <content>
+    <xsl:apply-templates select="answer/*" mode="html"/>
+  </content>
+</class>
+
+<epilog>
+</xsl:template>
+
+</xsl:stylesheet>
+</epilog>
+
+</dynamator>

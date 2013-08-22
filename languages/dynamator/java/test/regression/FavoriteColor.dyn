@@ -1,0 +1,55 @@
+<dynamator language="java">
+<prolog>
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.http.*;
+
+public class FavoriteColor
+extends HttpServlet
+{
+    private static final String[] colors_ = 
+        new String[]
+        {
+            "red",
+            "orange",
+            "green",
+            "brown",
+            "slate",
+        };
+
+    public 
+    void
+    doGet(
+        HttpServletRequest request,
+        HttpServletResponse response
+        )
+    throws IOException
+    {
+        PrintWriter out = response.getWriter();
+        response.setContentType("text/html");
+
+        String likeInput = request.getParameter("like");
+        int like = 
+            ( likeInput == null || likeInput.length() == 0 )
+            ? -1
+            : Integer.valueOf(likeInput).intValue();
+</prolog>
+<id name="color">
+  <foreach type="String[]" element="color" i="iColor">
+      colors_
+  </foreach>
+  <attr name="value">
+    <content>iColor</content>
+  </attr>
+  <attr name="selected">
+    <if>iColor == like</if>
+  </attr>
+  <content>color</content>
+</id>
+<epilog>
+        out.flush();
+        out.close();
+    }
+}
+</epilog>
+</dynamator>

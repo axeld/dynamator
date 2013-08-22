@@ -1,0 +1,26 @@
+<dynamator language="asp.vb">
+
+  <prolog>
+    <%@ Language=VBScript %>
+  </prolog>
+  
+  <class name="size">
+    <for>i = 1 to 7</for>
+    <discard-tag/>
+  </class>
+
+  <class name="font">
+    <attr name="size">
+      <content>i</content>
+    </attr>
+    <attr name="class">
+      <discard/>
+    </attr>
+  </class>
+
+  <class name="fontsize">
+    <content>i</content>
+    <discard-tag/>
+  </class>
+
+</dynamator>

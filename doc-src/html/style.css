@@ -1,0 +1,389 @@
+*
+{
+    font-family: verdana, charcoal, sans-serif;
+    font-size: 10pt;
+    color:#555555;
+}
+p, li, dd
+{
+    text-align:justify;
+}
+pre
+{
+    font-family:verdana;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+td
+{
+    vertical-align: top;
+}
+tt, code
+{
+    font-family: monospace;
+}
+body
+{
+    margin: 0px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
+    background-color: #ffffff;
+}
+h1, h2, h3, h4
+{
+    padding-top: 10px;
+}
+h1, h1 *
+{
+    font-size: 13pt;
+}
+h2, h2 *
+{
+    font-size: 12pt;
+}
+h3, h3 *
+{
+    font-size: 11pt;
+}
+a:link
+{
+    color:#11aaff;
+    font-weight:bold;
+    text-decoration:none;
+}
+a:visited
+{
+    color:#0099cc;
+    color:#00cc99;
+    font-weight:bold;
+    text-decoration:none;
+}
+a:hover
+{
+    background-color:transparent;
+    color:#ff5500;
+    text-decoration: underline;
+}
+.border
+{
+    background-color:#ffffff;
+    height:2px;
+}
+#nav a
+{
+    color:#11aaff;
+    display:block;
+    text-decoration:none;
+    font-weight:bold;
+    padding-bottom:2px;
+    padding-left: 15px;
+    padding-right: 10px;
+}
+#nav a:hover
+{
+    text-decoration: none;
+    color:#ffffff;
+    background-color:#ff6600;
+}
+#nav b
+{
+    display:block;
+    padding-left: 5px;
+    margin-top: .25em;
+    padding-top: .25em;
+}
+#nav br
+{
+    display:none;
+}
+#nav
+{
+    border: 1px solid #09f;
+    margin-top: 1.5em;
+    padding-top: .25em;
+    margin-bottom: .25em;
+    padding-bottom: .25em;
+}
+
+#page-content
+{
+    margin-top: 1.5em;
+}
+
+#thispage
+{
+    text-decoration:none;
+    font-weight:bold;
+    display:block;
+    padding-left: 15px;
+    padding-right: 10px;
+    color:#11aaff;
+    color:#ff6600;
+/*
+    border-style: solid;
+    border-width: 1px;
+    border-color: #11aaff #ffff66 #11aaff #ffff66;
+    background-color: #ffff99;
+    color:#999999;
+    border-color: #999999 #cccccc #999999 #cccccc;
+    background-color: #cccccc;
+    background-color: #11aaff;
+    border-color: #999999 #cccccc #999999 #cccccc;
+*/
+    color: #ffffff;
+    background-color:#11aaff;
+}
+a.footerLink:hover
+{
+    color:#bbbbbb;
+    text-decoration:underline;
+    background-color:#f8f8f8;
+}
+#news, #announce
+{
+    border: 1px solid #0099ff;
+    margin-top: 1.5em;
+    padding: 4px 4px 6px 4px;
+}
+.date, #announce p
+{
+    font-size:10pt;
+    color:#666666;
+    font-weight: bold;
+}
+.headline, #announce p
+{
+    font-size:10pt;
+    color:#333333;
+    padding-left: 15px;
+}
+#footer *
+{
+    font-size: 7pt;
+    color: #bbbbbb;
+}
+#footer a
+{
+    text-decoration: none;
+    font-weight: normal;
+    color: #bbbbbb;
+    font-size: 7pt;
+}
+#bodytext
+{
+    padding-top: 1px;
+}
+.nocss
+{
+    display:none;
+}
+.deprecated
+{
+   color: #999999;
+}
+.new
+{
+    background-color: #ff0066;
+    color: #ffff00;
+    font-weight: bold;
+    padding: 1px;
+    font-size: 7pt;    
+}
+.tabular
+{
+    background-color: #999;
+}
+.tabular .heading
+{ 
+    text-align: center; 
+    vertical-align: bottom;
+    font-weight: bold;
+    background-color: #ddd;
+}
+.tabular tr
+{ 
+    background-color: #f8f8f8;
+}
+.tabular td
+{
+    vertical-align: top;
+    padding: 4px;
+}
+.column
+{
+    float: left;
+    margin: 5px;
+}
+.twocolumn
+{
+    float: left;
+    margin: 5px;
+}
+.column-filename
+{
+    text-align: right;
+    font-weight: bold;
+}
+.clear
+{
+    clear: both;
+}
+.exhibit
+{
+    float: left;
+    border: 2px outset #ddd;
+    background-color: #f8f8f8;
+}
+.neutral
+{
+    border: 1px solid #999;
+    background-color: #ddd;
+    padding-left: 5px;
+    padding-right: 5px;
+    white-space: nowrap;
+}
+.out
+{
+    background-color: #e9f;
+    background-color: #fff;
+    /*
+        To get full-line color, display: block is used on the 
+        text elements.  But on lines containing multiple colors, 
+        display: inline must be used.  This causes colors not
+        to extend to the end of the line.  In most cases, such
+        lines should be the color of the template, so that's what's
+        used as the background color.
+    */
+    background-color: #dfd;
+    border: 1px solid #999;
+    padding-left: 5px;
+    padding-right: 5px;
+    text-align: left;
+    white-space: nowrap;
+}
+.out *
+{
+    /*
+        Making the text color the same as the template text color
+        simplifies the HTML.  It means that only Dynamator content
+        needs to be wrapped in span elements.
+    */
+    color: #093;
+}
+.html
+{
+    border: 1px solid #999;
+    background-color: #dfd;
+    padding-left: 5px;
+    padding-right: 5px;
+    white-space: nowrap;
+}
+.html-text, .html-text *, .html pre
+{
+    color: #093;
+    background-color: #dfd;
+    display: block;
+}
+.html *
+{
+    color: #093;
+}
+.dyn
+{
+    border: 1px solid #999;
+    background-color: #fdf;
+    padding-left: 5px;
+    padding-right: 5px;
+    white-space: nowrap;
+}
+.dyn-text, .dyn-text *, .dyn pre
+{
+    color: #639;
+    background-color: #fdf;
+    display: block;
+}
+.dyn *
+{
+    color: #639;
+}
+.dyn-inline, .dyn-inline *
+{
+    color: #639;
+    background-color: #fdf;
+    display: inline;
+}
+.source
+{
+    border: 1px solid #999;
+    background-color: #eee;
+    padding-left: 5px;
+    padding-right: 5px;
+    white-space: nowrap;
+}
+.neutral-inline
+{
+    color: #333;
+    background-color: #f8f8f8;
+    display: inline;
+}
+.html-inline, .html-inline *
+{
+    color: #093;
+    background-color: #dfd;
+    display: inline;
+}
+.shell
+{
+    float: left;
+    background-color: #666;
+    border: 1px solid #ccc;
+    margin: 5px;
+    padding: 5px;
+    white-space: nowrap;
+}
+.shell, .shell *
+{
+    color: #eee;
+}
+.toc
+{
+    list-style-type: none; 
+    padding-left: 2em; 
+    margin-left: 0;
+}
+.bigmath
+{
+    font-size: 36pt;
+    color: #666;
+}
+.inline
+{
+    display:inline;
+}
+iframe, .demo
+{
+    border: 3px outset #ccc;
+    padding: 5px;
+}
+.hidden, .HideForDemo
+{
+    display: none;
+}
+.in-action
+{
+    display: none;
+}
+.nav-indent-1
+{
+    text-indent: 1em;
+}
+.nav-indent-2
+{
+    text-indent: 2em;
+}
+.nav-heading
+{
+    padding-left: 0px;
+    margin-left: 0px;
+}

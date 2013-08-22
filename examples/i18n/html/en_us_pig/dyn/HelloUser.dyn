@@ -1,0 +1,12 @@
+<dynamator language="none" suffix="html">
+  <tag tag="title">
+    <raw-content>
+        Userway Eetinggray
+    </raw-content>
+  </tag>
+  <id name="HelloText">
+    <raw-content>
+        Ellohay, <span id="UserName">Userway</span>!
+    </raw-content>
+  </id>
+</dynamator>

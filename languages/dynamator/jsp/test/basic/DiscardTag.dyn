@@ -1,0 +1,5 @@
+<dynamator language="jsp">
+  <class name="discard_tag">
+    <discard-tag/>
+  </class>
+</dynamator>

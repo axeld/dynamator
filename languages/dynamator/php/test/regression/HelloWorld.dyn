@@ -1,0 +1,13 @@
+<dynamator language="php">
+
+<prolog>
+<?php 
+    $greeting = "Hello World, says Dynamator!";
+?>
+</prolog>
+  
+<id name="DynamicText">
+  <content>$greeting</content>
+</id>
+
+</dynamator>

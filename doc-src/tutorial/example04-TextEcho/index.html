@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="generator" content="HTML Tidy, see www.w3.org" />
+<title>Dynamator Example 4: Text Echo</title>
+<link rel="StyleSheet" type="text/css" href="../../style.css" />
+</head>
+<body>
+<h1>Text Echo</h1>
+
+<p>This lesson demonstrates simple form handling. 
+In just four lessons (three if you don't count the Bean excursion),
+you've learned everything you need to use Dynamator with a simple form. 
+This lesson doesn't add any new Dynamator concepts, but it
+puts together what you've already seen in a different way.
+It also shows an optional aspect of static demo sites; the use of
+Javascript to simulate dynamic behavior.</p>
+
+<h2>The Page</h2>
+
+<iframe src="TextEcho.html" width="600" height="170"></iframe>
+
+<h2>HTML</h2>
+
+<div class="column">
+<div class="column-filename">TextEcho.html (updated)</div>
+
+<div class="html">
+<div class='insert'>TextEcho.html</div>
+</div>
+</div>
+
+<div class="clear"></div>
+
+<p>This example uses Javascript to simulate server behavior.
+The inline function to extract the query string from the page URL would
+normally be placed in the head element within a comment div for removal
+by Dynamator, but we haven't covered that yet (<a
+href="../example10-Xml/">jump ahead</a> to see how that works).</p>
+
+<p>Notice that even though the value that is displayed in the input
+field and the value that is displayed below are the same, the
+containing elements are given two different id names. 
+This is for two reasons. First, id's must be unique.
+Second, there are two different kinds of changes that need to be
+made. In the first dynamic element, we only want to change the
+attribute value for the 'value' attribute. In the second dynamic
+element, we only want to change the content.</p>
+
+<h2>Dynamator File</h2>
+
+<div class="column">
+<div class="column-filename">TextEcho.dyn</div>
+
+<div class="dyn">
+<div class='insert'>TextEcho.dyn</div>
+</div>
+</div>
+
+<div class="clear"></div>
+
+<p>Two id entries are required for this Dynamator file, one for
+each ID, but they both map to the same program variable.</p>
+
+<h2>JSP</h2>
+
+<p>After processing with Dynamator, the resulting JSP file looks
+like this:</p>
+
+<div class="column">
+<div class="column-filename">TextEcho.jsp</div>
+
+<iframe src="TextEcho_jsp.html" width="600" height="250" frameborder="1" scrolling="auto"></iframe>
+</div>
+
+<div class="clear"></div>
+
+<p>
+Because the Dynamator file specified the replacement of the content of the
+element with the "TextInputDisplay" id, Dynamator removed the Javascript.</p>
+
+<div class="in-action">
+<h2>In Action</h2>
+
+<p>If you are viewing this page in a servlet engine, you can see <a
+href="TextEcho.jsp">the generated page in action</a>.</p>
+</div>
+</body>
+</html>
+

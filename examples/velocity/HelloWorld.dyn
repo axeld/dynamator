@@ -1,0 +1,11 @@
+<dynamator suffix="vm">
+
+<prolog>
+#set ( $greeting = "Hello World, says Dynamator!" )
+</prolog>
+  
+<id name="DynamicText">
+  <content>$greeting</content>
+</id>
+
+</dynamator>

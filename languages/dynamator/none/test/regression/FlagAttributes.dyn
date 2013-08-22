@@ -1,0 +1,12 @@
+<dynamator language="none">
+  <tag tag="input" name="t1">
+    <attr name="checked">
+      <discard/>
+    </attr>
+  </tag>
+  <tag tag="input" name="t2">
+    <attr name="checked">
+      <content>checked</content>
+    </attr>
+  </tag>
+</dynamator>

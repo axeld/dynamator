@@ -1,0 +1,381 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>
+      Dynamator: Examples
+    </title>
+    <link type="text/css" href="style.css" rel="stylesheet" />
+<script language="javascript" type="text/javascript">
+// If this isn't on a web server, disable the example links,
+// since PHP won't work.
+// (Being on a web server doesn't guarantee PHP, but 
+// I don't have an easy way of determining whether PHP is available.)
+// This function must not use any XML special characters.
+function maybeDisableExamples()
+{
+    if ( document.location.href.indexOf("http://") == 0 )
+    {
+        return;
+    }
+
+    var table = document.getElementById('demo');
+    table.style.display="none";
+
+    var rows  = table.getElementsByTagName('tr');
+    var iRow = rows.length;
+    if ( iRow == 0 )
+    {
+        return;
+    }
+    while ( --iRow != 0 )  // ignore heading
+    {
+        var row = rows[iRow];
+        var cells = row.getElementsByTagName('td');
+        var firstcell = cells[0];
+        var a = firstcell.getElementsByTagName('a')[0];
+        if ( a.tagName != "A" )
+        {
+            // I don't understand this browser's DOM
+            return;
+        }
+        var content = a.childNodes;
+        var iContent = -1;
+        while ( content.length != ++iContent )
+        {
+            firstcell.insertBefore(content[iContent].cloneNode(true), a);
+        }
+        firstcell.removeChild(a);
+    }
+    table.style.display="";
+}
+</script>
+  </head>
+  <body onload="maybeDisableExamples()">
+    <h1>
+      Examples
+    </h1>
+    <table id="demo" class="tabular" border="0" cellspacing="1"
+    cellpadding="5"
+    summary="Dynamator examples. Each example is implemented in multiple languages.">
+      <tr class="heading">
+        <th>
+          Example
+        </th>
+        <th>
+          Demonstrates
+        </th>
+        <th>
+          HTML
+        </th>
+        <th>
+          JSP
+        </th>
+        <th>
+          ASP
+        </th>
+        <th>
+          Java
+        </th>
+        <th>
+          PHP
+        </th>
+        <th>
+          XSL
+        </th>
+      </tr>
+      <tr>
+        <td>
+          <a href="examples/php/HelloWorld.php">HelloWorld</a> 
+        </td>
+        <td>
+          Simple substitution
+        </td>
+        <td>
+          <a href="examples/HelloWorld.html.txt">.html</a><br />
+           <a href="examples/HelloWorld.html">(try&nbsp;it)</a> 
+        </td>
+        <td>
+          <a href="examples/jsp/HelloWorld.dyn.txt">
+          .dyn</a><br />
+           <a href="examples/jsp/HelloWorld.jsp.txt">.jsp</a> 
+        </td>
+        <td>
+          <a href="examples/asp/HelloWorld.dyn.txt">
+          .dyn</a><br />
+           <a href="examples/asp/HelloWorld.asp.txt">.asp</a> 
+        </td>
+        <td>
+          <a href="examples/java/HelloWorld.dyn.txt">
+          .dyn</a><br />
+           <a href="examples/java/HelloWorld.java.txt">.java</a> 
+        </td>
+        <td>
+          <a href="examples/php/HelloWorld.dyn.txt">
+          .dyn</a><br />
+           <a href="examples/php/HelloWorld.php.txt">.php</a> 
+        </td>
+        <td>
+          <a href="examples/xsl/HelloWorld.dyn.txt">
+          .dyn</a><br />
+           <a href="examples/xsl/HelloWorld.xsl.txt">.xsl</a> 
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <a href="examples/php/FontSizes.php">FontSizes</a> 
+        </td>
+        <td>
+          Simple iteration
+        </td>
+        <td>
+          <a href="examples/FontSizes.html.txt">.html</a><br />
+           <a href="examples/FontSizes.html">(try&nbsp;it)</a> 
+        </td>
+        <td>
+          <a href="examples/jsp/FontSizes.dyn.txt">.dyn</a><br />
+           <a href="examples/jsp/FontSizes.jsp.txt">.jsp</a> 
+        </td>
+        <td>
+          <a href="examples/asp/FontSizes.dyn.txt">.dyn</a><br />
+           <a href="examples/asp/FontSizes.asp.txt">.asp</a> 
+        </td>
+        <td>
+          <a href="examples/java/FontSizes.dyn.txt">
+          .dyn</a><br />
+           <a href="examples/java/FontSizes.java.txt">.java</a> 
+        </td>
+        <td>
+          <a href="examples/php/FontSizes.dyn.txt">.dyn</a><br />
+           <a href="examples/php/FontSizes.php.txt">.php</a> 
+        </td>
+        <td>
+          <a href="examples/xsl/FontSizes.dyn.txt">.dyn</a><br />
+           <a href="examples/xsl/FontSizes.xsl.txt">.xsl</a> 
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <a href="examples/php/TermsTable.php">TermsTable</a> 
+        </td>
+        <td>
+          Iteration over a collection<br />
+          (HTML table)
+        </td>
+        <td>
+          <a href="examples/TermsTable.html.txt">.html</a><br />
+           <a href="examples/TermsTable.html">(try&nbsp;it)</a> 
+        </td>
+        <td>
+          <a href="examples/jsp/TermsTable.dyn.txt">
+          .dyn</a><br />
+           <a href="examples/jsp/TermsTable.jsp.txt">.jsp</a> 
+        </td>
+        <td>
+          <a href="examples/asp/TermsTable.dyn.txt">
+          .dyn</a><br />
+           <a href="examples/asp/TermsTable.asp.txt">.asp</a> 
+        </td>
+        <td>
+          <a href="examples/java/TermsTable.dyn.txt">
+          .dyn</a><br />
+           <a href="examples/java/TermsTable.java.txt">.java</a> 
+        </td>
+        <td>
+          <a href="examples/php/TermsTable.dyn.txt">
+          .dyn</a><br />
+           <a href="examples/php/TermsTable.php.txt">.php</a> 
+        </td>
+        <td>
+          <a href="examples/xsl/TermsTable.dyn.txt">
+          .dyn</a><br />
+           <a href="examples/xsl/TermsTable.xsl.txt">.xsl</a> 
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <a href="examples/php/TermsDictionary.php">
+          TermsDictionary</a> 
+        </td>
+        <td>
+          Iteration over a collection<br />
+          (HTML dictionary list)
+        </td>
+        <td>
+          <a href="examples/TermsDictionary.html.txt">
+          .html</a><br />
+           <a href="examples/TermsDictionary.html">
+          (try&nbsp;it)</a> 
+        </td>
+        <td>
+          <a href="examples/jsp/TermsDictionary.dyn.txt">
+          .dyn</a><br />
+           <a href="examples/jsp/TermsDictionary.jsp.txt">
+          .jsp</a> 
+        </td>
+        <td>
+          <a href="examples/asp/TermsDictionary.dyn.txt">
+          .dyn</a><br />
+           <a href="examples/asp/TermsDictionary.asp.txt">
+          .asp</a> 
+        </td>
+        <td>
+          <a href="examples/java/TermsDictionary.dyn.txt">
+          .dyn</a><br />
+           <a href="examples/java/TermsDictionary.java.txt">
+          .java</a> 
+        </td>
+        <td>
+          <a href="examples/php/TermsDictionary.dyn.txt">
+          .dyn</a><br />
+           <a href="examples/php/TermsDictionary.php.txt">
+          .php</a> 
+        </td>
+        <td>
+          <a href="examples/xsl/TermsDictionary.dyn.txt">
+          .dyn</a><br />
+           <a href="examples/xsl/TermsDictionary.xsl.txt">
+          .xsl</a> 
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <a href="examples/php/TheTime.php">TheTime</a> 
+        </td>
+        <td>
+          Selection (if)
+        </td>
+        <td>
+          <a href="examples/TheTime.html.txt">.html</a><br />
+           <a href="examples/TheTime.html">(try&nbsp;it)</a> 
+        </td>
+        <td>
+          <a href="examples/jsp/TheTime.dyn.txt">.dyn</a><br />
+           <a href="examples/jsp/TheTime.jsp.txt">.jsp</a> 
+        </td>
+        <td>
+          <a href="examples/asp/TheTime.dyn.txt">.dyn</a><br />
+           <a href="examples/asp/TheTime.asp.txt">.asp</a> 
+        </td>
+        <td>
+          <a href="examples/java/TheTime.dyn.txt">.dyn</a><br />
+           <a href="examples/java/TheTime.java.txt">.java</a> 
+        </td>
+        <td>
+          <a href="examples/php/TheTime.dyn.txt">.dyn</a><br />
+           <a href="examples/php/TheTime.php.txt">.php</a> 
+        </td>
+        <td>
+          <a href="examples/xsl/TheTime.dyn.txt">.dyn</a><br />
+           <a href="examples/xsl/TheTime.xsl.txt">.xsl</a> 
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <a href="examples/php/Calendar.php">Calendar</a> 
+        </td>
+        <td>
+          HTML element prototypes
+        </td>
+        <td>
+          <a href="examples/Calendar.html.txt">.html</a><br />
+           <a href="examples/Calendar.html">(try&nbsp;it)</a> 
+        </td>
+        <td>
+          <a href="examples/jsp/Calendar.dyn.txt">.dyn</a><br />
+           <a href="examples/jsp/Calendar.jsp.txt">.jsp</a> 
+        </td>
+        <td>
+          <a href="examples/asp/Calendar.dyn.txt">.dyn</a><br />
+           <a href="examples/asp/Calendar.asp.txt">.asp</a> 
+        </td>
+        <td>
+          <a href="examples/java/Calendar.dyn.txt">.dyn</a><br />
+           <a href="examples/java/Calendar.java.txt">.java</a> 
+        </td>
+        <td>
+          <a href="examples/php/Calendar.dyn.txt">.dyn</a><br />
+           <a href="examples/php/Calendar.php.txt">.php</a> 
+        </td>
+        <td valign="middle">
+          <center>
+            n/a
+          </center>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <a href="examples/php/Guestbook.php">Guestbook</a> 
+        </td>
+        <td>
+          HTML form processing
+        </td>
+        <td>
+          <a href="examples/Guestbook.html.txt">.html</a><br />
+           <a href="examples/Guestbook.html">(try&nbsp;it)</a> 
+        </td>
+        <td>
+          <a href="examples/jsp/Guestbook.dyn.txt">.dyn</a><br />
+           <a href="examples/jsp/Guestbook.jsp.txt">.jsp</a> 
+        </td>
+        <td style="text-align:center">
+          -
+        </td>
+        <td>
+          <a href="examples/java/Guestbook.dyn.txt">
+          .dyn</a><br />
+           <a href="examples/java/Guestbook.java.txt">.java</a> 
+        </td>
+        <td>
+          <a href="examples/php/Guestbook.dyn.txt">.dyn</a><br />
+           <a href="examples/php/Guestbook.php.txt">.php</a> 
+        </td>
+        <td valign="middle">
+          <center>
+            n/a
+          </center>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <a href="examples/php/Taxonomy.php">Taxonomy</a> 
+          <span class="new">New!</span> 
+        </td>
+        <td>
+          Recursive element output
+        </td>
+        <td>
+          <a href="examples/Taxonomy.html.txt">.html</a><br />
+           <a href="examples/Taxonomy.html">(try&nbsp;it)</a> 
+        </td>
+        <td>
+          <a href="examples/jsp/Taxonomy.dyn.txt">.dyn</a><br />
+           <a href="examples/jsp/Taxonomy.jsp.txt">.jsp</a> 
+        </td>
+        <td style="text-align:center">
+          -
+        </td>
+        <td>
+          <a href="examples/java/Taxonomy.dyn.txt">.dyn</a><br />
+           <a href="examples/java/Taxonomy.java.txt">.java</a> 
+        </td>
+        <td>
+          <a href="examples/php/Taxonomy.dyn.txt">.dyn</a><br />
+           <a href="examples/php/Taxonomy.php.txt">.php</a> 
+        </td>
+        <td>
+          <a href="examples/xsl/Taxonomy.dyn.txt">.dyn</a><br />
+           <a href="examples/xsl/Taxonomy.xsl.txt">.xsl</a> 
+        </td>
+      </tr>
+    </table>
+    <p>
+      Each server page file is generated by Dynamator from the
+      HTML file and the .dyn file for the target language.
+    </p>
+    <p>
+      I'm no longer creating new ASP examples.
+    </p>
+  </body>
+</html>
+

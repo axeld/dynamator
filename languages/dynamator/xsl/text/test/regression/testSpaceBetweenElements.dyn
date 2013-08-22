@@ -1,0 +1,56 @@
+<dynamator language="xsl.text" suffix="xsl">
+<prolog><xsl:stylesheet
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	version="1.1" >
+
+<xsl:output method="text"/>
+</prolog>
+<epilog>
+</xsl:stylesheet>
+</epilog>
+
+<tag tag="module">
+  <rename to="xsl:template"/>
+  <attr name="match">
+    <content>/type</content>
+  </attr>
+</tag>
+
+<tag tag="a">
+  <discard-tag/>
+  <content>
+    <a-replaced/>
+  </content>
+</tag>
+
+<tag tag="b">
+  <discard-tag/>
+  <content>
+    <b-replaced/>
+  </content>
+</tag>
+
+<tag tag="if-condition">
+  <discard-tag/>
+  <if>
+    some-condition
+  </if>
+</tag>
+
+<tag tag="if-serializable">
+  <discard-tag/>
+  <if>
+    @serializable
+  </if>
+</tag>
+
+<tag tag="if-cloneable">
+  <rename to="xsl:if"/>
+  <attr name="test">
+    <content>
+      @cloneable
+    </content>
+  </attr>
+</tag>
+
+</dynamator>

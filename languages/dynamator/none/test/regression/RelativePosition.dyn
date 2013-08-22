@@ -1,0 +1,13 @@
+<dynamator language="none">
+  <class name="relative">
+<before><p>1a.</p>
+      <p>1b.</p>
+</before>
+<before-content><p>2.</p>
+</before-content>
+<after-content><p>3.</p>
+</after-content>
+<after><p>4.</p>
+</after>
+  </class>
+</dynamator>

@@ -1,0 +1,14 @@
+<dynamator language="jsp">
+<id name="div-id">
+  <for>int i=1; i < 10; ++i</for>
+</id>
+<class name="div-class">
+  <discard-tag/>
+  <for>int j=1; j < 10; ++j</for>
+</class>
+<id name="replace-content">
+  <content>
+    <%= "Content replaced" %>
+  </content>
+</id>
+</dynamator>

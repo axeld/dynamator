@@ -1,0 +1,29 @@
+Buildfile: test-syntax.xml
+
+regression_syntax:
+ [dynamate] Dynamating 1 file
+ [dynamate] DynamatorSyntax.dyn(1): Error: Element 'dynamator': attribute 'x' not allowed
+ [dynamate] DynamatorSyntax.dyn(1): Error: Element 'dynamator', attribute 'suffix': Value is not a name token: '+'
+ [dynamate] DynamatorSyntax.dyn(2): Error: Element 'prolog': attribute 'attr' not allowed
+ [dynamate] DynamatorSyntax.dyn(2): Error: Element 'prolog' must have text content
+ [dynamate] DynamatorSyntax.dyn(3): Error: Element 'x' not allowed as child of element 'dynamator'
+ [dynamate] DynamatorSyntax.dyn(4): Error: Element 'id': Required attribute not specified: name
+ [dynamate] DynamatorSyntax.dyn(4): Error: Element 'id' may not have text content
+ [dynamate] DynamatorSyntax.dyn(6): Error: Element 'a' not allowed as child of element 'id'
+ [dynamate] DynamatorSyntax.dyn(7): Error: Element 'foreach', attribute 'element': A value is required
+ [dynamate] DynamatorSyntax.dyn(7): Error: Element 'foreach' must have text content
+ [dynamate] DynamatorSyntax.dyn(8): Error: Element 'attr', attribute 'name': Value is not a name token: '!!!'
+ [dynamate] DynamatorSyntax.dyn(8): Error: Element 'attr' may not have text content
+ [dynamate] DynamatorSyntax.dyn(10): Error: Element 'y' not allowed as child of element 'attr'
+ [dynamate] DynamatorSyntax.dyn(11): Error: Element 'if': attribute 'attr' not allowed
+ [dynamate] DynamatorSyntax.dyn(11): Error: Element 'if' must have text content
+ [dynamate] DynamatorSyntax.dyn(12): Error: Element 'if' may occur at most once within element 'attr'
+ [dynamate] DynamatorSyntax.dyn(15): Error: Element 'class', attribute 'name': Value is empty
+ [dynamate] DynamatorSyntax.dyn(16): Error: Element 'tag', attribute 'with-attr': Value is not a name token: '+w!'
+ [dynamate] DynamatorSyntax.dyn(17): Error: Element 'tag', attribute 'without-attr': Value is empty
+ [dynamate] DynamatorSyntax.html had errors
+
+BUILD FAILED
+test-syntax.xml:30: 1 files not processed
+
+Total time: 1 second

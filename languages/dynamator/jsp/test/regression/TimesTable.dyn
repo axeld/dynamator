@@ -1,0 +1,28 @@
+<dynamator language="jsp">
+  <prolog>
+    <%@ page session="false" %>
+    <%
+        int max = 10;
+        String sMax = request.getParameter("max");
+        if ( sMax != null && sMax.length() >= 0 )
+        {
+            // ignore possible NumberFormatException for this demo
+            max = Integer.valueOf(sMax).intValue();
+        }
+    %>
+  </prolog>
+  <class name="x">
+    <for>int x = 1; x <= max; ++x</for>
+    <content>x</content>
+  </class>  
+  <class name="yrow">
+    <for>int y = 1; y <= max; ++y</for>
+  </class>  
+  <class name="y">
+    <content>y</content>
+  </class>
+  <class name="result">
+    <for>int x = 1; x <= max; ++x</for>
+    <content>x * y</content>
+  </class>
+</dynamator>

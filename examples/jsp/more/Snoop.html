@@ -1,0 +1,72 @@
+<html>
+<head>
+<title>Information available to this Servlet</title>
+</head>
+<body>
+<p>The class name of this servlet is <b><SPAN id="classname">(class name)</SPAN></b>.</p>
+
+<p>The name of the thread supporting this servlet invocation: <b><SPAN id="threadname">(thread name)</SPAN></b>.</p>
+
+<p>Free memory available to the Java Virtual Machine: <b><SPAN id="freememory">(free memory)</SPAN></b>.</p>
+
+<p>Total memory available to the Java Virtual Machine: <b><SPAN id="totalmemory">(total memory)</SPAN></b>.</p>
+
+<h1>Request Arguments</h1>
+<table border=1>
+  <tr id="RequestArguments">
+    <td id="RequestArgumentName"></td>
+    <td id="RequestArgumentValue"></td>
+  </tr>
+</table>
+
+<p>
+<span id="NumberOfRequestArguments"></span> 
+arguments were sent to this servlet.</p>
+
+<h1>Request Information</h1>
+<table border=1>
+  <tr><td>authType          </td><td id="AuthType"></td></tr>
+  <tr><td>characterEncoding </td><td id="CharacterEncoding"></td></tr>
+  <tr><td>contentLength     </td><td id="ContentLength"></td></tr>
+  <tr><td>contentType       </td><td id="ContentType"></td></tr>
+  <tr><td>method            </td><td id="Method"></td></tr>
+  <tr><td>pathInfo          </td><td id="PathInfo"></td></tr>
+  <tr><td>pathTranslated    </td><td id="PathTranslated"></td></tr>
+  <tr><td>protocol          </td><td id="Protocol"></td></tr>
+  <tr><td>queryString       </td><td id="QueryString"></td></tr>
+  <tr><td>remoteAddr        </td><td id="RemoteAddr"></td></tr>
+  <tr><td>remoteHost        </td><td id="RemoteHost"></td></tr>
+  <tr><td>remoteUser        </td><td id="RemoteUser"></td></tr>
+  <tr><td>requestURI        </td><td id="RequestURI"></td></tr>
+  <tr><td>requestedSessionId</td><td id="RequestedSessionId"></td></tr>
+  <tr><td>scheme            </td><td id="Scheme"></td></tr>
+  <tr><td>serverName        </td><td id="ServerName"></td></tr>
+  <tr><td>serverPort        </td><td id="ServerPort"></td></tr>
+  <tr><td>servletPath       </td><td id="ServletPath"></td></tr>
+</table>
+
+<h1>Request Headers</h1>
+<p>obtained using request.getHeader(<i>name</i>)</p>
+<table border=1>
+  <tr id="Headers">
+    <td id="HeaderName"></td>
+    <td id="HeaderValue"></td>
+  </tr>
+</table>
+
+<h1>Session Properties</h1>
+<div id="IfWithinSession">
+  <p>obtained using session.getValue(<i>name</i>)</p>
+  <table border=1>
+    <tr id="SessionVariables">
+      <td id="SessionVariableName"></td>
+      <td id="SessionVariableValue"></td>
+    </tr>
+  </table>
+</div>
+<div id="IfNotWithinSession">
+  <p>(No session available)</p>
+</div>
+
+</body>
+</html>

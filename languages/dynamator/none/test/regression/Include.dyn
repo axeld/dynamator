@@ -1,0 +1,13 @@
+<dynamator language="none">
+<prolog><!--RETAIN Starting comment RETAIN--></prolog>
+  <include file="Prolog.dyn"/>
+  <include file="TestPath.include"/>
+  <tag tag="title">
+    <content>New title</content>
+  </tag>
+  <include file="Epilog.dyn"/>
+<epilog><!--RETAIN Ending comment RETAIN-->
+</epilog>
+</dynamator>
+
+

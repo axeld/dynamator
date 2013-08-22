@@ -1,0 +1,7 @@
+<dynamator>
+  <tag tag="body">
+    <before-content>
+<p>The -I argument didn't work.
+</before-content>
+  </tag>
+</dynamator>

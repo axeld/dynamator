@@ -1,0 +1,26 @@
+<dynamator language="asp.vb">
+
+<prolog>
+<%@ 
+    Language=VBScript 
+%>
+<% 
+    theHour = Hour(Now)
+%>
+</prolog>
+  
+<id name="CurrentTime">
+  <content>Now</content>
+</id>
+<id name="IfMorning">
+  <if>theHour < 12</if>
+</id>
+<id name="IfAfternoon">
+  <if>12 <= theHour and theHour < 18</if>
+</id>
+<id name="IfEvening">
+  <if>18 <= theHour</if>
+</id>
+
+</dynamator>
+

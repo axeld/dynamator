@@ -1,0 +1,308 @@
+<!--
+    Calendar 
+    
+    This example demonstrates some fairly sophisticated template
+    manipulations.  The static content of this example is more dynamic
+    than that of the other examples.  It is not possible to use all of
+    the template elements.  Instead, representative elements (called
+    "prototypes") are selected and used, and other elements are
+    discarded. 
+-->
+<dynamator language="java">
+
+<prolog>
+import java.io.PrintWriter;
+import java.text.DateFormatSymbols;
+import java.util.Date;
+import java.util.Dictionary;
+import java.util.Hashtable;
+import java.util.Locale;
+
+public class Calendar
+{
+    // following is identical to JSP
+    
+    private static final Dictionary dates = new Hashtable();
+    static
+    {
+        // certainly not an exhaustive list, 
+        // but at least one per month
+        dates.put("1/27",  "Wolfgang Amadeus Mozart, 1756");
+        dates.put("2/3",   "Felix Mendelssohn, 1809");
+        dates.put("2/23",  "Georg Friedrich Handel, 1685");
+        dates.put("3/21",  "Johann Sebastian Bach, 1685");
+        dates.put("3/25",  "Bela Bartok, 1881");
+        dates.put("3/31",  "Franz Joseph Haydn, 1732");
+        dates.put("4/27",  "Sergei Prokofiev, 1891");
+        dates.put("5/5",   "Johannes Brahms, 1833");
+        dates.put("6/2",   "Sir Edward Elgar, 1857");
+        dates.put("6/15",  "Edward Grieg, 1843");
+        dates.put("7/3",   "Leos Janacek, 1854");
+        dates.put("7/7",   "Gustav Mahler, 1860");
+        dates.put("8/22",  "Claude Debussy, 1862");
+        dates.put("9/4",   "Anton Bruckner, 1824");
+        dates.put("9/8",   "Anton Dvorak, 1841");
+        dates.put("9/26",  "George Gershwin, 1898");
+        dates.put("10/20", "Charles Ives, 1874");
+        dates.put("10/22", "Franz List, 1811");
+        dates.put("11/18", "Carl Weber, 1786");
+        dates.put("12/10", "Cesar Franck, 1822");
+        dates.put("12/15", "Ludwig van Beethoven, 1770");
+        dates.put("12/30", "Dmitri Kabalevsky, 1904");
+    }
+    // above is identical to JSP
+
+    public static void main(String[] args)
+    {
+        PrintWriter writer = new PrintWriter(System.out, true);
+        // get requested month/year
+        int calendarMonth;
+        int calendarYear;
+        int month = args.length == 0 
+            ? Integer.MAX_VALUE
+            : Integer.parseInt(args[0]);
+        int year  = args.length == 0
+            ? Integer.MAX_VALUE
+            : Integer.parseInt(args[1]);
+        output(writer, month, year);
+        writer.flush();
+        writer.close();
+    }
+
+    public static void output(PrintWriter out, int calendarMonth, int calendarYear)
+    {
+        // following is almost identical to JSP
+        // differences:
+        // - input argument handling
+        // - links are removed
+        
+        Locale locale = Locale.getDefault();
+        String event;
+    
+        java.util.Calendar calendar = java.util.Calendar.getInstance(locale);
+        int firstDayOfWeek = calendar.getFirstDayOfWeek();
+
+        DateFormatSymbols dateFormatSymbols = new DateFormatSymbols(locale);
+        // weekday names is one-based; [0] is empty
+        String[] dayNames;
+        {
+            String[] originalDayNames =  dateFormatSymbols.getShortWeekdays();
+            dayNames = new String[originalDayNames.length-1];
+            System.arraycopy(
+                originalDayNames, firstDayOfWeek, 
+                dayNames, 0, dayNames.length-(firstDayOfWeek-1));
+            if ( firstDayOfWeek != 1 )
+            {
+                System.arraycopy(
+                    originalDayNames, 1,
+                    dayNames, dayNames.length-(firstDayOfWeek-1), firstDayOfWeek-1);
+            }
+        }
+        String[] monthNames = dateFormatSymbols.getMonths();
+        
+        // get info about today
+        int thisDay = calendar.get(java.util.Calendar.DAY_OF_MONTH);
+        int thisMonth = calendar.get(java.util.Calendar.MONTH);
+        int thisYear = calendar.get(java.util.Calendar.YEAR);
+    
+        if ( calendarMonth == Integer.MAX_VALUE )
+        {
+            calendarMonth = thisMonth;
+        }
+        if ( calendarYear == Integer.MAX_VALUE )
+        {
+            calendarYear = thisYear;
+        }
+
+        String monthName = monthNames[calendarMonth];
+    
+        calendar.set(java.util.Calendar.DAY_OF_MONTH, 1);
+        calendar.set(java.util.Calendar.MONTH, calendarMonth);
+        calendar.set(java.util.Calendar.YEAR, calendarYear);
+    
+        // what weekday is the first day of the month?
+        int firstWeekdayOfMonth = 
+            calendar.get(java.util.Calendar.DAY_OF_WEEK);
+    
+        // calendarDay contains the day of the month.  It is initialized to
+        // a negative value and incremented for each cell in the calendar
+        // so that its value is 1 on the cell for the first day of the month.
+        int calendarDay = 1 + firstDayOfWeek - firstWeekdayOfMonth;
+    
+        // what's the last day of the month?
+        calendar.add(java.util.Calendar.MONTH, 1);
+        calendar.add(java.util.Calendar.DAY_OF_MONTH, -1);
+        int lastDayOfMonth = 
+            calendar.get(java.util.Calendar.DAY_OF_MONTH);
+        int lastWeekOfMonth = 
+            calendar.get(java.util.Calendar.WEEK_OF_MONTH);
+    
+        // above is identical to JSP
+</prolog>
+
+<epilog>
+    }
+}
+</epilog>
+
+<!-- remainder is identical to jsp -->
+
+<tag tag="title">
+  <content>
+    monthName + " " + calendarYear
+  </content>
+</tag>
+
+<id name="month-title">
+  <content>
+    monthName + " " + calendarYear
+  </content>
+</id>
+
+<!--
+    Select the first day-name heading cell and replicate it for each
+    day of the week.
+-->
+<id name="prototype-weekday-name">
+  <foreach type="String[]" element="dayName">
+    dayNames
+  </foreach>
+  <content>
+    dayName
+  </content>
+  <attr name="id">
+    <discard/>
+  </attr>
+</id>
+
+<!--
+    Discard all the other day-name heading cells.
+-->
+<tag tag="td" class="weekday-name" without-attr="id">
+  <discard/>
+</tag>
+
+<!--
+    Select the table row for the first week of the month and replicate
+    it for each week in the month.
+-->
+<id name="prototype-week">
+  <for>
+    int weekOfMonth = 0; weekOfMonth < lastWeekOfMonth; ++weekOfMonth
+  </for>
+  <attr name="id">
+    <discard/>
+  </attr>
+</id>
+
+<!--
+    Discard all the other week rows.
+-->
+<tag tag="tr" class="week" without-attr="id">
+  <discard/>
+</tag>
+
+<!--
+    Select the date cell containing the complete prototype formatting
+    and replicate it for each day in the week.
+-->
+<id name="prototype-day">
+  <for>
+    int dayOfWeek = 0; dayOfWeek < dayNames.length; ++dayOfWeek, ++calendarDay
+  </for>
+
+  <!-- 
+        Add an id attribute only for the calendar day 
+        corresponding to today.
+  -->
+  <attr name="id">
+    <if>calendarDay == thisDay && calendarMonth == thisMonth && calendarYear == thisYear</if>
+    <raw-content>today</raw-content>
+  </attr>
+
+  <!-- 
+        Set the class for the table cell to be either this-month
+        or other-month, depending on whether the calendar cell
+        represents a day in this month.
+  -->
+  <attr name="class">
+    <content>
+      1 <= calendarDay && calendarDay <= lastDayOfMonth
+      ? "this-month"
+      : "other-month"
+    </content>
+  </attr>
+
+</id>
+
+<!--
+    This class is associated with a span tag inside the prototype
+    day cell that contains the day of the month.  
+-->
+<class name="day">
+
+  <!-- Discard the span tag (but not its content) -->
+  <discard-tag/>
+
+  <!-- Output the day of the month -->
+  <content>
+      1 <= calendarDay && calendarDay <= lastDayOfMonth
+      ? String.valueOf(calendarDay)
+      : "&nbsp;"
+  </content>
+
+</class>
+
+<!--
+    This class is associated with a paragraph tag inside the prototype
+    day cell that contains an event.
+-->
+<class name="event">
+
+  <!-- 
+      Output the paragraph only if there's an event for this calendar
+      day.  (Note that event is set as a side-effect of this test.)
+  -->
+  <if>
+    null != (event = (String) dates.get(String.valueOf(calendarMonth+1) + "/" + String.valueOf(calendarDay)))
+  </if>    
+
+  <!-- 
+      If outputting the paragraph, output the event description as the
+      content of the paragraph.
+  -->
+  <content>
+    event
+  </content>
+
+</class>
+
+<!--
+    Discard all the table cells in the template that represent a 
+    day in another month.
+-->
+<class name="other-month">
+  <discard/>
+</class>
+
+<!--
+    Discard all the table cells in the template that represent a 
+    day in this month, except for any that have 'id' attributes.
+    (There's only one, the prototype referenced above.)
+-->
+<tag tag="td" class="this-month" without-attr="id">
+  <discard/>
+</tag>
+
+<!--
+    Since this is a batch report, don't print links
+-->
+<id name="prev">
+  <discard/>
+</id>
+
+<id name="next">
+  <discard/>
+</id>
+
+</dynamator>

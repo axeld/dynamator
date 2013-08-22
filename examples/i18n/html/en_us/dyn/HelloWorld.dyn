@@ -1,0 +1,12 @@
+<dynamator language="none" suffix="html">
+  <tag tag="title">
+    <content>
+        A Simple Page
+    </content>
+  </tag>
+  <id name="HelloText">
+    <content>
+        Hello, world!
+    </content>
+  </id>
+</dynamator>

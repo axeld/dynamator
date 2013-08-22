@@ -1,0 +1,49 @@
+<dynamator language="java">
+
+<prolog>
+import java.io.PrintWriter;
+
+public class FontSizes
+{
+    public static void main(String[] args)
+    {
+        PrintWriter writer = new PrintWriter(System.out, true);
+        output(writer);
+        writer.flush();
+        writer.close();
+    }
+
+    public static void output(PrintWriter out)
+    {
+</prolog>
+
+<epilog>
+    }
+}
+</epilog>
+
+  <class name="size">
+    <before-content indent-program="yes">
+        for ( int i = 1; i <= 7; ++i ) {
+    </before-content>
+    <after-content>
+        }
+    </after-content>
+    <discard-tag/>
+  </class>
+
+  <class name="font">
+    <attr name="size">
+      <content>i</content>
+    </attr>
+    <attr name="class">
+      <discard/>
+    </attr>
+  </class>
+
+  <class name="fontsize">
+    <content>i</content>
+    <discard-tag/>
+  </class>
+
+</dynamator>

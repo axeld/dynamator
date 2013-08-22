@@ -1,0 +1,90 @@
+<!-- 
+    This is an ant build file. 
+
+    It builds the app for each locale.
+-->
+<project name="dynamator-i18n-example-locales" default="all">
+  
+  <path id="classpath.project">
+    <pathelement location="../../../build/dynamator.jar"/>
+    <pathelement location="../../../dynamator.jar"/>
+    <fileset dir="../../..">
+      <include name="lib/**/*.jar"/>
+    </fileset>
+    <!-- path from sub-directories -->
+    <pathelement location="../../../../build/dynamator.jar"/>
+    <pathelement location="../../../../dynamator.jar"/>
+    <fileset dir="../../../..">
+      <include name="lib/**/*.jar"/>
+    </fileset>
+    <pathelement path="${java.class.path}"/>
+  </path>
+  
+  <taskdef name="dynamate" 
+      classname="dynamator.ant.DynamateTask"
+      classpathref="classpath.project"
+      />
+  
+  <target name="all"
+      description="Build app for each locale"
+    >
+      <ant target="dynamate-all" dir="en_us" antfile="../build.xml"/>
+      <ant target="dynamate-all" dir="en_us_pig" antfile="../build.xml"/>
+      <ant target="dynamate-all" dir="es" antfile="../build.xml">
+        <property name="charset" value="iso-8859-1" />
+      </ant>
+      <ant target="dynamate-all" dir="ja" antfile="../build.xml">
+        <property name="charset" value="utf-8" />
+      </ant>
+      <ant target="dynamate-all" dir="tw" antfile="../build.xml">
+        <property name="charset" value="big5" />
+      </ant>
+  </target>
+  
+  <property name="charset" value="us-ascii"/>
+  
+  <target name="dynamate-all"
+      depends="clean, dynamate-html, dynamate-jsp"
+      description="Clean and rebuild Dynamator examples."
+    />
+  
+  <target name="dynamate-html"
+      description="Create localized HTML."
+    >
+    <mkdir dir="html"/>
+    <dynamate
+        srcdir=".."
+        matchdir="dyn"
+        destdir="html"
+        destsuffix="html"
+        includes="*.html"
+        encoding="${charset}"
+        />
+  </target>
+  
+  <target name="dynamate-jsp"
+      description="Create localized JSP."
+    >
+    <mkdir dir="htdocs"/>
+    <dynamate
+        srcdir="html"
+        matchdir="../../dyn"
+        destdir="htdocs"
+        destsuffix="jsp"
+        includes="*.html"
+        encoding="${charset}"
+        includepath="."
+        />
+  </target>
+
+  <target name="clean"
+      description="Delete all program-generated files"
+    >
+    <delete quiet="true">
+      <fileset dir="." includes="*.jsp" />
+      <fileset dir="." includes="**/html/*.html" />
+      <fileset dir="." includes="**/*.asxml" />
+    </delete>
+  </target>
+  
+</project>
