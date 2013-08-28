@@ -30,7 +30,9 @@
 
 package dynamator.jsp;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import dynamator.Utils;
 
@@ -47,14 +49,62 @@ extends dynamator.Generator
     class CollectionType
     {
         public static final CollectionType ARRAY = new CollectionType();
-        public static final CollectionType VECTOR = new CollectionType();
         public static final CollectionType DICTIONARY = new CollectionType();
         public static final CollectionType PROPERTIES = new CollectionType();
         public static final CollectionType ENUMERATION = new CollectionType();
         public static final CollectionType ITERATOR = new CollectionType();
+        public static final CollectionType ITERABLE = new CollectionType();
         public static final CollectionType MAP = new CollectionType();
     }
-    
+
+    private static class Collection
+    {
+        String name;
+        String declaredType;
+        CollectionType type;
+        String elementType;
+        String keySuffix;
+        String valueSuffix;
+        int paramterType;
+
+        public Collection(
+            String name,
+            String declaredType,
+            CollectionType type,
+            String elementType,
+            String keySuffix,
+            String valueSuffix,
+            int parameterType
+            )
+        {
+            this.name = name;
+            this.declaredType = declaredType;
+            this.type = type;
+            this.elementType = elementType;
+            this.keySuffix = keySuffix;
+            this.valueSuffix = valueSuffix;
+            this.paramterType = parameterType;
+        }
+    }
+
+    private static final int NONE = 0;
+    private static final int ELEMENT = 1;
+    private static final int KEY_ELEMENT = 2;
+    private static final int KEY_VALUE = 3;
+
+    private static final List<Collection> collections_ = new ArrayList<>();
+
+    static
+    {
+        collections_.add(new Collection("Dictionary", "java.util.Dictionary", CollectionType.DICTIONARY, null, "Key", null, KEY_ELEMENT));
+        collections_.add(new Collection("Map", "java.util.Map", CollectionType.MAP, "java.util.Map.Entry", "Key", "Value", KEY_VALUE));
+        collections_.add(new Collection("Properties", "java.util.Properties", CollectionType.PROPERTIES, "String", "Name", null, NONE));
+        collections_.add(new Collection("Iterator", "java.util.Iterator", CollectionType.ITERATOR, null, null, null, ELEMENT));
+        collections_.add(new Collection("Set", "java.util.Iterator", CollectionType.ITERABLE, null, null, null, ELEMENT));
+        collections_.add(new Collection("Vector", "java.util.Iterator", CollectionType.ITERABLE, null, null, null, ELEMENT));
+        collections_.add(new Collection("Enumeration", "java.util.Enumeration", CollectionType.ENUMERATION, null, null, null, ELEMENT));
+    }
+
     private
     String
     convertToVariable(
@@ -243,7 +293,7 @@ extends dynamator.Generator
             
         String elementType = null;
 
-        String keyType = null;          // only used for Dictionaries
+        String keyType = null;          // only used for Dictionaries and Maps
         String keySuffix = null;
 
         String valueType = null;        // only used for Maps
@@ -262,136 +312,64 @@ extends dynamator.Generator
                 collectionDeclaredType = collectionTypeString;
             }
             else
-            if ( collectionTypeString.startsWith("Vector") )
             {
-                int last = collectionTypeString.length()-1;
-                if ( last < 8
-                    || collectionTypeString.charAt(6) != '['
-                    || collectionTypeString.charAt(last) != ']' )
+                for (Collection collection : collections_)
                 {
-                    error(
-                        "Invalid foreach type: " + collectionTypeString
-                        );
-                    return result;
+                    if ( collection.paramterType == NONE
+                            && !collectionTypeString.equals(collection.name)
+                            || collection.paramterType != NONE
+                            && !collectionTypeString.startsWith(collection.name) )
+                        continue;
+
+                    elementType = collection.elementType;
+                    collectionDeclaredType = collection.declaredType;
+                    collectionType = collection.type;
+                    keySuffix = collection.keySuffix;
+                    valueSuffix = collection.valueSuffix;
+
+                    if ( collection.paramterType != NONE )
+                    {
+                        int last = collectionTypeString.length() - 1;
+                        if ( last < collection.name.length() + 2
+                                || collectionTypeString.charAt(collection.name.length()) != '['
+                                || collectionTypeString.charAt(last) != ']' )
+                        {
+                            error("Invalid foreach type: " + collectionTypeString);
+                            return result;
+                        }
+
+                        String type = collectionTypeString.substring(collection.name.length() + 1,
+                                last).trim();
+                        if ( collection.paramterType == ELEMENT )
+                        {
+                            elementType = type;
+                        }
+                        else
+                        {
+                            String[] types = type.split(",");
+                            if ( types.length != 2 )
+                            {
+                                error(
+                                        "Invalid foreach type: " + collectionTypeString
+                                        + " (should be " + collection.name + "[keytype,valuetype])"
+                                        );
+                                return result;
+                            }
+
+                            keyType = types[0].trim();
+                            if ( collection.paramterType == KEY_ELEMENT)
+                                elementType = types[1].trim();
+                            else
+                                valueType = types[1].trim();
+                        }
+                    }
                 }
 
-                elementType = collectionTypeString.substring(7, last);
-                collectionDeclaredType = "java.util.Vector";
-                collectionType = CollectionType.VECTOR;
-            }
-            else
-            if ( collectionTypeString.startsWith("Enumeration") )
-            {
-                int last = collectionTypeString.length()-1;
-                if ( last < 13
-                    || collectionTypeString.charAt(11) != '['
-                    || collectionTypeString.charAt(last) != ']' )
+                if ( collectionType == null )
                 {
-                    error(
-                        "Invalid foreach type: " + collectionTypeString
-                        );
+                    error("Invalid foreach type: " + collectionTypeString);
                     return result;
                 }
-
-                elementType = collectionTypeString.substring(12, last);
-                collectionDeclaredType = "java.util.Enumeration";
-                collectionType = CollectionType.ENUMERATION;
-            }
-            else
-            if ( collectionTypeString.startsWith("Iterator") )
-            {
-                int last = collectionTypeString.length()-1;
-                if ( last < 10
-                    || collectionTypeString.charAt(8) != '['
-                    || collectionTypeString.charAt(last) != ']' )
-                {
-                    error(
-                        "Invalid foreach type: " + collectionTypeString
-                        );
-                    return result;
-                }
-
-                elementType = collectionTypeString.substring(9, last);
-                collectionDeclaredType = "java.util.Iterator";
-                collectionType = CollectionType.ITERATOR;
-            }
-            else
-            if ( collectionTypeString.startsWith("Dictionary") )
-            {
-                int last = collectionTypeString.length()-1;
-                if ( last < 14
-                    || collectionTypeString.charAt(10) != '['
-                    || collectionTypeString.charAt(last) != ']' )
-                {
-                    error(
-                        "Invalid foreach type: " + collectionTypeString
-                        );
-                    return result;
-                }
-
-                String types = collectionTypeString.substring(11, last);
-                int pComma = types.indexOf(',');
-                if ( pComma == -1 )
-                {
-                    error(
-                        "Invalid foreach type: " + collectionTypeString
-                        + " (should be Dictionary[keytype,valuetype])"
-                        );
-                    return result;
-                }
-                keyType = types.substring(0, pComma).trim();
-                elementType = types.substring(pComma+1).trim();
-                collectionDeclaredType = "java.util.Dictionary";
-                collectionType = CollectionType.DICTIONARY;
-                keySuffix = "Key";
-            }
-            else
-            if ( collectionTypeString.startsWith("Map") )
-            {
-                int last = collectionTypeString.length()-1;
-                if ( last < 7
-                    || collectionTypeString.charAt(3) != '['
-                    || collectionTypeString.charAt(last) != ']' )
-                {
-                    error(
-                        "Invalid foreach type: " + collectionTypeString
-                        );
-                    return result;
-                }
-
-                String types = collectionTypeString.substring(4, last);
-                int pComma = types.indexOf(',');
-                if ( pComma == -1 )
-                {
-                    error(
-                        "Invalid foreach type: " + collectionTypeString
-                        + " (should be Map[keytype,valuetype])"
-                        );
-                    return result;
-                }
-                elementType = "java.util.Map.Entry";
-                keyType = types.substring(0, pComma).trim();
-                valueType = types.substring(pComma+1).trim();
-                collectionDeclaredType = "java.util.Map";
-                collectionType = CollectionType.MAP;
-                keySuffix = "Key";
-                valueSuffix = "Value";
-            }
-            else
-            if ( collectionTypeString.equals("Properties") )
-            {
-                keyType = "String";
-                elementType = "String";
-                keySuffix = "Name";
-                collectionDeclaredType = "java.util.Properties";
-                collectionType = CollectionType.PROPERTIES;
-            }
-            else
-            {
-                error(
-                    "Invalid foreach type: " + collectionTypeString
-                    );
-                return result;
             }
         }
         else
@@ -426,12 +404,12 @@ extends dynamator.Generator
         
         if ( elementName == null 
             && 
-            ( collectionType == CollectionType.VECTOR
-                || collectionType == CollectionType.ENUMERATION
+            ( collectionType == CollectionType.ENUMERATION
                 || collectionType == CollectionType.DICTIONARY
                 || collectionType == CollectionType.PROPERTIES
                 || collectionType == CollectionType.ITERATOR
                 || collectionType == CollectionType.MAP
+                || collectionType == CollectionType.ITERABLE
             )
            )
         {
@@ -454,19 +432,16 @@ extends dynamator.Generator
         outputRaw(
             collectionDeclaredType + " " 
             + collectionName
-            + " = " + collectionExpression + ";"
+            + " = " + collectionExpression + (collectionType == CollectionType.ITERABLE ? ".iterator()" : "") + ";"
             );
 
-        if ( collectionType == CollectionType.ARRAY 
-            || collectionType == CollectionType.VECTOR )
+        if ( collectionType == CollectionType.ARRAY )
         {
             nextProgramLine();
             outputRaw(
                 "int " + limVarName
                 + " = " + lengthExpression 
-                + ( collectionType == CollectionType.VECTOR
-                    ? ".size();"
-                    : ".length;" )
+                + ".length;"
                 );
         }
 
@@ -539,7 +514,7 @@ extends dynamator.Generator
                 );
         }
         else
-        if ( collectionType == CollectionType.ITERATOR )
+        if ( collectionType == CollectionType.ITERATOR || collectionType == CollectionType.ITERABLE )
         {
             if ( iName != null )
             {
@@ -685,7 +660,7 @@ extends dynamator.Generator
                 }
             }
             else
-            if ( collectionType == CollectionType.ITERATOR )
+            if ( collectionType == CollectionType.ITERATOR || collectionType == CollectionType.ITERABLE )
             {
                 nextProgramLine();
                 outputRaw(
@@ -697,15 +672,6 @@ extends dynamator.Generator
                     nextProgramLine();
                     outputRaw("++" + iName + ";");
                 }
-            }
-            else
-            if ( collectionType == CollectionType.VECTOR )
-            {
-                nextProgramLine();
-                outputRaw(
-                    elementName + " = (" + elementType + ") "
-                    + collectionName + ".elementAt(" + iVarName + ");"
-                    );
             }
             else
             {
