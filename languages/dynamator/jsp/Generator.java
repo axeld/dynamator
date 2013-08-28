@@ -101,6 +101,7 @@ extends dynamator.Generator
         collections_.add(new Collection("Properties", "java.util.Properties", CollectionType.PROPERTIES, "String", "Name", null, NONE));
         collections_.add(new Collection("Iterator", "java.util.Iterator", CollectionType.ITERATOR, null, null, null, ELEMENT));
         collections_.add(new Collection("Set", "java.util.Iterator", CollectionType.ITERABLE, null, null, null, ELEMENT));
+        collections_.add(new Collection("List", "java.util.Iterator", CollectionType.ITERABLE, null, null, null, ELEMENT));
         collections_.add(new Collection("Vector", "java.util.Iterator", CollectionType.ITERABLE, null, null, null, ELEMENT));
         collections_.add(new Collection("Enumeration", "java.util.Enumeration", CollectionType.ENUMERATION, null, null, null, ELEMENT));
     }
