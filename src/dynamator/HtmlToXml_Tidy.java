@@ -83,10 +83,6 @@ implements HtmlToXml
         // No need to add document generator to output
         properties.put("tidy-mark", "false");
 
-        // If the doctype is in the HTML file, the SAX parser makes a 
-        // network trip to get the HTML dtd.
-        properties.put("doctype", "omit");
-
         // Request that entities be output in their numeric form
         // rather than the character mnemonics: some browsers don't 
         // understand all the mnemonics.  Unfortunately this forces
